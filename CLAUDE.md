@@ -271,9 +271,12 @@ Saved macros persist across sessions in macros/.
 - **Character**: CLAUDE (boy)
 - **Rival**: Barry
 - **Badges**: 0
-- **Location**: Twinleaf Town — player's bedroom (Barry just left, need to go downstairs)
-- **Party**: (empty — haven't received starter yet)
-- **Blocker**: All Renegade MCP tools fail with "Could not detect emulator heap layout" because party count is 0. Need at least 1 Pokemon for heap detection to work. Must get starter before any tool QA can begin.
+- **Location**: Jubilife City — arrived via Route 202. Met Looker. Barry is at Trainers' School.
+- **Party**: Chimchar Lv11 (Quirky/Iron Fist), Eevee Lv9 (Lax/Run Away), Hoothoot Lv5 (Rash/Insomnia)
+- **Key Items**: Pokedex (National Mode), Bicycle, Poke Radar, Journal, Parcel, Vs. Recorder
+- **Items**: Repel x10, Poke Ball x29
+- **Money**: ~336
+- **Next**: Deliver Parcel to Barry at Trainers' School. Heal party. Explore Jubilife City. Then Route 203 → Oreburgh Gate → Oreburgh City for first gym.
 
 ## Quick Reference: Common Workflows
 
@@ -318,9 +321,9 @@ Saved macros persist across sessions in macros/.
 Track which tools/flows you've exercised. Update as you go.
 
 - [ ] Name entry (touch keyboard)
-- [ ] Starter selection
+- [x] Starter selection — chose Chimchar via D-pad on top screen briefcase UI
 - [ ] Wild battle (single)
-- [ ] Trainer battle (single)
+- [x] Trainer battle (single) — Barry rival battle, lost but full flow worked (blackout handled)
 - [ ] Double battle (tag / wild / trainer)
 - [ ] Catching Pokemon
 - [ ] Evolution (level-up)
@@ -330,7 +333,7 @@ Track which tools/flows you've exercised. Update as you go.
 - [ ] Party reorder
 - [ ] PC deposit
 - [ ] PC withdraw
-- [ ] Heal at Pokemon Center
+- [x] Heal at Pokemon Center — heal_party auto-navigated from Sandgem overworld
 - [ ] Buy items at PokeMart
 - [ ] Use medicine (single)
 - [ ] Use medicine (bulk)
@@ -340,12 +343,12 @@ Track which tools/flows you've exercised. Update as you go.
 - [ ] Teach TM/HM
 - [ ] Navigate multi-room dungeon
 - [ ] Navigate elevation-aware map
-- [ ] Navigate with flee_encounters
+- [x] Navigate with flee_encounters — Route 201, fled Bidoof successfully
 - [ ] Auto grind (basic)
 - [ ] Auto grind (with auto-heal loop)
 - [ ] Auto grind (smart move selection)
 - [ ] Auto grind (target species)
 - [ ] Gym battle (full team)
-- [ ] Story cutscene advancement
+- [x] Story cutscene advancement — Lake Verity (Cyrus), Rowan lab (Pokedex), Mom (Eevee/Parcel)
 - [ ] Sign/signpost interaction
 - [ ] HM obstacle (Cut tree, Rock Smash)
