@@ -15,3 +15,9 @@ QoL improvements identified during QA playthrough. Ordered by impact.
 - **Context**: In Oreburgh Mine, `interact_with(object_index=5, flee_encounters=True)` fled a wild Geodude but then stopped without completing the interaction. Had to `navigate_to` the item manually, then `interact_with` once adjacent.
 - **Proposed**: After fleeing an encounter, `interact_with` should re-BFS from current position to the target (like `navigate_to` does with its re-path logic) instead of stopping.
 - **Impact**: Minor annoyance — easy workaround exists (navigate_to + interact_with separately).
+
+### FR-003: `auto_grind` cross-map auto-heal
+- **Priority**: Medium
+- **Context**: Grinding Monferno Lv21→23 in Oreburgh Gate (cave, map 258) required healing at Oreburgh City PC (map 45). The auto-heal loop (`heal_x/heal_y/grind_x/grind_y`) only works within the same map, so PP depletion stopped the grind and I had to manually navigate out of the cave, heal, navigate back in, and restart. This cycle happened twice for 2 levels of grinding.
+- **Proposed**: Support cross-map heal coordinates. When `heal_x/heal_y` are on a different map than the grind area, auto_grind would navigate through warps/doors to reach the town, heal, then navigate back. The warp data from `view_map` already provides the exit coordinates needed.
+- **Impact**: Eliminates the most tedious part of cave grinding. Without this, every PP depletion or faint in a cave requires 4+ manual navigation steps to heal and return.
