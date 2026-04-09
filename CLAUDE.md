@@ -271,12 +271,12 @@ Saved macros persist across sessions in macros/.
 - **Character**: CLAUDE (boy)
 - **Rival**: Barry
 - **Badges**: 1 (Coal)
-- **Location**: Floaroma Town PC, healed. Team Galactic grunts blocking north exit.
-- **Party**: Monferno Lv24 (Quirky/Iron Fist, 67/67 HP, holds Muscle Band) — Mach Punch/Low Kick/Flame Wheel/Rock Smash. Eevee Lv12 (Lax/Run Away, 37/37, holds Scope Lens). Noctowl Lv21 (Rash/Insomnia, 74/74, holds Exp. Share) — Air Cutter/Extrasensory/Hypnosis/Peck. Abra Lv7 (Rash/Synchronize, Teleport/Endure).
-- **Key Items**: Pokedex (National Mode), Bicycle, Poke Radar, Journal, Vs. Recorder, Town Map, Coal Badge, Fashion Case
-- **Items**: Repel x10, Silk Scarf, Potion x5, Antidote x3, Poke Ball x28, Heal Ball x3, TM Stealth Rock, Fire Stone, Oval Stone, Big Pearl, Muscle Band (on Monferno), Rare Bone, Dire Hit, Yellow Shard, Parlyz Heal x3
-- **Money**: ~7736
-- **Next**: Deal with Team Galactic grunts blocking Floaroma north exit. Then Route 205 → Valley Windworks → Eterna Forest → Eterna City. Still need to test Rock Smash field use (HM obstacle QA) and Take held item, PC deposit/withdraw, Auto grind (target species).
+- **Location**: Eterna Forest entrance. Cheryl joined as partner (heals after battles, double battle ally).
+- **Party**: Monferno Lv27 (Quirky/Iron Fist, 3/74 HP, holds Muscle Band) — Mach Punch/Low Kick/Flamethrower/Rock Smash. Eevee Lv12 (Lax/Run Away, fainted, holds Scope Lens). Noctowl Lv24 (Rash/Insomnia, fainted, holds Exp. Share) — Air Cutter/Extrasensory/Hypnosis/Peck. Abra Lv7 (Rash/Synchronize, Teleport/Endure).
+- **Key Items**: Pokedex (National Mode), Bicycle, Poke Radar, Journal, Vs. Recorder, Town Map, Coal Badge, Fashion Case, Works Key
+- **Items**: Repel x11, Silk Scarf, Potion x5, Antidote x3, Poke Ball x28, Heal Ball x3, TM Stealth Rock, TM34 Shock Wave, TM08 Bulk Up, Fire Stone, Oval Stone, Big Pearl, Muscle Band (on Monferno), Magnet, Honey, Rare Bone, Dire Hit, Yellow Shard, Parlyz Heal x3
+- **Money**: ~13,000
+- **Next**: Explore Eterna Forest with Cheryl (partner double battles). Then Route 205 north → Eterna City. Still need to test Rock Smash field use (HM obstacle QA).
 
 ## Quick Reference: Common Workflows
 
@@ -331,15 +331,15 @@ Track which tools/flows you've exercised. Update as you go.
 - [x] Move learning (4 moves, forget) — Flame Wheel, Mach Punch (Monferno), Confusion, Hypnosis (Hoothoot), Quick Attack (Eevee)
 - [x] Move learning (4 moves, skip) — auto_grind: Monferno skipped Fake Out at Lv22 (forget_move=-1)
 - [x] Party reorder — swapped Monferno/Eevee for grinding
-- [ ] PC deposit
-- [ ] PC withdraw
+- [x] PC deposit — deposited Abra to Box 1, verified with read_box
+- [x] PC withdraw — withdrew Abra from Box 1, party back to 4
 - [x] Heal at Pokemon Center — heal_party auto-navigated from Sandgem, Jubilife, and Route 202
 - [x] Buy items at PokeMart — Potions, Antidotes (common cashier), Heal Balls (specialty cashier)
 - [x] Use medicine (single) — Potion on Monferno in Oreburgh Gym
 - [x] Use medicine (bulk) — use_medicine dry-run + confirm on Route 203
 - [x] Use field item (Repel, etc.) — Escape Rope in Oreburgh Mine
 - [x] Give held item — Scope Lens to Eevee, Exp. Share to Hoothoot, Muscle Band to Monferno
-- [ ] Take held item
+- [x] Take held item — took Scope Lens from Eevee, then gave it back
 - [x] Teach TM/HM — HM06 Rock Smash to Monferno (4 moves, forget Taunt), TM58 Endure to Abra (<4 moves)
 - [x] Navigate multi-room dungeon — Oreburgh Gate (1F) + Oreburgh Mine (1F + B1F)
 - [x] Navigate elevation-aware map — Oreburgh Mine ramps (L0-L4), Oreburgh Gym (L0-L3)
@@ -347,7 +347,7 @@ Track which tools/flows you've exercised. Update as you go.
 - [x] Auto grind (basic) — 5 iterations on Route 202, worked correctly
 - [x] Auto grind (with auto-heal loop) — Route 202 to Jubilife PC, heal_trips confirmed. BUG-002: evolution + sequential move learns.
 - [x] Auto grind (smart move selection) — Oreburgh Gate: Mach Punch primary, Flame Wheel backup for Fighting types, flee_ineffective=True
-- [ ] Auto grind (target species)
+- [x] Auto grind (target species) — target_species="Buizel" on Route 205, found on first encounter, stopped at action prompt correctly
 - [x] Gym battle (full team) — Roark defeated at Lv23! 5 Pokemon: Nosepass/Geodude/Onix/Larvitar/Cranidos. Mach Punch priority was key.
 - [x] Story cutscene advancement — Lake Verity, Rowan lab, Mom (Eevee/Parcel), Poketch Company, Barry Parcel delivery, Oreburgh arrival NPC escort, Roark mine scene (Fire Stone quiz), Team Galactic Jubilife encounter
 - [x] Sign/signpost interaction — Arrow Signpost and Trainer Tips on Route 203. sign_overlay: true confirmed for both.

@@ -28,6 +28,13 @@
 | `jubilife_post_galactic` | Jubilife City, post-Team Galactic double battle. Got Fashion Case. |
 | `route204_north_cleared` | Route 204 north, all trainers beaten. Noctowl evolved from Hoothoot Lv20. |
 | `floaroma_town_arrival` | Floaroma Town PC, healed. Monferno Lv24, Noctowl Lv21, Eevee Lv12. Team Galactic grunts blocking north exit. |
+| `valley_windworks_approach` | Route 205 east, approaching Valley Windworks. Party healed. Pre-grunt. |
+| `floaroma_meadow_pre_grunts` | Ravaged Path, near Galactic grunts harassing honey man. Pre-double battle. |
+| `floaroma_healed_works_key` | Floaroma PC, healed. Have Works Key from honey man. Ready for Valley Windworks. |
+| `valley_windworks_pre_mars` | Valley Windworks interior, grunts cleared. Pre-Commander Mars battle. |
+| `valley_windworks_mars_defeated` | Valley Windworks, post-Mars. Team Galactic fled. Father reunited. |
+| `route205_north_pre_eterna_forest` | Route 205 north gatehouse area. Multiple trainers cleared. Pre-Eterna Forest. |
+| `eterna_forest_cheryl_joined` | Eterna Forest entrance. Cheryl joined as partner. Monferno Lv27 (Flamethrower!), Noctowl Lv24. |
 
 ## Bug Reproduction
 
