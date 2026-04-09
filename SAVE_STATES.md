@@ -4,6 +4,7 @@
 
 | Name | Description |
 |------|-------------|
+| `session1_bedroom_pre_starter` | Twinleaf Town, player's bedroom. Barry just left. No Pokemon yet. Pre-stairs. |
 
 ## Bug Reproduction
 

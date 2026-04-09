@@ -268,12 +268,12 @@ Saved macros persist across sessions in macros/.
 
 ## Game Progress
 
-*Start from scratch. Update this section as you play.*
-
-- **Character**: (to be named)
+- **Character**: CLAUDE (boy)
+- **Rival**: Barry
 - **Badges**: 0
-- **Location**: New game
-- **Party**: (empty)
+- **Location**: Twinleaf Town — player's bedroom (Barry just left, need to go downstairs)
+- **Party**: (empty — haven't received starter yet)
+- **Blocker**: All Renegade MCP tools fail with "Could not detect emulator heap layout" because party count is 0. Need at least 1 Pokemon for heap detection to work. Must get starter before any tool QA can begin.
 
 ## Quick Reference: Common Workflows
 
