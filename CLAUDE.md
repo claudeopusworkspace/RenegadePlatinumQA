@@ -17,12 +17,14 @@ You are performing a **QA playthrough** of Pokemon Renegade Platinum using the m
 
 When you encounter a bug:
 
-1. **Save a state immediately** with a descriptive name (e.g., `bug_navigate_to_stuck_route203`)
+1. **Save a state for reproduction** — the save must capture the game state *before* the faulty tool call, so the bug can be reproduced by loading the state and re-running the same call.
+   - If the bug is **reproducible from the current state** (e.g., a read tool returning wrong data, a navigate call that always fails from this position), use **`save_state`** with a descriptive name (e.g., `bug_navigate_to_stuck_route203`).
+   - If the bug involved a tool that **changed game state** and can't be re-triggered from the current position (e.g., a navigation that moved you partway, a battle turn that advanced the fight), use **`save_checkpoint`** to capture a previous point in time before the tool was called. Name it descriptively.
 2. **Add an entry to BUG_LOG.md** with:
    - The tool that failed
    - What you were trying to do
    - What actually happened (include the error/unexpected output)
-   - The save state name for reproduction
+   - The save state/checkpoint name for reproduction
    - Exact tool call and parameters that triggered it
 3. **Work around it** and keep playing - don't get stuck on any single issue
 4. If a bug is blocking progress entirely, note it and find an alternative path
@@ -44,6 +46,11 @@ When you encounter a bug:
 - Game difficulty (that's Renegade Platinum)
 - Needing to grind (normal)
 - A tool correctly reporting an error (e.g., "not in battle" when you're not in battle)
+- One-off manual tasks that no Renegade tool covers (see below)
+
+### Manual / One-Off Tasks
+
+Some game moments — especially early game — involve unique UIs or story sequences that the Renegade tools don't cover (e.g., the professor's intro dialogue, naming your rival, choosing your starter). These are **not bugs or missing features**. They're one-off situations. Use the base melonDS MCP tools (`press_buttons`, `tap_touch_screen`, `advance_frames`, `get_screenshot`, etc.) to get past them manually and move on.
 
 ## Getting Started
 
