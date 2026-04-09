@@ -28,14 +28,25 @@ QoL improvements identified during QA playthrough. Ordered by impact.
 - **Proposed**: `navigate` and `navigate_to` should recognize deep snow tiles (and similar slow-walk terrain) and hold directional input for extra frames per step, similar to how cave encounters use `cave=true` for non-grass.
 - **Impact**: Minor — only affects a few areas with deep snow tiles. Easy workaround: skip the item.
 
-### FR-005: Partner double battle support (Eterna Forest / tag battles)
-- **Priority**: Medium
-- **Context**: Eterna Forest has Cheryl as a partner — all wild encounters are double battles with her Chansey as ally. The `battle_turn` tool handles player-side doubles (already tested), but partner AI battles may have different flow (partner acts automatically). When Cheryl joins, `seek_encounter` and `auto_grind` need to handle the partner's turn without player input. Currently untested whether `battle_turn` correctly handles the case where only 1 of 2 allied Pokemon is player-controlled.
-- **Proposed**: Verify/fix `battle_turn` for partner double battles. The tool should recognize when the partner acts automatically and not wait for a second player action.
-- **Impact**: Eterna Forest is a required area with ~10 trainer battles as doubles with Cheryl. If partner doubles don't work, the entire forest must be navigated manually.
+### FR-005: Partner double battle support (Eterna Forest / tag battles) — VALIDATED
+- **Priority**: ~~Medium~~ N/A — **Works correctly as-is**
+- **Context**: Eterna Forest has Cheryl as a partner — all wild encounters are double battles with her Chansey as ally.
+- **QA Result (Session 7)**: Partner doubles work perfectly. Tested tag trainer battles (Bug Catcher + Bug Catcher, Bug Catcher + Lass) and wild doubles (Buneary + Shroomish). Cheryl's Chansey acts autonomously with no player input needed. `battle_turn` correctly submits only the player's action and waits for the next action prompt after the partner acts. `seek_encounter` and wild battle flow also work correctly with partner doubles. No changes needed.
 
 ### FR-006: `battle_turn` accuracy-drop awareness
 - **Priority**: Low
 - **Context**: In the Floaroma Meadow double battle, Croagunk spammed Mud-Slap dropping Monferno to -2 accuracy. Flame Wheel then missed 4 consecutive turns against a Lv15 Ledyba, nearly losing the fight. The type effectiveness guardrail warns about NVE moves, but there's no warning when accuracy drops make a move unreliable.
 - **Proposed**: When the active Pokemon has accuracy stages <= -2, `battle_turn` could note "Warning: accuracy at -2 (60% hit rate)" in the response so the caller can decide whether to switch or use a never-miss move instead.
 - **Impact**: Nice-to-have situational awareness. The caller can already read stages from battle_state, but a proactive nudge prevents wasted turns.
+
+### FR-007: `battle_turn` move cursor reset after MOVE_BLOCKED / Disable
+- **Priority**: High (tied to BUG-006)
+- **Context**: When a move is blocked by Disable (or Torment/Encore/Taunt), the game rejects the move and returns to the move selection submenu. But the cursor position in the 2x2 move grid is now unknown — it may be on the disabled move or elsewhere. When `battle_turn` is called again with a different `move_index`, it navigates the grid assuming the cursor starts at top-left (index 0), but the actual cursor may be anywhere, causing the wrong move to be selected (BUG-006: requested Extrasensory, got Peck).
+- **Proposed**: After detecting a blocked/disabled move, `battle_turn` should either: (a) back out to the main action menu and re-enter FIGHT to reset the cursor, or (b) read the cursor position from memory before navigating. Option (a) is simpler and more robust.
+- **Impact**: Without this, any battle involving Disable/Torment/Encore is unreliable — the player can't trust that the requested move will actually be used. This came up against a Drowzee in Eterna Forest (Psychic trainer).
+
+### FR-008: Formatted battle state shows incorrect "TIMEOUT" label
+- **Priority**: Low (cosmetic)
+- **Context**: The `formatted` field in `battle_turn` responses frequently shows `State: TIMEOUT` even when `final_state` correctly reports `BATTLE_ENDED`, `ACTION`, or `SWITCH_PROMPT`. Observed consistently across dozens of battles in Sessions 6-7.
+- **Proposed**: The formatted string should reflect the actual `final_state` value, not a stale/default "TIMEOUT" label.
+- **Impact**: Cosmetic only — the `final_state` field is correct and usable. But the formatted output is confusing when debugging.
