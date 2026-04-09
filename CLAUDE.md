@@ -320,7 +320,7 @@ Saved macros persist across sessions in macros/.
 
 Track which tools/flows you've exercised. Update as you go.
 
-- [ ] Name entry (touch keyboard)
+- [~] Name entry (touch keyboard) — worked at game start (named CLAUDE), but was manual (base melonDS tools). No renegade tool covers this; not retroactively testable.
 - [x] Starter selection — chose Chimchar via D-pad on top screen briefcase UI
 - [x] Wild battle (single) — Route 202/203 encounters, flee and fight tested
 - [x] Trainer battle (single) — Barry rival (3 Pokemon), Route 203 Youngsters
