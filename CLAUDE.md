@@ -271,12 +271,12 @@ Saved macros persist across sessions in macros/.
 - **Character**: CLAUDE (boy)
 - **Rival**: Barry
 - **Badges**: 0
-- **Location**: Jubilife City — arrived via Route 202. Met Looker. Barry is at Trainers' School.
-- **Party**: Chimchar Lv11 (Quirky/Iron Fist), Eevee Lv9 (Lax/Run Away), Hoothoot Lv5 (Rash/Insomnia)
-- **Key Items**: Pokedex (National Mode), Bicycle, Poke Radar, Journal, Parcel, Vs. Recorder
-- **Items**: Repel x10, Poke Ball x29
-- **Money**: ~336
-- **Next**: Deliver Parcel to Barry at Trainers' School. Heal party. Explore Jubilife City. Then Route 203 → Oreburgh Gate → Oreburgh City for first gym.
+- **Location**: Route 203 east end, near Oreburgh Gate entrance. All Route 203 trainers defeated (3 Youngsters + 2 Lass double battle).
+- **Party**: Monferno Lv17 (Quirky/Iron Fist, 40/50 HP), Eevee Lv12 (Lax/Run Away, FAINTED, holds Scope Lens), Hoothoot Lv10 (Rash/Insomnia, 20/32 HP, holds Exp. Share), Abra Lv7 (Rash/Synchronize, only Teleport)
+- **Key Items**: Pokedex (National Mode), Bicycle, Poke Radar, Journal, Vs. Recorder, Town Map
+- **Items**: Repel x10, Silk Scarf, Potion x5, Antidote x3, Poke Ball x28, Heal Ball x3, TM58 Endure
+- **Money**: ~2408
+- **Next**: Heal party (Eevee fainted, low HP). Enter Oreburgh Gate cave at warp (246, 749). Navigate through to Oreburgh City. Consider depositing Abra in PC. Get first gym badge (Rock-type gym — Monferno has SE moves).
 
 ## Quick Reference: Common Workflows
 
@@ -322,33 +322,33 @@ Track which tools/flows you've exercised. Update as you go.
 
 - [ ] Name entry (touch keyboard)
 - [x] Starter selection — chose Chimchar via D-pad on top screen briefcase UI
-- [ ] Wild battle (single)
-- [x] Trainer battle (single) — Barry rival battle, lost but full flow worked (blackout handled)
-- [ ] Double battle (tag / wild / trainer)
-- [ ] Catching Pokemon
-- [ ] Evolution (level-up)
+- [x] Wild battle (single) — Route 202/203 encounters, flee and fight tested
+- [x] Trainer battle (single) — Barry rival (3 Pokemon), Route 203 Youngsters
+- [x] Double battle (tag / wild / trainer) — 2x Lass tag battle on Route 203. BUG-003: battle_turn fails first Pokemon action for Abra.
+- [x] Catching Pokemon — caught Abra with throw_ball on Route 203
+- [x] Evolution (level-up) — Chimchar → Monferno at Lv14 during auto_grind
 - [ ] Move learning (< 4 moves)
-- [ ] Move learning (4 moves, forget)
+- [x] Move learning (4 moves, forget) — Flame Wheel, Mach Punch (Monferno), Confusion, Hypnosis (Hoothoot), Quick Attack (Eevee)
 - [ ] Move learning (4 moves, skip)
-- [ ] Party reorder
+- [x] Party reorder — swapped Monferno/Eevee for grinding
 - [ ] PC deposit
 - [ ] PC withdraw
-- [x] Heal at Pokemon Center — heal_party auto-navigated from Sandgem overworld
-- [ ] Buy items at PokeMart
+- [x] Heal at Pokemon Center — heal_party auto-navigated from Sandgem, Jubilife, and Route 202
+- [x] Buy items at PokeMart — Potions, Antidotes (common cashier), Heal Balls (specialty cashier)
 - [ ] Use medicine (single)
 - [ ] Use medicine (bulk)
 - [ ] Use field item (Repel, etc.)
-- [ ] Give held item
+- [x] Give held item — Scope Lens to Eevee, Exp. Share to Hoothoot
 - [ ] Take held item
 - [ ] Teach TM/HM
 - [ ] Navigate multi-room dungeon
 - [ ] Navigate elevation-aware map
-- [x] Navigate with flee_encounters — Route 201, fled Bidoof successfully
-- [ ] Auto grind (basic)
-- [ ] Auto grind (with auto-heal loop)
+- [x] Navigate with flee_encounters — Route 201, 202, 203
+- [x] Auto grind (basic) — 5 iterations on Route 202, worked correctly
+- [x] Auto grind (with auto-heal loop) — Route 202 to Jubilife PC, heal_trips confirmed. BUG-002: evolution + sequential move learns.
 - [ ] Auto grind (smart move selection)
 - [ ] Auto grind (target species)
 - [ ] Gym battle (full team)
-- [x] Story cutscene advancement — Lake Verity (Cyrus), Rowan lab (Pokedex), Mom (Eevee/Parcel)
+- [x] Story cutscene advancement — Lake Verity, Rowan lab, Mom (Eevee/Parcel), Poketch Company, Barry Parcel delivery
 - [ ] Sign/signpost interaction
 - [ ] HM obstacle (Cut tree, Rock Smash)

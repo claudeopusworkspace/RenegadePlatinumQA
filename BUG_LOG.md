@@ -40,3 +40,23 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 - **Actual**: After processing the second move learn (Mach Punch), the evolution result screen ("Monferno learned Mach Punch!") was not dismissed. The tool returned to seeking encounters while the screen was still showing, causing movement to be blocked. Required manual B press + frame advance to recover.
 - **Workaround**: Manually press B and advance frames to dismiss the evolution/move-learn screen, then resume grinding.
 - **Notes**: The evolution from Chimchar → Monferno happened during the same level-up that triggered Flame Wheel and Mach Punch learning. The first `forget_move` call (Flame Wheel) worked, but the second (Mach Punch) left residual UI on screen. The `current_moves: null` in step 2 also suggests the tool had trouble reading move data during the evolution transition.
+
+### BUG-003: battle_turn fails to submit first Pokemon's action in double battles
+- **Tool**: `battle_turn`
+- **Severity**: major
+- **Save state**: `route203_trainers_cleared` (walk east toward Lass trainers at (242, 754) and (246, 754) to trigger double battle)
+- **Call**: `battle_turn(move_index=0)` for Abra (slot 0, only knows Teleport) in a double battle
+- **Expected**: `battle_turn` should navigate FIGHT → select Teleport → confirm target → advance to partner Pokemon's action prompt, returning `WAIT_FOR_PARTNER_ACTION`.
+- **Actual**: Tool returns `WAIT_FOR_PARTNER_ACTION` with `NO_TEXT` status, but the game is stuck on the Pokemon selection submenu (POKEMON screen) instead of having advanced to the partner's action prompt. The game shows "What will Abra do?" with the Abra target selection screen. Subsequent `battle_turn` calls for the partner also fail, returning the same stuck state. Requires manual button presses (B → B → A on Teleport → A on Abra target) to advance past Abra's action and reach Hoothoot's action prompt. The issue reproduces every turn — `battle_turn` cannot handle the first Pokemon's action in doubles.
+- **Workaround**: Manually submit the first Pokemon's action with `press_buttons`, then use `battle_turn` for the second Pokemon's action starting from its action prompt. This is tedious but functional.
+- **Notes**: May be specific to Abra (only has 1 move, Teleport, which is self-targeting). The double battle target selection UI for self-targeting moves requires pressing A on the user's own Pokemon, which the tool's UI navigation doesn't account for. The tool likely navigates to the POKEMON submenu instead of the FIGHT submenu, or doesn't handle the target selection step for self-targeting moves in doubles.
+
+### BUG-004: read_party shows HP as -1 for fainted Pokemon
+- **Tool**: `read_party`
+- **Severity**: minor
+- **Save state**: N/A (observable any time a Pokemon is fainted)
+- **Call**: `read_party()` when one or more party members are fainted
+- **Expected**: Fainted Pokemon should show `hp: 0` and ideally `status_conditions: ["fainted"]` or similar indicator.
+- **Actual**: Fainted Pokemon show `hp: -1` and `status_conditions: []` (empty). The formatted output shows "HP ?/?". The -1 value is likely an unsigned/signed integer interpretation issue in the HP field reading.
+- **Workaround**: Treat HP -1 as fainted. Check `hp < 0` or `hp == -1` to detect fainted state.
+- **Notes**: Observed consistently across multiple blackouts and faints (Eevee after Barry fight, entire party after double battle blackout). The max_hp field reads correctly.

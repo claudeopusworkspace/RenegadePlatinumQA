@@ -13,6 +13,12 @@
 | `route202_party3_pre_jubilife` | Route 202. Party: Chimchar Lv10, Eevee Lv9, Hoothoot Lv5. Caught Hoothoot, beat Dawn. |
 | `route202_trainers_done` | Route 202 north. All trainers beaten. Chimchar Lv11. |
 | `jubilife_city_arrival` | Jubilife City entrance. Met Looker, got Vs. Recorder. Need to deliver Parcel to Barry. |
+| `jubilife_shopped_pre_route203` | Jubilife PokeMart. Bought Potions, Antidotes, Heal Balls. Got Poketch. Ready for Route 203. |
+| `route203_pre_barry_battle` | Route 203 entrance. Party: Chimchar Lv11, Eevee Lv9, Hoothoot Lv5. Pre-Barry. |
+| `jubilife_healed_pre_barry` | Jubilife PC. Monferno Lv15, Eevee Lv12, Hoothoot Lv5. Healed, ready for Barry. |
+| `route203_barry_defeated` | Route 203, post-Barry. Got Exp. Share. Monferno Lv16. |
+| `route203_trainers_cleared` | Route 203 east. 3 Youngster trainers beaten. Monferno Lv17, Hoothoot Lv9. Caught Abra. |
+| `route203_double_battle_won` | Route 203, near Oreburgh Gate entrance. All trainers beaten. Monferno Lv17, Hoothoot Lv10. Eevee fainted. |
 
 ## Bug Reproduction
 
