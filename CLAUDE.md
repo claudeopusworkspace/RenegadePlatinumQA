@@ -271,12 +271,18 @@ Saved macros persist across sessions in macros/.
 - **Character**: CLAUDE (boy)
 - **Rival**: Barry
 - **Badges**: 1 (Coal)
-- **Location**: Eterna Forest entrance. Cheryl joined as partner (heals after battles, double battle ally).
-- **Party**: Monferno Lv27 (Quirky/Iron Fist, 3/74 HP, holds Muscle Band) — Mach Punch/Low Kick/Flamethrower/Rock Smash. Eevee Lv12 (Lax/Run Away, fainted, holds Scope Lens). Noctowl Lv24 (Rash/Insomnia, fainted, holds Exp. Share) — Air Cutter/Extrasensory/Hypnosis/Peck. Abra Lv7 (Rash/Synchronize, Teleport/Endure).
-- **Key Items**: Pokedex (National Mode), Bicycle, Poke Radar, Journal, Vs. Recorder, Town Map, Coal Badge, Fashion Case, Works Key
-- **Items**: Repel x11, Silk Scarf, Potion x5, Antidote x3, Poke Ball x28, Heal Ball x3, TM Stealth Rock, TM34 Shock Wave, TM08 Bulk Up, Fire Stone, Oval Stone, Big Pearl, Muscle Band (on Monferno), Magnet, Honey, Rare Bone, Dire Hit, Yellow Shard, Parlyz Heal x3
-- **Money**: ~13,000
-- **Next**: Explore Eterna Forest with Cheryl (partner double battles). Then Route 205 north → Eterna City. Still need to test Rock Smash field use (HM obstacle QA).
+- **Location**: Eterna City south gatehouse, on Bicycle, about to enter Route 206 (Cycling Road).
+- **Party**: Monferno Lv29 (Quirky/Iron Fist, 79/79 HP, holds Muscle Band) — Mach Punch/Cut/Flamethrower/Rock Smash. Eevee Lv12 (Lax/Run Away, holds Scope Lens). Noctowl Lv27 (Rash/Insomnia, holds Exp. Share) — Air Slash/Extrasensory/Hypnosis/Peck. Abra Lv7 (Rash/Synchronize, Teleport/Endure).
+- **Key Items**: Pokedex (National Mode), Bicycle, Poke Radar, Journal, Vs. Recorder, Town Map, Coal Badge, Fashion Case, Works Key, HM01 Cut, HM06 Rock Smash
+- **Items**: Repel x11, Silk Scarf, Potion x6, Antidote x4, Poke Ball x28, Heal Ball x3, Net Ball, TM Stealth Rock, TM34 Shock Wave, TM08 Bulk Up, TM27 Return, TM46 Thief, Fire Stone, Water Stone, Sun Stone, Oval Stone, Big Pearl, Rare Candy, Soft Sand, Muscle Band (on Monferno), Magnet, Honey, Rare Bone, Dire Hit, Yellow Shard, Parlyz Heal x4
+- **Money**: ~18,000
+- **Story Events Completed**: Barry/Cyrus statue scene, Cynthia gave HM01 Cut. Eterna Forest cleared with Cheryl (TM27 Return). Route 205 north + Route 211 trainers cleared. Mt. Coronet 1F explored (Rare Candy found, B1F needs Surf).
+- **Gardenia Quest**: Gym Leader Gardenia is NOT at her gym. She went to Route 216 (through Mt. Coronet) to find Grass Pokemon. Gym Guide says to go find her. Gym door is NPC-blocked until she returns. Route 216 access unclear — may need to go south via Route 206 → Route 207 → Mt. Coronet south entrance, or find another path. Mt. Coronet B1F from Route 211 entrance needs Surf.
+- **Next**: 
+  1. Head south through Route 206 (Cycling Road) to explore and find path to Route 216/Gardenia
+  2. Test HM obstacles (Cut trees, Rock Smash rocks) — last unchecked QA items
+  3. Once Gardenia returns: defeat her for Badge 2 (Forest Badge)
+  4. Then Team Galactic Eterna Building (grunts visible around city)
 
 ## Quick Reference: Common Workflows
 
@@ -324,7 +330,7 @@ Track which tools/flows you've exercised. Update as you go.
 - [x] Starter selection — chose Chimchar via D-pad on top screen briefcase UI
 - [x] Wild battle (single) — Route 202/203 encounters, flee and fight tested
 - [x] Trainer battle (single) — Barry rival (3 Pokemon), Route 203 Youngsters
-- [x] Double battle (tag / wild / trainer) — 2x Lass tag battle on Route 203. BUG-003: battle_turn fails first Pokemon action for Abra.
+- [x] Double battle (tag / wild / trainer) — 2x Lass tag battle on Route 203. BUG-003: battle_turn fails first Pokemon action for Abra. Session 7: Eterna Forest partner doubles with Cheryl work correctly (tag trainers + wild doubles). BUG-003 confirmed Abra/Teleport-specific, not general doubles issue.
 - [x] Catching Pokemon — caught Abra with throw_ball on Route 203
 - [x] Evolution (level-up) — Chimchar → Monferno at Lv14 during auto_grind
 - [x] Move learning (< 4 moves) — teach_tm: Endure to Abra (had 1 move, auto-learned)

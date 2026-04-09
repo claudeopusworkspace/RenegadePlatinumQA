@@ -35,6 +35,13 @@
 | `valley_windworks_mars_defeated` | Valley Windworks, post-Mars. Team Galactic fled. Father reunited. |
 | `route205_north_pre_eterna_forest` | Route 205 north gatehouse area. Multiple trainers cleared. Pre-Eterna Forest. |
 | `eterna_forest_cheryl_joined` | Eterna Forest entrance. Cheryl joined as partner. Monferno Lv27 (Flamethrower!), Noctowl Lv24. |
+| `eterna_forest_post_psychics` | Eterna Forest, Psychic trainers defeated. Noctowl learned Air Slash. |
+| `route205_north_post_forest` | Route 205 north, exited Eterna Forest. Cheryl gave TM27 Return. |
+| `eterna_city_arrival` | Eterna City PC, first arrival. Monferno Lv28, Noctowl Lv25. |
+| `eterna_city_pre_gym` | Eterna City, pre-gym exploration. Met Cynthia (HM01 Cut), Barry/Cyrus statue scene. |
+| `route211_pre_mt_coronet` | Route 211, at Mt. Coronet entrance. Trainers cleared. |
+| `eterna_city_healed_pre_galactic` | Eterna City PC, healed. Monferno Lv29, Noctowl Lv27. Have Cut. Pre-Team Galactic. |
+| `eterna_gate_bicycle_pre_route206` | Eterna City south gatehouse, on Bicycle. About to enter Route 206 Cycling Road. |
 
 ## Bug Reproduction
 

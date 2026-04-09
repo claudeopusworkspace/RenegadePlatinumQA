@@ -60,3 +60,23 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 - **Actual**: Fainted Pokemon show `hp: -1` and `status_conditions: []` (empty). The formatted output shows "HP ?/?". The -1 value is likely an unsigned/signed integer interpretation issue in the HP field reading.
 - **Workaround**: Treat HP -1 as fainted. Check `hp < 0` or `hp == -1` to detect fainted state.
 - **Notes**: Observed consistently across multiple blackouts and faints (Eevee after Barry fight, entire party after double battle blackout). The max_hp field reads correctly.
+
+### BUG-005: battle_turn returns WAIT_FOR_ACTION instead of MOVE_BLOCKED after Disable
+- **Tool**: `battle_turn`
+- **Severity**: minor
+- **Save state**: `eterna_forest_post_psychics` (post-battle; reproduce from pre-battle by fighting Psychic Elijah whose Drowzee uses Disable)
+- **Call**: `battle_turn(move_index=0)` after Drowzee used Disable on Air Cutter
+- **Expected**: Should return `MOVE_BLOCKED` state when a disabled move is attempted, per documentation.
+- **Actual**: Returned `WAIT_FOR_ACTION` with log text "Noctowl's Air Cutter is disabled!" No turn consumed (correct behavior), but wrong state label.
+- **Workaround**: None needed — behavior is correct, just the state label is wrong.
+- **Notes**: The MOVE_BLOCKED state is documented for Torment, Disable, Encore, Taunt, and Choice item locks. Disable specifically returns WAIT_FOR_ACTION instead.
+
+### BUG-006: Wrong move selected after Disable-blocked attempt
+- **Tool**: `battle_turn`
+- **Severity**: major
+- **Save state**: `eterna_forest_post_psychics` (post-battle; reproduce from pre-battle by fighting Psychic Elijah)
+- **Call**: `battle_turn(move_index=1, force=True)` immediately after a Disable-blocked Air Cutter attempt
+- **Expected**: Should select move index 1 (Extrasensory) from the move menu.
+- **Actual**: Selected move index 3 (Peck) instead. The battle log showed "Noctowl used Peck!" when Extrasensory was requested. The cursor position in the move selection UI was likely shifted after the failed Disable attempt, and the tool's move navigation didn't account for this.
+- **Workaround**: After a Disable-blocked move, manually verify the correct move is selected, or switch Pokemon to reset UI state.
+- **Notes**: Sequence was: (1) battle_turn(move_index=0) → Air Cutter disabled, returned WAIT_FOR_ACTION. (2) battle_turn(move_index=1, force=True) → Peck used instead of Extrasensory. The move menu cursor may have been left in an unexpected position after the disabled move rejection. The 2x2 move grid navigation likely assumed cursor was at top-left but it may have been elsewhere.
