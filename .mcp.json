@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "melonds": {
+      "command": "/workspace/MelonMCP/.venv/bin/python",
+      "args": ["-m", "melonds_mcp"],
+      "cwd": "/workspace/MelonMCP",
+      "env": {
+        "SDL_VIDEODRIVER": "dummy",
+        "SDL_AUDIODRIVER": "dummy",
+        "PYTHONPATH": "/workspace/MelonMCP"
+      }
+    },
+    "renegade": {
+      "command": "/workspace/MelonMCP/.venv/bin/python",
+      "args": ["-m", "renegade_mcp"],
+      "cwd": "/workspace/RenegadePlatinumQA",
+      "env": {
+        "EMU_BACKEND": "melonds",
+        "PYTHONPATH": "/workspace/RenegadePlatinumQA:/workspace/MelonMCP"
+      }
+    }
+  }
+}

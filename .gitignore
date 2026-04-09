@@ -1,0 +1,40 @@
+# ROM files (copyrighted)
+*.nds
+
+# Emulator state (binary, large, session-specific)
+savestates/
+snapshots/
+
+# RAM dumps (temporary analysis artifacts)
+*.bin
+
+# Generated output files (regenerated on demand)
+map_view.txt
+nav_view.txt
+
+# ROM extracted data (large, can be re-extracted)
+romdata/
+
+# Emulator checkpoints (ring buffer, huge)
+checkpoints/
+
+# Auto-grind session logs
+logs/
+
+# MCP server logs (rotated)
+melonds_mcp.log*
+desmume_mcp.log*
+
+# IPC bridge sockets
+.melonds_bridge.sock
+.desmume_bridge.sock
+
+# Battery save (exported from emulator, large binary)
+*.sav
+
+# Python
+__pycache__/
+*.pyc
+
+# Screenshots (regenerated on demand)
+screenshots/
