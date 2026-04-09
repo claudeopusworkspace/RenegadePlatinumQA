@@ -271,12 +271,12 @@ Saved macros persist across sessions in macros/.
 - **Character**: CLAUDE (boy)
 - **Rival**: Barry
 - **Badges**: 0
-- **Location**: Route 203 east end, near Oreburgh Gate entrance. All Route 203 trainers defeated (3 Youngsters + 2 Lass double battle).
-- **Party**: Monferno Lv17 (Quirky/Iron Fist, 40/50 HP), Eevee Lv12 (Lax/Run Away, FAINTED, holds Scope Lens), Hoothoot Lv10 (Rash/Insomnia, 20/32 HP, holds Exp. Share), Abra Lv7 (Rash/Synchronize, only Teleport)
+- **Location**: Oreburgh Gym (map 47), inside gym near entrance. Gym trainers already beaten. Ready for Roark.
+- **Party**: Monferno Lv21 (Quirky/Iron Fist, 59/59 HP, holds Muscle Band) — Mach Punch/Low Kick/Flame Wheel/Taunt. Eevee Lv12 (Lax/Run Away, 37/37, holds Scope Lens). Hoothoot Lv16 (Rash/Insomnia, 46/46, holds Exp. Share) — Air Cutter/Confusion/Hypnosis/Peck. Abra Lv7 (Rash/Synchronize, only Teleport).
 - **Key Items**: Pokedex (National Mode), Bicycle, Poke Radar, Journal, Vs. Recorder, Town Map
-- **Items**: Repel x10, Silk Scarf, Potion x5, Antidote x3, Poke Ball x28, Heal Ball x3, TM58 Endure
-- **Money**: ~2408
-- **Next**: Heal party (Eevee fainted, low HP). Enter Oreburgh Gate cave at warp (246, 749). Navigate through to Oreburgh City. Consider depositing Abra in PC. Get first gym badge (Rock-type gym — Monferno has SE moves).
+- **Items**: Repel x10, Silk Scarf, Potion x5, Antidote x3, Poke Ball x28, Heal Ball x3, TM58 Endure, HM06 Rock Smash, Fire Stone, Oval Stone, Muscle Band (on Monferno), Rare Bone, Dire Hit, Yellow Shard, Parlyz Heal x2
+- **Money**: ~1788
+- **Next**: Beat Roark. His team: Nosepass Lv15 (Sturdy/Smooth Rock — Stealth Rock/Sandstorm/Thunder Wave/Shock Wave), Geodude Lv15 (Rock Head/Expert Belt — Bulldoze/Rock Tomb/Fire Punch/Thunder Punch), Onix Lv15 (Rock Head/Muscle Band — Stealth Rock/Rock Tomb/Bulldoze/Sandstorm). **Key challenge is Onix** — Bulldoze does ~43 damage to Monferno and Onix is extremely tanky (39 HP, massive Def). Strategy: Low Kick OHKOs Nosepass. Mach Punch (priority) 2HKOs Geodude but Expert Belt Bulldoze hits for 43. Against Onix, need to survive 2 Bulldozes to land 2 Mach Punches (each ~24 damage). Consider: grinding to Lv23+ so Low Kick can OHKO Onix; or using Eevee's Sand Attack to create misses after Monferno drops Onix to 15 HP. Potions in battle would help but no tool supports in-battle item use. After gym, get Coal Badge (enables Rock Smash field use), then Route 207 → Eterna City.
 
 ## Quick Reference: Common Workflows
 
@@ -335,20 +335,20 @@ Track which tools/flows you've exercised. Update as you go.
 - [ ] PC withdraw
 - [x] Heal at Pokemon Center — heal_party auto-navigated from Sandgem, Jubilife, and Route 202
 - [x] Buy items at PokeMart — Potions, Antidotes (common cashier), Heal Balls (specialty cashier)
-- [ ] Use medicine (single)
-- [ ] Use medicine (bulk)
-- [ ] Use field item (Repel, etc.)
-- [x] Give held item — Scope Lens to Eevee, Exp. Share to Hoothoot
+- [x] Use medicine (single) — Potion on Monferno in Oreburgh Gym
+- [x] Use medicine (bulk) — use_medicine dry-run + confirm on Route 203
+- [x] Use field item (Repel, etc.) — Escape Rope in Oreburgh Mine
+- [x] Give held item — Scope Lens to Eevee, Exp. Share to Hoothoot, Muscle Band to Monferno
 - [ ] Take held item
 - [ ] Teach TM/HM
-- [ ] Navigate multi-room dungeon
-- [ ] Navigate elevation-aware map
-- [x] Navigate with flee_encounters — Route 201, 202, 203
+- [x] Navigate multi-room dungeon — Oreburgh Gate (1F) + Oreburgh Mine (1F + B1F)
+- [x] Navigate elevation-aware map — Oreburgh Mine ramps (L0-L4), Oreburgh Gym (L0-L3)
+- [x] Navigate with flee_encounters — Route 201, 202, 203, Oreburgh Mine
 - [x] Auto grind (basic) — 5 iterations on Route 202, worked correctly
 - [x] Auto grind (with auto-heal loop) — Route 202 to Jubilife PC, heal_trips confirmed. BUG-002: evolution + sequential move learns.
-- [ ] Auto grind (smart move selection)
+- [x] Auto grind (smart move selection) — Oreburgh Gate: Mach Punch primary, Flame Wheel backup for Fighting types, flee_ineffective=True
 - [ ] Auto grind (target species)
-- [ ] Gym battle (full team)
-- [x] Story cutscene advancement — Lake Verity, Rowan lab, Mom (Eevee/Parcel), Poketch Company, Barry Parcel delivery
+- [ ] Gym battle (full team) — Roark attempted 4x, Onix is blocking. Need more levels or strategy.
+- [x] Story cutscene advancement — Lake Verity, Rowan lab, Mom (Eevee/Parcel), Poketch Company, Barry Parcel delivery, Oreburgh arrival NPC escort, Roark mine scene (Fire Stone quiz)
 - [ ] Sign/signpost interaction
 - [ ] HM obstacle (Cut tree, Rock Smash)

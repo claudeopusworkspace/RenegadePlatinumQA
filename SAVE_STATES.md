@@ -19,6 +19,10 @@
 | `route203_barry_defeated` | Route 203, post-Barry. Got Exp. Share. Monferno Lv16. |
 | `route203_trainers_cleared` | Route 203 east. 3 Youngster trainers beaten. Monferno Lv17, Hoothoot Lv9. Caught Abra. |
 | `route203_double_battle_won` | Route 203, near Oreburgh Gate entrance. All trainers beaten. Monferno Lv17, Hoothoot Lv10. Eevee fainted. |
+| `oreburgh_gate_entrance` | Oreburgh Gate west entrance. Party healed, ready to explore cave. |
+| `oreburgh_mine_roark_met` | Oreburgh Mine B1F. Met Roark, got Fire Stone + HM06 Rock Smash. All mine trainers beaten. |
+| `oreburgh_gym_pre_roark_v3` | Oreburgh Gym, gym trainers beaten. Monferno Lv21, Hoothoot Lv16. Full HP/PP. Pre-Roark. |
+| `oreburgh_city_pre_roark_lv21` | Same as v3 — clean save for next session's Roark attempt. |
 
 ## Bug Reproduction
 
