@@ -23,6 +23,8 @@
 | `oreburgh_mine_roark_met` | Oreburgh Mine B1F. Met Roark, got Fire Stone + HM06 Rock Smash. All mine trainers beaten. |
 | `oreburgh_gym_pre_roark_v3` | Oreburgh Gym, gym trainers beaten. Monferno Lv21, Hoothoot Lv16. Full HP/PP. Pre-Roark. |
 | `oreburgh_city_pre_roark_lv21` | Same as v3 — clean save for next session's Roark attempt. |
+| `oreburgh_pre_roark_lv23` | Oreburgh PC, healed. Monferno Lv23, Hoothoot Lv18. Full HP/PP. Pre-Roark grind complete. |
+| `post_roark_badge1` | Oreburgh Gym, just defeated Roark. Coal Badge obtained. Monferno Lv23, Hoothoot Lv19. |
 
 ## Bug Reproduction
 

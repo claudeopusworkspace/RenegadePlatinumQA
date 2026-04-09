@@ -270,13 +270,13 @@ Saved macros persist across sessions in macros/.
 
 - **Character**: CLAUDE (boy)
 - **Rival**: Barry
-- **Badges**: 0
-- **Location**: Oreburgh Gym (map 47), inside gym near entrance. Gym trainers already beaten. Ready for Roark.
-- **Party**: Monferno Lv21 (Quirky/Iron Fist, 59/59 HP, holds Muscle Band) — Mach Punch/Low Kick/Flame Wheel/Taunt. Eevee Lv12 (Lax/Run Away, 37/37, holds Scope Lens). Hoothoot Lv16 (Rash/Insomnia, 46/46, holds Exp. Share) — Air Cutter/Confusion/Hypnosis/Peck. Abra Lv7 (Rash/Synchronize, only Teleport).
-- **Key Items**: Pokedex (National Mode), Bicycle, Poke Radar, Journal, Vs. Recorder, Town Map
-- **Items**: Repel x10, Silk Scarf, Potion x5, Antidote x3, Poke Ball x28, Heal Ball x3, TM58 Endure, HM06 Rock Smash, Fire Stone, Oval Stone, Muscle Band (on Monferno), Rare Bone, Dire Hit, Yellow Shard, Parlyz Heal x2
-- **Money**: ~1788
-- **Next**: Beat Roark. His team: Nosepass Lv15 (Sturdy/Smooth Rock — Stealth Rock/Sandstorm/Thunder Wave/Shock Wave), Geodude Lv15 (Rock Head/Expert Belt — Bulldoze/Rock Tomb/Fire Punch/Thunder Punch), Onix Lv15 (Rock Head/Muscle Band — Stealth Rock/Rock Tomb/Bulldoze/Sandstorm). **Key challenge is Onix** — Bulldoze does ~43 damage to Monferno and Onix is extremely tanky (39 HP, massive Def). Strategy: Low Kick OHKOs Nosepass. Mach Punch (priority) 2HKOs Geodude but Expert Belt Bulldoze hits for 43. Against Onix, need to survive 2 Bulldozes to land 2 Mach Punches (each ~24 damage). Consider: grinding to Lv23+ so Low Kick can OHKO Onix; or using Eevee's Sand Attack to create misses after Monferno drops Onix to 15 HP. Potions in battle would help but no tool supports in-battle item use. After gym, get Coal Badge (enables Rock Smash field use), then Route 207 → Eterna City.
+- **Badges**: 1 (Coal)
+- **Location**: Oreburgh Gym (map 47), just defeated Roark.
+- **Party**: Monferno Lv23 (Quirky/Iron Fist, 32/64 HP, holds Muscle Band) — Mach Punch/Low Kick/Flame Wheel/Rock Smash. Eevee Lv12 (Lax/Run Away, 37/37, holds Scope Lens). Hoothoot Lv19 (Rash/Insomnia, 53/53, holds Exp. Share) — Air Cutter/Extrasensory/Hypnosis/Peck. Abra Lv7 (Rash/Synchronize, Teleport/Endure).
+- **Key Items**: Pokedex (National Mode), Bicycle, Poke Radar, Journal, Vs. Recorder, Town Map, Coal Badge
+- **Items**: Repel x10, Silk Scarf, Potion x5, Antidote x3, Poke Ball x28, Heal Ball x3, TM Stealth Rock, Fire Stone, Oval Stone, Muscle Band (on Monferno), Rare Bone, Dire Hit, Yellow Shard, Parlyz Heal x2
+- **Money**: ~4124
+- **Next**: Head to Route 207 → Route 206 → Eterna City. Test Rock Smash field use (HM obstacle QA). Coal Badge enables Rock Smash outside battle. Roark's full Renegade Platinum team was 5 Pokemon: Nosepass Lv15, Geodude Lv15, Onix Lv15, Larvitar Lv15, Cranidos Lv16. Key lesson: Mach Punch (priority) is essential — Onix and Cranidos outspeed Monferno, so Low Kick gets you killed despite higher base power.
 
 ## Quick Reference: Common Workflows
 
@@ -327,9 +327,9 @@ Track which tools/flows you've exercised. Update as you go.
 - [x] Double battle (tag / wild / trainer) — 2x Lass tag battle on Route 203. BUG-003: battle_turn fails first Pokemon action for Abra.
 - [x] Catching Pokemon — caught Abra with throw_ball on Route 203
 - [x] Evolution (level-up) — Chimchar → Monferno at Lv14 during auto_grind
-- [ ] Move learning (< 4 moves)
+- [x] Move learning (< 4 moves) — teach_tm: Endure to Abra (had 1 move, auto-learned)
 - [x] Move learning (4 moves, forget) — Flame Wheel, Mach Punch (Monferno), Confusion, Hypnosis (Hoothoot), Quick Attack (Eevee)
-- [ ] Move learning (4 moves, skip)
+- [x] Move learning (4 moves, skip) — auto_grind: Monferno skipped Fake Out at Lv22 (forget_move=-1)
 - [x] Party reorder — swapped Monferno/Eevee for grinding
 - [ ] PC deposit
 - [ ] PC withdraw
@@ -340,7 +340,7 @@ Track which tools/flows you've exercised. Update as you go.
 - [x] Use field item (Repel, etc.) — Escape Rope in Oreburgh Mine
 - [x] Give held item — Scope Lens to Eevee, Exp. Share to Hoothoot, Muscle Band to Monferno
 - [ ] Take held item
-- [ ] Teach TM/HM
+- [x] Teach TM/HM — HM06 Rock Smash to Monferno (4 moves, forget Taunt), TM58 Endure to Abra (<4 moves)
 - [x] Navigate multi-room dungeon — Oreburgh Gate (1F) + Oreburgh Mine (1F + B1F)
 - [x] Navigate elevation-aware map — Oreburgh Mine ramps (L0-L4), Oreburgh Gym (L0-L3)
 - [x] Navigate with flee_encounters — Route 201, 202, 203, Oreburgh Mine
@@ -348,7 +348,7 @@ Track which tools/flows you've exercised. Update as you go.
 - [x] Auto grind (with auto-heal loop) — Route 202 to Jubilife PC, heal_trips confirmed. BUG-002: evolution + sequential move learns.
 - [x] Auto grind (smart move selection) — Oreburgh Gate: Mach Punch primary, Flame Wheel backup for Fighting types, flee_ineffective=True
 - [ ] Auto grind (target species)
-- [ ] Gym battle (full team) — Roark attempted 4x, Onix is blocking. Need more levels or strategy.
+- [x] Gym battle (full team) — Roark defeated at Lv23! 5 Pokemon: Nosepass/Geodude/Onix/Larvitar/Cranidos. Mach Punch priority was key.
 - [x] Story cutscene advancement — Lake Verity, Rowan lab, Mom (Eevee/Parcel), Poketch Company, Barry Parcel delivery, Oreburgh arrival NPC escort, Roark mine scene (Fire Stone quiz)
 - [ ] Sign/signpost interaction
 - [ ] HM obstacle (Cut tree, Rock Smash)
