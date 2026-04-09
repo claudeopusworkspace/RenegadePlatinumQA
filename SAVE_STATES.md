@@ -25,6 +25,9 @@
 | `oreburgh_city_pre_roark_lv21` | Same as v3 — clean save for next session's Roark attempt. |
 | `oreburgh_pre_roark_lv23` | Oreburgh PC, healed. Monferno Lv23, Hoothoot Lv18. Full HP/PP. Pre-Roark grind complete. |
 | `post_roark_badge1` | Oreburgh Gym, just defeated Roark. Coal Badge obtained. Monferno Lv23, Hoothoot Lv19. |
+| `jubilife_post_galactic` | Jubilife City, post-Team Galactic double battle. Got Fashion Case. |
+| `route204_north_cleared` | Route 204 north, all trainers beaten. Noctowl evolved from Hoothoot Lv20. |
+| `floaroma_town_arrival` | Floaroma Town PC, healed. Monferno Lv24, Noctowl Lv21, Eevee Lv12. Team Galactic grunts blocking north exit. |
 
 ## Bug Reproduction
 

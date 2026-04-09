@@ -271,12 +271,12 @@ Saved macros persist across sessions in macros/.
 - **Character**: CLAUDE (boy)
 - **Rival**: Barry
 - **Badges**: 1 (Coal)
-- **Location**: Oreburgh Gym (map 47), just defeated Roark.
-- **Party**: Monferno Lv23 (Quirky/Iron Fist, 32/64 HP, holds Muscle Band) — Mach Punch/Low Kick/Flame Wheel/Rock Smash. Eevee Lv12 (Lax/Run Away, 37/37, holds Scope Lens). Hoothoot Lv19 (Rash/Insomnia, 53/53, holds Exp. Share) — Air Cutter/Extrasensory/Hypnosis/Peck. Abra Lv7 (Rash/Synchronize, Teleport/Endure).
-- **Key Items**: Pokedex (National Mode), Bicycle, Poke Radar, Journal, Vs. Recorder, Town Map, Coal Badge
-- **Items**: Repel x10, Silk Scarf, Potion x5, Antidote x3, Poke Ball x28, Heal Ball x3, TM Stealth Rock, Fire Stone, Oval Stone, Muscle Band (on Monferno), Rare Bone, Dire Hit, Yellow Shard, Parlyz Heal x2
-- **Money**: ~4124
-- **Next**: Head to Route 207 → Route 206 → Eterna City. Test Rock Smash field use (HM obstacle QA). Coal Badge enables Rock Smash outside battle. Roark's full Renegade Platinum team was 5 Pokemon: Nosepass Lv15, Geodude Lv15, Onix Lv15, Larvitar Lv15, Cranidos Lv16. Key lesson: Mach Punch (priority) is essential — Onix and Cranidos outspeed Monferno, so Low Kick gets you killed despite higher base power.
+- **Location**: Floaroma Town PC, healed. Team Galactic grunts blocking north exit.
+- **Party**: Monferno Lv24 (Quirky/Iron Fist, 67/67 HP, holds Muscle Band) — Mach Punch/Low Kick/Flame Wheel/Rock Smash. Eevee Lv12 (Lax/Run Away, 37/37, holds Scope Lens). Noctowl Lv21 (Rash/Insomnia, 74/74, holds Exp. Share) — Air Cutter/Extrasensory/Hypnosis/Peck. Abra Lv7 (Rash/Synchronize, Teleport/Endure).
+- **Key Items**: Pokedex (National Mode), Bicycle, Poke Radar, Journal, Vs. Recorder, Town Map, Coal Badge, Fashion Case
+- **Items**: Repel x10, Silk Scarf, Potion x5, Antidote x3, Poke Ball x28, Heal Ball x3, TM Stealth Rock, Fire Stone, Oval Stone, Big Pearl, Muscle Band (on Monferno), Rare Bone, Dire Hit, Yellow Shard, Parlyz Heal x3
+- **Money**: ~7736
+- **Next**: Deal with Team Galactic grunts blocking Floaroma north exit. Then Route 205 → Valley Windworks → Eterna Forest → Eterna City. Still need to test Rock Smash field use (HM obstacle QA) and Take held item, PC deposit/withdraw, Auto grind (target species).
 
 ## Quick Reference: Common Workflows
 
@@ -349,6 +349,6 @@ Track which tools/flows you've exercised. Update as you go.
 - [x] Auto grind (smart move selection) — Oreburgh Gate: Mach Punch primary, Flame Wheel backup for Fighting types, flee_ineffective=True
 - [ ] Auto grind (target species)
 - [x] Gym battle (full team) — Roark defeated at Lv23! 5 Pokemon: Nosepass/Geodude/Onix/Larvitar/Cranidos. Mach Punch priority was key.
-- [x] Story cutscene advancement — Lake Verity, Rowan lab, Mom (Eevee/Parcel), Poketch Company, Barry Parcel delivery, Oreburgh arrival NPC escort, Roark mine scene (Fire Stone quiz)
-- [ ] Sign/signpost interaction
+- [x] Story cutscene advancement — Lake Verity, Rowan lab, Mom (Eevee/Parcel), Poketch Company, Barry Parcel delivery, Oreburgh arrival NPC escort, Roark mine scene (Fire Stone quiz), Team Galactic Jubilife encounter
+- [x] Sign/signpost interaction — Arrow Signpost and Trainer Tips on Route 203. sign_overlay: true confirmed for both.
 - [ ] HM obstacle (Cut tree, Rock Smash)
