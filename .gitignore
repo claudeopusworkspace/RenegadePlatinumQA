@@ -29,6 +29,13 @@ desmume_mcp.log*
 .melonds_bridge.sock
 .desmume_bridge.sock
 
+# Renderer sync artifacts (session-specific)
+.renderer_frame
+.renderer_sync.mst
+
+# Video/screenshot recordings
+recordings/
+
 # Battery save (exported from emulator, large binary)
 *.sav
 
