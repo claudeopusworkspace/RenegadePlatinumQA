@@ -24,3 +24,15 @@
 18:26:43 [renderer] INFO melonds_mcp.renderer: Renderer loaded state: /workspace/RenegadePlatinumQA/savestates/jubilife_city_town_map_obtained.mst
 18:26:44 [renderer] INFO melonds_mcp.renderer: Renderer loaded state: /workspace/RenegadePlatinumQA/savestates/monferno_lv15_route202_v2.mst
 18:26:51 [renderer] INFO melonds_mcp.renderer: Renderer loaded state: /workspace/RenegadePlatinumQA/savestates/jubilife_city_town_map_obtained.mst
+19:55:26 [renderer] INFO melonds_mcp.renderer: Renderer loaded state: /workspace/RenegadePlatinumQA/savestates/route202_shinx_lv13_pre_barry3.mst
+20:15:59 [renderer] INFO melonds_mcp.renderer: Renderer loaded state: /workspace/RenegadePlatinumQA/savestates/route203_barry2_defeated.mst
+21:05:31 [renderer] WARNING melonds_mcp.streamer: Renderer queue blocked >5s, dropping frame 1059589
+21:05:31 [renderer] WARNING melonds_mcp.streamer: Streamer slow _on_cycle: 6.868s (frame 1059589, q=300)
+21:40:35 [renderer] INFO melonds_mcp.recorder: Recorder stopping (wrote 1100596 frames)
+21:40:35 [renderer] INFO melonds_mcp.recorder: Recorder writer thread exiting (wrote 1100596 frames)
+21:40:35 [renderer] INFO melonds_mcp.recorder: Session recorder stopped: /workspace/RenegadePlatinumQA/recordings/20260414_211108.mp4
+21:40:35 [renderer] INFO melonds_mcp.journal: Journal file cleaned up: /workspace/RenegadePlatinumQA/.melonds_journal.jsonl
+21:40:35 [renderer] INFO melonds_mcp.streamer: HLS streamer shutting down (wrote 1100601 frames, dropped 1)
+21:40:35 [renderer] INFO melonds_mcp.streamer: Frame writer thread exiting (wrote 1100602 frames)
+21:40:35 [renderer] INFO melonds_mcp.streamer: HLS streamer stopped
+21:40:35 [renderer] INFO melonds_mcp.renderer: Renderer exiting
