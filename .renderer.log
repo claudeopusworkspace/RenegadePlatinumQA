@@ -18,3 +18,11 @@
 18:31:35 [renderer] INFO melonds_mcp.streamer: audio pipe buffer set to 1048576 bytes
 18:31:35 [renderer] INFO melonds_mcp.streamer: Both FIFOs opened for writing
 18:31:36 [renderer] INFO melonds_mcp.renderer: Renderer loaded state: /workspace/RenegadePlatinumQA/savestates/oreburgh_city_healed.mst
+19:43:50 [renderer] INFO melonds_mcp.recorder: Recorder stopping (wrote 261149 frames)
+19:43:50 [renderer] INFO melonds_mcp.recorder: Recorder writer thread exiting (wrote 261149 frames)
+19:43:50 [renderer] INFO melonds_mcp.recorder: Session recorder stopped: /workspace/RenegadePlatinumQA/recordings/20260415_233135.mp4
+19:43:50 [renderer] INFO melonds_mcp.journal: Journal file cleaned up: /workspace/RenegadePlatinumQA/.melonds_journal.jsonl
+19:43:50 [renderer] INFO melonds_mcp.streamer: HLS streamer shutting down (wrote 261157 frames, dropped 0)
+19:43:50 [renderer] INFO melonds_mcp.streamer: Frame writer thread exiting (wrote 261158 frames)
+19:43:50 [renderer] INFO melonds_mcp.streamer: HLS streamer stopped
+19:43:50 [renderer] INFO melonds_mcp.renderer: Renderer exiting
