@@ -228,21 +228,24 @@ Saved macros persist across sessions in `macros/`.
 
 - **Character**: WOJ (boy), rival **Barry**
 - **Badges**: 0
-- **Money**: ¥1,948
-- **Location**: Jubilife City (map 3) at (180,778), just south of the west road leading to Route 203. **Pre-Barry-rematch**, active Repel effect.
+- **Money**: ¥2,944 (pre-double-battle); ~¥3,088 post-Lass-pair win (est. +160 per Youngster, similar per Lass).
+- **Location**: Route 203 (map 344), mid-**double battle** west of Oreburgh Gate. Load `route203_mid_double_battle_cubone_psyduck`. Prior stable save: `route203_post_barry_defeated_expshare` at (196,757).
 - **Party**:
-  1. **Chimchar** Lv13 (Quirky, Blaze) — Scratch, Leer, Ember, Taunt
-  2. **Eevee** Lv10 (Serious, Adaptability) — Tackle, Quick Attack, Bite, Covet
-  3. **Burmy** Lv5 (Naive, Shed Skin) — Protect, Tackle, Bug Bite, Hidden Power
-  4. **Shinx** Lv5 (Timid, Guts) — Tackle, Leer, Howl *(caught on Route 202 grass, Renegade ability-swap)*
-- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps)
-- **Bag**: 5 Potions, 9 Repels (1 active), 21 Poké Balls
+  1. **Monferno** Lv17 (Quirky, Blaze) — Scratch, Flame Wheel (**0 PP**, need PP Up/heal), Ember, Taunt. 34/54 HP at checkpoint.
+  2. **Eevee** Lv10 (Serious, Adaptability) — Tackle, Quick Attack, Bite, Covet. **Fainted** (0/33) — need PC revive.
+  3. **Burmy** Lv5 (Naive, Shed Skin) — Protect, Tackle, Bug Bite, Hidden Power. Full HP, Protect-spam partner in doubles.
+  4. **Shinx** Lv5 (Timid, Guts) — Tackle, Leer, Howl. Full HP.
+- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), **Exp. Share** (Barry reward).
+- **Bag**: 3 Potions, 9 Repels, 21 Poké Balls, **Silk Scarf** (holdable, +20% Normal moves — good for Eevee), **TM58 Endure**.
 - **Story flags**:
-  - Parcel delivered to Barry in Jubilife Trainers' School → Town Map received
-  - Pokétch received from the clown at (172,776)
-  - Vs. Recorder received from Looker on Route 202
-  - Jubilife TV gated ("filming") — Team Galactic scene not yet triggered
-- **Next session start**: Load `jubilife_pre_barry_rematch_potions_repel`. Head NE to (196,757) to trigger **Rival Barry** at Route 203 boundary. Known battle: Starly Lv10 (Reckless, Wing Attack/Quick Attack/Growl) → Piplup Lv11 (Torrent, Oran Berry; Water Pulse/Peck/Pound). Suggested plan: Chimchar Ember-spam on Starly (outspeeds, ~13 dmg/turn, Barry will Potion once); switch to Eevee for Piplup; Covet steals Oran Berry turn 1; use own Potions to tank Water Pulse; finish with Quick Attack priority. After Barry, continue east into Route 203 → Oreburgh Gate (cave — 1st elevation-aware dungeon) → Oreburgh City → **Roark (Rock gym, Badge 1)**.
+  - Parcel delivered, Pokétch/Vs. Recorder received, Jubilife TV still gated.
+  - **Rival Barry rematch defeated** (Starly/Piplup/**Munchlax**) at Route 203 boundary → Exp. Share received.
+- **Known Barry rematch team** (CLAUDE was missing Munchlax in prior sessions): Starly Lv10 (Reckless, Wing Attack/Quick Attack/Growl) → Piplup Lv11 (Torrent, Oran Berry; Water Pulse/Peck/Pound) → **Munchlax Lv10** (Thick Fat, 50 HP; Metronome/Tackle/Amnesia/Rock Tomb). Munchlax Rock Tomb is the sweeper-breaker — Monferno Flame Wheel is still the best response despite Thick Fat.
+- **Next session start**:
+  1. Load `route203_mid_double_battle_cubone_psyduck` to resume the double battle. Psyduck full HP (Water Gun/Confusion), Cubone full HP (Bone Club Ground **2x SE on Monferno's Fire type**). Monferno at 34 HP and no Flame Wheel PP — one Bone Club could OHKO. Safer: Monferno Ember the Psyduck (target=0), Burmy keeps Protecting. Or switch Monferno to Shinx (Electric neutral to Ground/Water — but low level). Or flee with run attempt? (trainers can't be fled from.)
+  2. Alternatively: reload `route203_post_barry_defeated_expshare` and re-approach Route 203 — split the Lasses by engaging them individually if possible, or just bring in a Ground/Water-resistant Pokémon.
+  3. After the doubles: heal at Oreburgh City PC (through Oreburgh Gate at warp (246,749) on Route 203). Oreburgh Gate is the first elevation-aware dungeon — prime QA target for `view_map level=N` / `navigate_to` with BDHC data.
+  4. Oreburgh City goals: heal, revive Eevee, buy Revives/Super Potions, then challenge **Roark (Rock gym, Badge 1)**. Monferno's Fire/Fighting is rough vs Roark (Rock) — Rock 2x vs Fire, but Fighting 2x SE vs Rock, so bring a Fighting move or rely on STAB/level advantage.
 
 ## Tips
 
@@ -268,9 +271,9 @@ Track which tools/flows you've exercised. Update as you go.
 - [x] Starter selection
 - [x] Wild battle (single)
 - [x] Trainer battle (single) — Route 202 trainers + Barry
-- [ ] Double battle (tag / wild / trainer)
+- [x] Double battle (tag / wild / trainer) — Lass tag team on Route 203 (mid-battle save `route203_mid_double_battle_cubone_psyduck`)
 - [x] Catching Pokemon — Shinx caught on Route 202 (5 balls)
-- [ ] Evolution (level-up)
+- [x] Evolution (level-up) — Chimchar→Monferno at Lv14 (**BUG-003**: auto_grind canceled the first attempt; succeeded after manual dialogue dismissal + one more level-up)
 - [x] Move learning (< 4 moves) — Eevee learned Quick Attack via auto_grind
 - [x] Move learning (4 moves, forget) — Eevee Tail Whip → Quick Attack
 - [x] Move learning (4 moves, skip) — Eevee skipped Sand Attack
@@ -294,5 +297,5 @@ Track which tools/flows you've exercised. Update as you go.
 - [x] Auto grind (target species) — Shinx search on Route 202
 - [ ] Gym battle (full team)
 - [x] Story cutscene advancement — Parcel delivery, Pokétch gift, Looker
-- [ ] Sign/signpost interaction — plenty of signs on map, not yet interacted
+- [x] Sign/signpost interaction — Arrow Signpost on Route 203 ("Rt. 203 / Jubilife City")
 - [ ] HM obstacle (Cut tree, Rock Smash)
