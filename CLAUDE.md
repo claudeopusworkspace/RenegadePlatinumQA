@@ -226,12 +226,23 @@ Saved macros persist across sessions in `macros/`.
 
 ## Game Progress
 
-*Start from scratch. Update this section as you play.*
-
-- **Character**: (to be named)
+- **Character**: WOJ (boy), rival **Barry**
 - **Badges**: 0
-- **Location**: New game
-- **Party**: (empty)
+- **Money**: ¥1,948
+- **Location**: Jubilife City (map 3) at (180,778), just south of the west road leading to Route 203. **Pre-Barry-rematch**, active Repel effect.
+- **Party**:
+  1. **Chimchar** Lv13 (Quirky, Blaze) — Scratch, Leer, Ember, Taunt
+  2. **Eevee** Lv10 (Serious, Adaptability) — Tackle, Quick Attack, Bite, Covet
+  3. **Burmy** Lv5 (Naive, Shed Skin) — Protect, Tackle, Bug Bite, Hidden Power
+  4. **Shinx** Lv5 (Timid, Guts) — Tackle, Leer, Howl *(caught on Route 202 grass, Renegade ability-swap)*
+- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps)
+- **Bag**: 5 Potions, 9 Repels (1 active), 21 Poké Balls
+- **Story flags**:
+  - Parcel delivered to Barry in Jubilife Trainers' School → Town Map received
+  - Pokétch received from the clown at (172,776)
+  - Vs. Recorder received from Looker on Route 202
+  - Jubilife TV gated ("filming") — Team Galactic scene not yet triggered
+- **Next session start**: Load `jubilife_pre_barry_rematch_potions_repel`. Head NE to (196,757) to trigger **Rival Barry** at Route 203 boundary. Known battle: Starly Lv10 (Reckless, Wing Attack/Quick Attack/Growl) → Piplup Lv11 (Torrent, Oran Berry; Water Pulse/Peck/Pound). Suggested plan: Chimchar Ember-spam on Starly (outspeeds, ~13 dmg/turn, Barry will Potion once); switch to Eevee for Piplup; Covet steals Oran Berry turn 1; use own Potions to tank Water Pulse; finish with Quick Attack priority. After Barry, continue east into Route 203 → Oreburgh Gate (cave — 1st elevation-aware dungeon) → Oreburgh City → **Roark (Rock gym, Badge 1)**.
 
 ## Tips
 
@@ -253,35 +264,35 @@ Saved macros persist across sessions in `macros/`.
 
 Track which tools/flows you've exercised. Update as you go.
 
-- [ ] Name entry (touch keyboard)
-- [ ] Starter selection
-- [ ] Wild battle (single)
-- [ ] Trainer battle (single)
+- [x] Name entry (touch keyboard)
+- [x] Starter selection
+- [x] Wild battle (single)
+- [x] Trainer battle (single) — Route 202 trainers + Barry
 - [ ] Double battle (tag / wild / trainer)
-- [ ] Catching Pokemon
+- [x] Catching Pokemon — Shinx caught on Route 202 (5 balls)
 - [ ] Evolution (level-up)
-- [ ] Move learning (< 4 moves)
-- [ ] Move learning (4 moves, forget)
-- [ ] Move learning (4 moves, skip)
-- [ ] Party reorder
-- [ ] PC deposit
-- [ ] PC withdraw
-- [ ] Heal at Pokemon Center
-- [ ] Buy items at PokeMart
-- [ ] Use medicine (single)
-- [ ] Use medicine (bulk)
-- [ ] Use field item (Repel, etc.)
+- [x] Move learning (< 4 moves) — Eevee learned Quick Attack via auto_grind
+- [x] Move learning (4 moves, forget) — Eevee Tail Whip → Quick Attack
+- [x] Move learning (4 moves, skip) — Eevee skipped Sand Attack
+- [x] Party reorder — `reorder_party` exercised twice
+- [x] PC deposit — deposited Shinx to Box 1
+- [x] PC withdraw — withdrew Shinx back to party
+- [x] Heal at Pokemon Center — `heal_party` with auto-navigate
+- [x] Buy items at PokeMart — bought 5 Potions (**FR-002 repro: shop UI stuck**)
+- [x] Use medicine (single) — `use_item`/`use_medicine` Potion on Chimchar
+- [x] Use medicine (bulk) — `use_medicine` plan + confirm flow
+- [x] Use field item (Repel) — `use_field_item`
 - [ ] Give held item
 - [ ] Take held item
 - [ ] Teach TM/HM
-- [ ] Navigate multi-room dungeon
-- [ ] Navigate elevation-aware map
-- [ ] Navigate with flee_encounters
-- [ ] Auto grind (basic)
-- [ ] Auto grind (with auto-heal loop)
-- [ ] Auto grind (smart move selection)
-- [ ] Auto grind (target species)
+- [ ] Navigate multi-room dungeon — upcoming at Oreburgh Gate
+- [ ] Navigate elevation-aware map — upcoming at Roark's gym
+- [x] Navigate with flee_encounters — used via auto_grind internally
+- [x] Auto grind (basic)
+- [ ] Auto grind (with auto-heal loop) — **BUG-002 blocks this**
+- [x] Auto grind (smart move selection) — `backup_move` used (Ember/Scratch, Covet/Bite)
+- [x] Auto grind (target species) — Shinx search on Route 202
 - [ ] Gym battle (full team)
-- [ ] Story cutscene advancement
-- [ ] Sign/signpost interaction
+- [x] Story cutscene advancement — Parcel delivery, Pokétch gift, Looker
+- [ ] Sign/signpost interaction — plenty of signs on map, not yet interacted
 - [ ] HM obstacle (Cut tree, Rock Smash)
