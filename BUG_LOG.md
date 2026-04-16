@@ -181,6 +181,37 @@ None of the tools that work in post-starter states need to change; this is purel
 
 ---
 
+### BUG-009: `use_battle_item` targets active Pokemon regardless of `party_slot` argument
+- **Tool**: `use_battle_item`
+- **Severity**: major (item consumed on wrong Pokemon; turn wasted)
+- **Save state**: `oreburgh_gym_pre_roark` (load, navigate to gym, enter Roark battle; reproduce with Luxio active and Monferno at party slot 1)
+- **Call**: `use_battle_item(item_name="Potion", party_slot=1)` — intent was to heal Monferno (party slot 1) while Luxio was the active battler
+- **Expected**: Tool opens BAG, selects Potion, targets Monferno (slot 1), heals it.
+- **Actual**: Tool reported `target="Luxio"` (the active Pokemon at slot 0). Monferno HP unchanged. The Potion was spent (or wasted on Luxio's current HP) and a turn was consumed.
+- **Hypothesis**: The tool's party-slot cursor navigation appears to interpret `party_slot=0` as "active Pokemon" and `party_slot=1` as either the second cursor position or another offset — but when the battle's party list starts with the active Pokemon at position 0, `party_slot=1` may scroll to slot 0 in the battle UI (i.e., the offset is applied differently than the overworld convention). Alternatively the tool may always target the active Pokemon regardless of the slot argument.
+- **Workaround**: Only use `party_slot=0` (targets the active battler); switch the Pokemon you want to heal to the active slot before using in-battle items. Alternatively, use `use_medicine` in the overworld between battles for bulk healing.
+- **Notes**: Not extensively tested — only one in-battle usage was attempted this session. `use_medicine` (overworld bulk heal) is unaffected; this bug is specific to the in-battle `use_battle_item` path.
+
+---
+
+### BUG-010: `use_battle_item` returns `BATTLE_ENDED` without `blackout: true` after party wipe; player left in gym
+- **Tool**: `use_battle_item`
+- **Severity**: major (caller believes it's in the overworld when the game is still mid-blackout sequence; subsequent tool calls operate on wrong state)
+- **Save state**: `oreburgh_gym_pre_roark` (load, enter Roark battle, let the party get wiped; reproduce by calling `use_battle_item` during the turn that causes the last KO, or immediately after)
+- **Call**: `use_battle_item(item_name="Potion", party_slot=0)` on a turn where the active Pokemon KO'd during the same exchange, triggering a full-party blackout
+- **Expected**: After a blackout, `use_battle_item` should either (a) return `BATTLE_ENDED` with `blackout: true` after completing the full blackout sequence and landing the player in the Pokemon Center, or (b) detect the in-progress blackout state and wait for it to resolve before returning.
+- **Actual**: Tool returned `BATTLE_ENDED` without `blackout: true`. Map state showed the player still inside the gym (map_id=47) at Roark's tile coordinates. Screenshot confirmed the "CLAUDE scurried to a Pokemon Center, protecting the exhausted and fainted Pokémon from further harm..." blackout message was still on screen — the Nurse Joy dialogue and PC warp had not yet played out. Subsequent `interact_with` call to trigger Roark again found the player mid-blackout-sequence rather than in the overworld.
+- **Reproduction steps**:
+  1. Load `oreburgh_gym_pre_roark`. Enter Roark's gym battle.
+  2. Allow the party to get fully KO'd (e.g., do not heal; let Roark's moves faint all three party members).
+  3. On the final exchange (or just after the last KO), call `use_battle_item(item_name="Potion", party_slot=0)`.
+  4. Tool returns `BATTLE_ENDED` (no `blackout` key). Call `view_map` or `map_name` → player is still in the gym.
+  5. `get_screenshot` confirms blackout message is still rendering.
+- **Workaround**: After `use_battle_item` returns `BATTLE_ENDED`, always call `read_party` and verify HP before assuming overworld control is restored. If HP values look wrong or `map_name` returns the gym, advance through the blackout sequence manually with `advance_frames` + `press_buttons(["a"])` until the Pokemon Center overworld renders.
+- **Notes**: `battle_turn` handles blackout correctly — it returns `BATTLE_ENDED` with `blackout: true` and auto-navigates through the Nurse Joy dialogue. `use_battle_item` appears to detect battle-over state by a different signal (possibly the same end-of-battle text trigger) but does not run the same blackout recovery path. The two tools' post-battle handling are inconsistent.
+
+---
+
 ### BUG-006: Double battle partner-faint softlock — POKEMON replacement menu loops indefinitely when no replacement is available
 - **Tool**: `battle_turn` (double battle mode); also reproduced with raw `advance_frames`/`press_buttons` input
 - **Severity**: blocking (battle cannot be completed; only recovery is loading a save state)

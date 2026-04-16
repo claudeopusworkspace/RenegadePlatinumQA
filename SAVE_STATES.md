@@ -24,6 +24,7 @@
 | `route203_trainers_defeated_monferno` | Route 203, just after defeating all mandatory double battle trainers (Youngster Michael / Lass / Youngster Dallas + Youngster Sebastian). Chimchar evolved to Monferno Lv14, learned Mach Punch (forgot Scratch). Party: Shinx Lv15 (39/39), Monferno Lv14 (35/42), Eevee Lv6 (healthy). Good reproduction state for BUG-007 (walk north from here to trigger Lass Kaitlin + Lass Madeline double battle). |
 | `oreburgh_city_arrival` | Oreburgh City on first arrival, immediately after exiting Oreburgh Gate. Oval Stone obtained from arriving NPC. Party not yet healed. |
 | `oreburgh_city_healed` | Oreburgh City, party fully healed at Pokemon Center. Shinx Lv15 / Monferno Lv15 / Eevee Lv11. HM06 Rock Smash in bag (from Hiker in Oreburgh Gate). Ready to challenge Roark's Gym. |
+| `oreburgh_gym_pre_roark` | Outside Oreburgh Gym entrance. Party: Luxio Lv16 / Monferno Lv16 / Eevee Lv13. Roark's gym trainers all cleared. Also usable for BUG-009 reproduction (`use_battle_item` wrong slot targeting). |
 
 ## Bug Reproduction
 
