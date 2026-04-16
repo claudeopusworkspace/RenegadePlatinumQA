@@ -31,6 +31,13 @@ desmume_mcp.log*
 .melonds_bridge.sock
 .desmume_bridge.sock
 
+# Journal / renderer runtime artifacts
+.melonds_journal*
+.renderer*
+
+# Recorded video sessions
+recordings/
+
 # Battery save (exported from emulator, large binary)
 *.sav
 
