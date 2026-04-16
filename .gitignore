@@ -2,7 +2,9 @@
 *.nds
 
 # Emulator state (binary, large, session-specific)
-savestates/
+# Exception: qa_base_bedroom.mst is the permanent QA starting point, committed to repo
+savestates/*
+!savestates/qa_base_bedroom.mst
 snapshots/
 
 # RAM dumps (temporary analysis artifacts)
