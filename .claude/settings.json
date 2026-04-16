@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/workspace/RenegadePlatinumQA/.claude/hooks/context-reminder.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
