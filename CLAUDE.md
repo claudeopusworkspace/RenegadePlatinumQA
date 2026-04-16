@@ -228,24 +228,25 @@ Saved macros persist across sessions in `macros/`.
 
 - **Character**: WOJ (boy), rival **Barry**
 - **Badges**: 0
-- **Money**: ¥2,944 (pre-double-battle); ~¥3,088 post-Lass-pair win (est. +160 per Youngster, similar per Lass).
-- **Location**: Route 203 (map 344), mid-**double battle** west of Oreburgh Gate. Load `route203_mid_double_battle_cubone_psyduck`. Prior stable save: `route203_post_barry_defeated_expshare` at (196,757).
+- **Money**: ~¥3,248 (after Oreburgh Mart 4× Potion + 2 gym trainer wins at ¥208 each).
+- **Location**: **Oreburgh Gym** (map 47, elevation-aware L0-L3). Player at (7,12), **ready to fight Roark**. Load `oreburgh_gym_pre_roark_lv20_monferno`.
 - **Party**:
-  1. **Monferno** Lv17 (Quirky, Blaze) — Scratch, Flame Wheel (**0 PP**, need PP Up/heal), Ember, Taunt. 34/54 HP at checkpoint.
-  2. **Eevee** Lv10 (Serious, Adaptability) — Tackle, Quick Attack, Bite, Covet. **Fainted** (0/33) — need PC revive.
-  3. **Burmy** Lv5 (Naive, Shed Skin) — Protect, Tackle, Bug Bite, Hidden Power. Full HP, Protect-spam partner in doubles.
-  4. **Shinx** Lv5 (Timid, Guts) — Tackle, Leer, Howl. Full HP.
-- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), **Exp. Share** (Barry reward).
-- **Bag**: 3 Potions, 9 Repels, 21 Poké Balls, **Silk Scarf** (holdable, +20% Normal moves — good for Eevee), **TM58 Endure**.
+  1. **Monferno** Lv20 (Quirky, Blaze) — **Low Kick** (Fighting, variable BP), **Flame Wheel** (15 PP), **Ember** (25 PP), **Rock Smash** (Fighting STAB). 62/62 HP after 2 Potions.
+  2. **Eevee** Lv10 (Serious, Adaptability) — Tackle, Quick Attack, Bite, Covet. Full HP 33/33.
+  3. **Burmy** Lv6 (Naive, Shed Skin) — Protect, Tackle, Bug Bite, Hidden Power. Full HP 21/21.
+  4. **Shinx** Lv6 (Timid, Guts) — Tackle, Leer, Howl, Quick Attack. Full HP 21/21.
+- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), **Exp. Share**, **HM06 Rock Smash** (taught to Monferno).
+- **Bag**: 3 Potions, 9 Repels, 21 Poké Balls, **Silk Scarf**, **Oval Stone**, **Water Stone** (Roark's quiz gift — can evolve Eevee → Vaporeon), TM58 Endure x99 (odd qty — not investigated).
 - **Story flags**:
-  - Parcel delivered, Pokétch/Vs. Recorder received, Jubilife TV still gated.
-  - **Rival Barry rematch defeated** (Starly/Piplup/**Munchlax**) at Route 203 boundary → Exp. Share received.
-- **Known Barry rematch team** (CLAUDE was missing Munchlax in prior sessions): Starly Lv10 (Reckless, Wing Attack/Quick Attack/Growl) → Piplup Lv11 (Torrent, Oran Berry; Water Pulse/Peck/Pound) → **Munchlax Lv10** (Thick Fat, 50 HP; Metronome/Tackle/Amnesia/Rock Tomb). Munchlax Rock Tomb is the sweeper-breaker — Monferno Flame Wheel is still the best response despite Thick Fat.
+  - Parcel delivered, Pokétch/Vs. Recorder/Exp. Share received, Route 203 Lass doubles beaten (Cubone/Psyduck + Azurill/Sunkern), Oreburgh Gate crossed (2 trainers beaten), HM06 obtained from Hiker in Oreburgh Gate.
+  - Met Roark at Oreburgh Mine — got **Water Stone** from Rock Smash boulder quiz (answer: "Water Stone"). Roark returned to gym.
+  - Gym: both **Youngsters defeated** (Rhyhorn+Omanyte+Kabuto / Aron+Anorith+Lileep).
 - **Next session start**:
-  1. Load `route203_mid_double_battle_cubone_psyduck` to resume the double battle. Psyduck full HP (Water Gun/Confusion), Cubone full HP (Bone Club Ground **2x SE on Monferno's Fire type**). Monferno at 34 HP and no Flame Wheel PP — one Bone Club could OHKO. Safer: Monferno Ember the Psyduck (target=0), Burmy keeps Protecting. Or switch Monferno to Shinx (Electric neutral to Ground/Water — but low level). Or flee with run attempt? (trainers can't be fled from.)
-  2. Alternatively: reload `route203_post_barry_defeated_expshare` and re-approach Route 203 — split the Lasses by engaging them individually if possible, or just bring in a Ground/Water-resistant Pokémon.
-  3. After the doubles: heal at Oreburgh City PC (through Oreburgh Gate at warp (246,749) on Route 203). Oreburgh Gate is the first elevation-aware dungeon — prime QA target for `view_map level=N` / `navigate_to` with BDHC data.
-  4. Oreburgh City goals: heal, revive Eevee, buy Revives/Super Potions, then challenge **Roark (Rock gym, Badge 1)**. Monferno's Fire/Fighting is rough vs Roark (Rock) — Rock 2x vs Fire, but Fighting 2x SE vs Rock, so bring a Fighting move or rely on STAB/level advantage.
+  1. Load `oreburgh_gym_pre_roark_lv20_monferno`. Walk up to Roark at (5,3) via the L2→L3 ramp and interact. Monferno at full HP with Rock Smash (60 pwr Fighting STAB + Def-drop chance) and Low Kick (variable BP — **100 BP vs Onix @ 210 kg** due to weight table).
+  2. **Roark's RP team (verify with `read_battle` — RP changes movesets)**: vanilla had Geodude Lv12 / Onix Lv12 / Cranidos Lv14 all Rock. Expect buffed stats/moves. Watch for Sturdy (Onix/Geodude) — forces 2-shot KO at full HP.
+  3. Use Rock Smash for most; swap to Low Kick against Onix specifically. Flame Wheel for Cranidos if it's still pure Rock. Keep 3 Potions + 1 Super Potion buffer — Monferno is the only offensive mon, so don't let HP drop below ~15 without a heal.
+  4. After gym: heal at PC (already accessible), pick up Water Stone candidate moment for Eevee — Water typing would be **great vs Route 204/207 Ground+ foes**.
+- **Open QA bugs this session**: **BUG-004** (`battle_turn` stalls on target-pick sub-menu after partner faints in doubles — worked around with manual `tap_touch_screen` on the Azurill tile).
 
 ## Tips
 
@@ -287,15 +288,17 @@ Track which tools/flows you've exercised. Update as you go.
 - [x] Use field item (Repel) — `use_field_item`
 - [ ] Give held item
 - [ ] Take held item
-- [ ] Teach TM/HM
-- [ ] Navigate multi-room dungeon — upcoming at Oreburgh Gate
-- [ ] Navigate elevation-aware map — upcoming at Roark's gym
+- [x] Teach TM/HM — `teach_tm("HM06", 0, forget_move=3)` taught Rock Smash to Monferno (forgot Taunt)
+- [x] Navigate multi-room dungeon — Oreburgh Gate (2 rooms / 2 trainers)
+- [x] Navigate elevation-aware map — Oreburgh Gate BDHC transitions + Oreburgh Mine (L0-L4) + Oreburgh Gym (L0-L3)
 - [x] Navigate with flee_encounters — used via auto_grind internally
 - [x] Auto grind (basic)
 - [ ] Auto grind (with auto-heal loop) — **BUG-002 blocks this**
 - [x] Auto grind (smart move selection) — `backup_move` used (Ember/Scratch, Covet/Bite)
 - [x] Auto grind (target species) — Shinx search on Route 202
-- [ ] Gym battle (full team)
-- [x] Story cutscene advancement — Parcel delivery, Pokétch gift, Looker
+- [ ] Gym battle (full team) — 2 gym trainers done, Roark next
+- [x] Story cutscene advancement — Parcel delivery, Pokétch gift, Looker, Oval Stone gift, Roark's Water Stone quiz
 - [x] Sign/signpost interaction — Arrow Signpost on Route 203 ("Rt. 203 / Jubilife City")
+- [x] Buy item via overworld auto-nav — bought 4 Potions in Oreburgh from overworld (auto-navigated to mart)
+- [x] Multi-choice prompt — Roark's stone quiz ("What stone?" → "Water Stone")
 - [ ] HM obstacle (Cut tree, Rock Smash)
