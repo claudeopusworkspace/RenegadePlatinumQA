@@ -1,38 +1,20 @@
-16:11:07 [renderer] INFO melonds_mcp.renderer: Renderer starting: rom=/workspace/RenegadePlatinumPlaytest/RenegadePlatinum.nds port=18091 data_dir=/workspace/RenegadePlatinumQA initial_state=None server_pid=35586
-16:11:07 [renderer] INFO melonds_mcp.emulator: Initializing melonDS engine
-16:11:07 [renderer] INFO melonds_mcp.emulator: melonDS initialized successfully (JIT: True)
-16:11:07 [renderer] INFO melonds_mcp.emulator: Loading ROM: /workspace/RenegadePlatinumPlaytest/RenegadePlatinum.nds
-16:11:08 [renderer] INFO melonds_mcp.emulator: ROM loaded successfully: RenegadePlatinum.nds
-16:11:08 [renderer] INFO melonds_mcp.streamer: ffmpeg started (pid 36105)
-16:11:08 [renderer] INFO melonds_mcp.streamer: Frame writer thread starting
-16:11:08 [renderer] INFO melonds_mcp.streamer: HLS streamer started on http://0.0.0.0:18091 (hls dir: /tmp/melonds_hls_xioj2y21)
-16:11:08 [renderer] INFO melonds_mcp.renderer: HLS streamer started on port 18091 (blocking mode)
-16:11:08 [renderer] INFO melonds_mcp.recorder: Recorder ffmpeg started (pid 36109)
-16:11:08 [renderer] INFO melonds_mcp.recorder: Recorder writer thread starting
-16:11:08 [renderer] INFO melonds_mcp.recorder: Session recorder started: /workspace/RenegadePlatinumQA/recordings/20260414_211108.mp4 (tmp: /tmp/melonds_rec_9j61wyxc)
-16:11:08 [renderer] INFO melonds_mcp.renderer: Session recorder started, output dir: /workspace/RenegadePlatinumQA/recordings, name: unnamed
-16:11:08 [renderer] INFO melonds_mcp.journal: Journal reader opened /workspace/RenegadePlatinumQA/.melonds_journal.jsonl
-16:11:08 [renderer] INFO melonds_mcp.renderer: Journal reader connected, entering replay loop
-16:11:08 [renderer] INFO melonds_mcp.streamer: video pipe buffer set to 1048576 bytes
-16:11:08 [renderer] INFO melonds_mcp.recorder: Recorder FIFOs opened
-16:11:08 [renderer] INFO melonds_mcp.streamer: audio pipe buffer set to 1048576 bytes
-16:11:08 [renderer] INFO melonds_mcp.streamer: Both FIFOs opened for writing
-16:11:08 [renderer] INFO melonds_mcp.renderer: Renderer loaded state: /workspace/RenegadePlatinumQA/savestates/lake_verity_cyrus_cutscene_done.mst
-18:02:56 [renderer] INFO melonds_mcp.renderer: Renderer loaded state: /workspace/RenegadePlatinumQA/savestates/monferno_lv15_route202.mst
-18:02:57 [renderer] INFO melonds_mcp.renderer: Renderer loaded state: /workspace/RenegadePlatinumQA/savestates/jubilife_city_town_map_obtained.mst
-18:26:41 [renderer] INFO melonds_mcp.renderer: Renderer loaded state: /workspace/RenegadePlatinumQA/savestates/monferno_lv15_route202_v2.mst
-18:26:43 [renderer] INFO melonds_mcp.renderer: Renderer loaded state: /workspace/RenegadePlatinumQA/savestates/jubilife_city_town_map_obtained.mst
-18:26:44 [renderer] INFO melonds_mcp.renderer: Renderer loaded state: /workspace/RenegadePlatinumQA/savestates/monferno_lv15_route202_v2.mst
-18:26:51 [renderer] INFO melonds_mcp.renderer: Renderer loaded state: /workspace/RenegadePlatinumQA/savestates/jubilife_city_town_map_obtained.mst
-19:55:26 [renderer] INFO melonds_mcp.renderer: Renderer loaded state: /workspace/RenegadePlatinumQA/savestates/route202_shinx_lv13_pre_barry3.mst
-20:15:59 [renderer] INFO melonds_mcp.renderer: Renderer loaded state: /workspace/RenegadePlatinumQA/savestates/route203_barry2_defeated.mst
-21:05:31 [renderer] WARNING melonds_mcp.streamer: Renderer queue blocked >5s, dropping frame 1059589
-21:05:31 [renderer] WARNING melonds_mcp.streamer: Streamer slow _on_cycle: 6.868s (frame 1059589, q=300)
-21:40:35 [renderer] INFO melonds_mcp.recorder: Recorder stopping (wrote 1100596 frames)
-21:40:35 [renderer] INFO melonds_mcp.recorder: Recorder writer thread exiting (wrote 1100596 frames)
-21:40:35 [renderer] INFO melonds_mcp.recorder: Session recorder stopped: /workspace/RenegadePlatinumQA/recordings/20260414_211108.mp4
-21:40:35 [renderer] INFO melonds_mcp.journal: Journal file cleaned up: /workspace/RenegadePlatinumQA/.melonds_journal.jsonl
-21:40:35 [renderer] INFO melonds_mcp.streamer: HLS streamer shutting down (wrote 1100601 frames, dropped 1)
-21:40:35 [renderer] INFO melonds_mcp.streamer: Frame writer thread exiting (wrote 1100602 frames)
-21:40:35 [renderer] INFO melonds_mcp.streamer: HLS streamer stopped
-21:40:35 [renderer] INFO melonds_mcp.renderer: Renderer exiting
+18:31:34 [renderer] INFO melonds_mcp.renderer: Renderer starting: rom=/workspace/RenegadePlatinumPlaytest/RenegadePlatinum.nds port=18091 data_dir=/workspace/RenegadePlatinumQA initial_state=None server_pid=19744
+18:31:34 [renderer] INFO melonds_mcp.emulator: Initializing melonDS engine
+18:31:34 [renderer] INFO melonds_mcp.emulator: melonDS initialized successfully (JIT: True)
+18:31:34 [renderer] INFO melonds_mcp.emulator: Loading ROM: /workspace/RenegadePlatinumPlaytest/RenegadePlatinum.nds
+18:31:35 [renderer] INFO melonds_mcp.emulator: ROM loaded successfully: RenegadePlatinum.nds
+18:31:35 [renderer] INFO melonds_mcp.streamer: ffmpeg started (pid 20230)
+18:31:35 [renderer] INFO melonds_mcp.streamer: Frame writer thread starting
+18:31:35 [renderer] INFO melonds_mcp.streamer: HLS streamer started on http://0.0.0.0:18091 (hls dir: /tmp/melonds_hls_igksh8ml)
+18:31:35 [renderer] INFO melonds_mcp.renderer: HLS streamer started on port 18091 (blocking mode)
+18:31:35 [renderer] INFO melonds_mcp.recorder: Recorder ffmpeg started (pid 20234)
+18:31:35 [renderer] INFO melonds_mcp.recorder: Recorder writer thread starting
+18:31:35 [renderer] INFO melonds_mcp.recorder: Session recorder started: /workspace/RenegadePlatinumQA/recordings/20260415_233135.mp4 (tmp: /tmp/melonds_rec_49dzrb8a)
+18:31:35 [renderer] INFO melonds_mcp.renderer: Session recorder started, output dir: /workspace/RenegadePlatinumQA/recordings, name: unnamed
+18:31:35 [renderer] INFO melonds_mcp.journal: Journal reader opened /workspace/RenegadePlatinumQA/.melonds_journal.jsonl
+18:31:35 [renderer] INFO melonds_mcp.renderer: Journal reader connected, entering replay loop
+18:31:35 [renderer] INFO melonds_mcp.streamer: video pipe buffer set to 1048576 bytes
+18:31:35 [renderer] INFO melonds_mcp.recorder: Recorder FIFOs opened
+18:31:35 [renderer] INFO melonds_mcp.streamer: audio pipe buffer set to 1048576 bytes
+18:31:35 [renderer] INFO melonds_mcp.streamer: Both FIFOs opened for writing
+18:31:36 [renderer] INFO melonds_mcp.renderer: Renderer loaded state: /workspace/RenegadePlatinumQA/savestates/oreburgh_city_healed.mst
