@@ -20,7 +20,11 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-008: Hex text-format codes (`[01D2]`, `[0114]`) leak in Team Galactic post-battle cutscene dialogue
+### BUG-008: Hex text-format codes (`[01D2]`, `[0114]`) leak in Team Galactic post-battle cutscene dialogue — **FIXED (verified 2026-04-17 session 8)**
+
+Re-ran the Galactic-grunts double battle from `jubilife_galactic_grunts_double_battle_start`; post-battle `post_battle_dialogue` now returns "90% of all Pokémon are somehow tied to evolution!" and "WOJ put the Fashion Case in the KEY ITEMS Pocket." with no hex-code leaks. Fix added 10 entries to `renegade_mcp/text_encoding.py::CHAR_MAP`: `0x01C2`=`&`, `0x01D2`=`%` (alt-font variants), and `0x0113`–`0x011A` mapped to empty string (the 8 pocket-icon sprite glyphs enumerated from ROM file 396). 5 tests added to `TestQaBug008HexFormatCodeLeak`.
+
+**Original entry retained below for reference.**
 
 - **Tool**: `navigate_to` (trigger via entering Jubilife cutscene tile) → `battle_turn` `post_battle_dialogue` surface, and to a lesser extent mid-cutscene `read_dialogue`-style output from the same pipeline. Same code path as BUG-005 (marked FIXED this session for the `[VAR]…` family) but a different hex-code family is still slipping through.
 - **Severity**: minor (cosmetic)
@@ -52,6 +56,8 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 ---
 
 ### BUG-007: Post-battle reward dialogue drops `{ITEM}` / `{POCKET}` / `{ARTICLE}` variable tokens entirely
+
+**Investigation 2026-04-17 session 8 — root cause identified, fix deferred.** Searched ROM message files for the Roark reward templates: file 213 index 25 is `"Obtained the {0x0108,0x0000,0x0000}!"` and file 56 index 4 is `"That {0x0108,0x0000,0x0000} contains the move {0x0106,0x0001,0x0000}."`. Cross-referenced against the Galactic-grunts cutscene (same battle_turn code path, same text decoder, same session) where `WOJ` and `Fashion Case` DO resolve correctly — those templates use `{0x0108,0x0001,0x0000}` (arg-0 = `0x0001`) vs Roark's `{0x0108,0x0000,0x0000}` (arg-0 = `0x0000`). Working theory: Gen 4 VAR blocks' arg-0 selects which internal memory slot the game's `TextPrinter` substitutes from; the Roark script doesn't populate slot 0, so the VAR block reaches our text buffer un-substituted and `_consume_var_block` (from the BUG-005 fix) correctly strips it → empty. Fix would need either (a) a per-var-id substitution layer that reads game state and fills in the tokens, or (b) reading the text buffer at a later point in the pipeline after the game's own substitution pass completes. Option (b) needs more investigation — probably looking at multiple text buffers in memory (pre-substitution vs post-substitution) and picking the right one. Deferred because this is cosmetic (minor severity) and option (a) risks regressions in the many places VAR stripping already works.
 
 - **Tool**: `battle_turn` (post-battle dialogue auto-advance surfacing via `post_battle_dialogue`)
 - **Severity**: minor (cosmetic, but harder to detect than BUG-005 was — instead of emitting visible `[VAR]…` placeholders, the tokens are silently replaced with empty strings, so the text reads almost correctly and it's easy to miss)
