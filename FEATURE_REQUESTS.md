@@ -16,21 +16,21 @@ Ideas for improving the Renegade MCP tooling, surfaced during QA playthroughs. T
 
 ---
 
-### FR-003: In-battle BAG item use is not covered by `battle_turn`
+### FR-003: Consider merging `use_battle_item` into `battle_turn` as a fourth action type
 
 - **Area**: battle
-- **Priority**: high
-- **Context**: Mid-Roark gym fight, Monferno at 21 HP + Spe-1 after Geodude's Bulldoze, Onix incoming. Needed to heal Monferno with a Potion to survive Onix's next Bulldoze while Burmy (sacrifice) ate the hit on the switch turn. Standard battle tactic, but the only path was the in-battle BAG UI.
-- **Current friction**: `battle_turn` only supports `move_index`, `switch_to`, `run`, `forget_move`, `target`, `force`. No `use_item` action. Had to drive the BAG menu by hand: `tap (50,165)` → `tap (64,55)` HP/PP Restore → `tap (50,25)` Potion → `tap (95,178)` USE → *party-pick screen*. Party-pick coordinates (50,85) worked once but taps were unreliable on subsequent screens (see FR-006); fell back to D-pad. Whole flow was ~10 tool calls plus screenshots for a single action the game considers one turn.
-- **Proposal**: Extend `battle_turn` with a `use_item` action:
+- **Priority**: medium (pure discoverability / UX — existing `use_battle_item` tool already covers the capability, just easy to miss)
+- **Context**: Mid-Roark gym fight, Monferno at 21 HP + Spe-1 after Geodude's Bulldoze, Onix incoming. Needed to Potion Monferno mid-fight. I walked right past `use_battle_item` in the tool list and reached for `battle_turn`, which has no `use_item` parameter, and fell back to ~10 manual taps through the in-battle BAG UI to do what one call to `use_battle_item("Potion", party_slot=0)` would have done.
+- **Current friction**: Every other "take an action this turn" path is a parameter on `battle_turn` — `move_index`, `switch_to`, `run`, `forget_move`. Items being a separate top-level tool breaks that pattern and makes them easy to forget when you're deep in a battle loop looking at battle_turn's docstring.
+- **Proposal**: Fold `use_battle_item` into `battle_turn` as a mutually-exclusive fourth action:
   ```python
-  battle_turn(use_item="Potion", target_slot=0)              # Potion on active Monferno
-  battle_turn(use_item="Super Potion", target_slot=2)         # Super Potion on Burmy in bench
-  battle_turn(use_item="Full Heal")                           # target defaults to active
-  battle_turn(use_item="X Attack")                            # Battle Items pocket (self-target)
+  battle_turn(use_item="Potion", party_slot=0)              # Potion on active
+  battle_turn(use_item="Full Heal", party_slot=2)           # Full Heal on bench
+  battle_turn(use_item="X Attack")                          # Self-targeted stat booster
+  battle_turn(use_item="Poke Doll")                         # Escape item, no target
   ```
-  Resolve the pocket from the item name (Medicine / Battle Items / Poké Balls / Berries are the four usable in-battle pockets). Return the same post-turn shape as the move/switch path: opponent's reactive turn, battle log, updated `battle_state`.
-- **Notes**: Trainer-side item use was observed this session (Roark used Super Potion on Nosepass and a Potion on Bonsly) — those were handled correctly by `battle_turn` as the trainer's "turn" and my move still executed. So the machinery for parsing in-battle item use exists — the gap is just on the player side.
+  Internally just delegates to the existing `use_battle_item` implementation. Preserve `use_battle_item` as a standalone tool for backward compat if desired. Return the unified `battle_turn` response shape (battle log, final_state, updated battle_state).
+- **Notes**: Originally filed as "there's no in-battle BAG coverage" — that was wrong, `use_battle_item` exists and is well-scoped (healing items, stat boosters, escape items, rejects Poké Balls with a pointer to `throw_ball`). The FR survives only as a discoverability / ergonomics suggestion — `battle_turn` is the obvious entry point for "I'm at the action prompt, do X," and having item-use live under a parallel tool adds cognitive overhead.
 
 ---
 
@@ -45,26 +45,24 @@ Ideas for improving the Renegade MCP tooling, surfaced during QA playthroughs. T
 
 ---
 
-### FR-005: `battle_turn(switch_to=0)` rejected when a non-slot-0 Pokémon is actually active
+### FR-005: Make `battle_turn`'s "slot 0 is the active battler" error self-describing
 
-- **Area**: battle
-- **Priority**: medium (a workaround exists — the manual party-selection UI — but the error message is actively misleading)
-- **Context**: Mid-Roark fight, Burmy active after a voluntary switch (from Monferno), Burmy fainted to Onix's Bulldoze → `FAINT_FORCED`. Wanted to bring Monferno (party slot 0) back in.
-- **Current friction**: `battle_turn(switch_to=0)` returned `"switch_to=0 is the active battler. Use 1-5 to switch to a different Pokemon."` — but Monferno (party slot 0) was *not* active; Burmy was. The tool seems to treat party slot 0 as the active battler unconditionally, which only holds when the party-slot-0 Pokémon happens to still be the one on the field. The docstring says "Slot 0 is the active battler" — consistent with the code, but it makes `switch_to` partly unusable whenever the active battler isn't at party slot 0.
-- **Proposal**: Interpret `switch_to` as the **party slot** (0-5) at all times, and reject the call only when the target slot *currently is* the active battler (resolved dynamically). The error message in that case should name what's active: `"Slot 0 (Monferno) is already the active battler"` instead of the current generic phrasing. The earlier call `battle_turn(switch_to=2)` already used party-slot semantics successfully — aligning the faint-forced path with the same semantics would remove the inconsistency.
-- **Notes**: Repro path from `roark_switch_prompt_onix_incoming`: `battle_turn(switch_to=2)` to bring Burmy in → let Onix KO Burmy with Bulldoze → at the forced-switch prompt, call `battle_turn(switch_to=0)` — rejected. Workaround was D-pad navigation through the party-select screen and tapping SHIFT.
+- **Area**: battle / developer experience
+- **Priority**: low (pure signaling — the behavior is correct, the message just didn't land for me)
+- **Context**: Mid-Roark fight, Burmy active after a voluntary switch (from Monferno), Burmy fainted to Onix's Bulldoze → `FAINT_FORCED`. Wanted to bring Monferno back in and called `battle_turn(switch_to=0)` based on `read_party`'s party slot numbering (Monferno=0).
+- **Current friction**: The tool correctly rejected with `"switch_to=0 is the active battler. Use 1-5 to switch to a different Pokemon."` — but because the message doesn't say *who* is active, the obvious (and wrong) inference is "the tool thinks Monferno is still active, that's a bug." It took re-reading the docstring to understand that `switch_to` uses **battle-slot** numbering (active = 0, always) rather than the persistent **party-slot** numbering I had in my head from `read_party`. The data to correct myself was available — `read_battle` after the voluntary switch would have shown `slot 0 = Burmy` — I just didn't look at the right source.
+- **Proposal**: Include the active battler's species in the error message so the user's mental model gets corrected by the error itself:
+  ```
+  Before:  "switch_to=0 is the active battler. Use 1-5 to switch to a different Pokemon."
+  After:   "switch_to=0 is the active battler (Burmy Lv6). Use 1-5 to switch to a different Pokemon. Note: slot numbering tracks read_battle (active = 0), not read_party's persistent party order."
+  ```
+  Same fix fits the `switch_to` docstring — currently `"Slot 0 is the active battler"` is technically accurate but trivially easy to read past. A tweak like `"Slots match read_battle (active battler is always 0). Use 1-5 for bench; note this can diverge from read_party after a mid-battle switch."` gives the reader the whole picture up front.
+- **Notes**: Withdrew the original proposal (reinterpret `switch_to` as party slot) — that would *change* working behavior to match my mistaken expectation, which is the wrong fix. The game internally swaps the active Pokemon into battle slot 0, and the tool follows that convention correctly. Pure signaling fix.
 
 ---
-
-### FR-006: Party-selection screen touch coordinates are unreliable
-
-- **Area**: menu
-- **Priority**: low
-- **Context**: Two separate party-selection contexts this session: (1) the FAINT_FORCED "Choose a Pokémon" screen after Burmy fainted, (2) the "Use on which Pokémon?" target screen after pressing USE on Water Stone.
-- **Current friction**: Taps that should have landed on the party cards didn't register at multiple estimated coordinates — `(50, 85)`, `(50, 110)`, `(80, 120)` for Monferno (bottom-left card), and `(185, 25)` for Eevee (top-right card) — all silently ignored, no cursor change, no activation. Switching to D-pad (`right`/`down` + `a`) worked immediately every time.
-- **Proposal**: Document the tested-good tap coordinates for the 2x2 party-pick grid in CLAUDE.md (similar to the existing "Bag Pocket Tabs" table), or add a `select_party_member(party_slot)` helper that handles the D-pad/tap details. Short-term, updating the CLAUDE.md coordinates reference with a note "D-pad is more reliable than tap on party-pick screens" would save future sessions from the same trial-and-error.
-- **Notes**: The Bag pocket-tabs coordinates (CLAUDE.md) *do* work reliably — so there's a mismatch in calibration specifically for the party-pick screen. Could be the sprite hitboxes vs. the card outlines, or the card rows drawn at different Y offsets than expected.
 
 ---
 
 *Previously filed FR-001 and FR-002 were reclassified as BUG-005 and BUG-006 during the 2026-04-16 triage and have since been verified FIXED (see BUG_LOG.md).*
+
+*FR-006 (party-selection touch coords unreliable) was withdrawn before commit — I only waited ~120 frames after each screen render, and Pokémon UI screens can sit through longer arrival animations before accepting input. Need to redo the calibration next session with (a) longer post-render waits (300+ frames), (b) a coordinate sweep across the card bounds, (c) a screenshot after each tap to see whether the cursor moved, before I can claim the coordinates themselves are off.*
