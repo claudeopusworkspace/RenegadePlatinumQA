@@ -20,7 +20,11 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-011: Orphan Pokémon-name / trainer-class lines appear in `battle_turn` log around level-up & battle-end macros
+### BUG-011: Orphan Pokémon-name / trainer-class lines appear in `battle_turn` log around level-up & battle-end macros — **FIXED (verified 2026-04-17 session 10)**
+
+Re-ran `seek_encounter` from `forest_exit_route205_north_post_cheryl` and the Cheryl battle from `eterna_forest_entered_south`. The orphan `"Slowpoke"` before `"A wild Slowpoke appeared!"` is gone; the orphan `"Water Pulse"` / `"Drifloon"` entries that used to sandwich the level-up and faint macros no longer appear. Fix in `battle_tracker._is_orphan_name_text()`: filter AUTO_ADVANCE log entries with no newline, no terminal punctuation, and ≤24 chars — covers every bare species/move/trainer-class name observed in session 9 without touching real narration. Applied in both `BattleTracker.poll` and `turn._wait_for_action_prompt`. 6 tests in `TestQaBug011OrphanNameFilter` (5 unit + 1 integration via `seek_encounter`).
+
+**Original entry retained below for reference.**
 
 Session 9 (2026-04-17) newly observed across multiple battles this session. Short single-token lines — a Pokémon species name or trainer class — appear as their own entries in the `log` array, sandwiched between normal battle macro lines. The line has no verb/punctuation; it's just the name. Parses as `{"text":"Makuhita","stop":"AUTO_ADVANCE"}` (or "Monferno", "Drowzee", "Slowpoke", "Bug Catcher", "Buneary"). Occurs consistently after level-up messages and after some defeat/faint messages.
 
@@ -41,7 +45,11 @@ Session 9 (2026-04-17) newly observed across multiple battles this session. Shor
 
 ---
 
-### BUG-010: `read_party` reports garbled `max_hp` (37988) for slot 3 Shinx; other fields and slots correct (TRANSIENT — clears after first battle transition)
+### BUG-010: `read_party` reports garbled `max_hp` (37988) for slot 3 Shinx; other fields and slots correct (TRANSIENT — clears after first battle transition) — **FIXED (verified 2026-04-17 session 10)**
+
+Re-ran `read_party` on a fresh load of `eterna_forest_entered_south`. Shinx slot 3 now returns `hp: 21, max_hp: 21` matching the in-game party menu; Monferno/Vaporeon/Burmy unaffected. Root cause was a **mixed encryption state** in the party extension bytes — after a PC round-trip the first 8 bytes (status/level/cur_hp) and the next 2 bytes (max_hp) end up in opposite encryption states, so neither "fully decrypted" nor "fully encrypted" reads pass `_ext_sane`. Fix in `party._resolve_party_extension`: when both sources fail full-record sanity, compose field-by-field by picking each of `level`/`cur_hp`/`max_hp`/`status` from whichever source reads sane for that field. 3 tests in `TestQaBug010MaxHpMixedStateRecovery` (unit mix-state reconstruction + integration fresh-load + sanity check for other slots).
+
+**Original entry retained below for reference.**
 
 Session 9 (2026-04-17) newly observed on loading `eterna_forest_entered_south`. Only the slot-3 Pokémon (Shinx Lv6, PC-withdrawn earlier in the playthrough) is affected; slots 0–2 report sensible values. In-game party menu displays Shinx correctly at **HP 21/21**, so the underlying save data is fine — this is a read-side issue in `read_party` computing max_hp for this one slot.
 
@@ -58,7 +66,11 @@ Session 9 (2026-04-17) newly observed on loading `eterna_forest_entered_south`. 
 
 ---
 
-### BUG-009: Hex text-format codes (`[01E0][01E1]`) leak in trainer-name prefix lines during battle
+### BUG-009: Hex text-format codes (`[01E0][01E1]`) leak in trainer-name prefix lines during battle — **FIXED (verified 2026-04-17 session 10)**
+
+Re-ran the Cheryl battle from `eterna_forest_entered_south`. Turn-2 log now renders `"Pokémon Trainer Cheryl used one Super Potion!"` and `"Pokémon Trainer Cheryl is about to send in Wailmer."` with the ligature resolved — no `[01E0]` / `[01E1]` leaks. Confirmed via ROM search (file 619): `[0x01E0][0x01E1]` is the 2-tile "Pokémon" sprite ligature used to prefix trainer classes "Pokémon Trainer", "Pokémon Breeder", "Pokémon Ranger". Fix: added 2 CHAR_MAP entries in `renegade_mcp/text_encoding.py` — `0x01E0 → "Pokémon"` and `0x01E1 → ""`, so the pair decodes as one word and the space that follows in the ROM string renders naturally. 4 tests in `TestQaBug009PokemonLigatureLeak` (3 unit + 1 integration driving the Cheryl battle).
+
+**Original entry retained below for reference.**
 
 Session 8 (2026-04-17) newly observed — BUG-008's `[0113]`/`[0114]`/`[0115]`/`[01C2]` family is genuinely fixed (4 clean item pickups this session: Destiny Knot on Route 205 N at (204,603), Repel at (204,603), Super Potion at (219,608), Antidote at Eterna Forest (15,81) — all parse clean `"WOJ put the X in the ITEMS/MEDICINE Pocket."`). But a distinct new code family surfaces in trainer-class-prefixed battle text against Cheryl in Eterna Forest.
 
