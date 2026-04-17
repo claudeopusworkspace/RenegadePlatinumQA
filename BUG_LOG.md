@@ -20,6 +20,44 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
+### BUG-011: Orphan Pokémon-name / trainer-class lines appear in `battle_turn` log around level-up & battle-end macros
+
+Session 9 (2026-04-17) newly observed across multiple battles this session. Short single-token lines — a Pokémon species name or trainer class — appear as their own entries in the `log` array, sandwiched between normal battle macro lines. The line has no verb/punctuation; it's just the name. Parses as `{"text":"Makuhita","stop":"AUTO_ADVANCE"}` (or "Monferno", "Drowzee", "Slowpoke", "Bug Catcher", "Buneary"). Occurs consistently after level-up messages and after some defeat/faint messages.
+
+- **Tool**: `battle_turn` (`log` output), also leaks into the `encounter.battle_log` returned by `interact_with`/`navigate_to` on trigger.
+- **Severity**: minor (cosmetic) — doesn't break callers that iterate the log and skip unknown entries, but a naive formatter will render a nonsensical standalone word mid-battle.
+- **Save state**: Reproducible from multiple session-9 states:
+  - `eterna_forest_entered_south` → `interact_with(x=28, y=83)` to start Cheryl solo battle → after the Makuhita KO, a "Makuhita" orphan line appears bracketing the Lv28 level-up message and Burmy's Lv19 level-up message.
+  - `forest_exit_route205_north_post_cheryl` → trigger any wild encounter in Route 205 N grass → the encounter's first log entry is often just the species name (e.g. "Slowpoke") *before* the real "A wild Slowpoke appeared!" line.
+- **Call**: Any `battle_turn(...)` that ends a Pokémon / ends the battle / level-ups a party member. Examples from session 9:
+  - Cheryl battle: log contains `"Monferno grew to / Lv. 28!"` → orphan `"Makuhita"` → `"Burmy grew to / Lv. 19!"` → orphan `"Makuhita"`.
+  - Bug Catcher Jack+Lass Briana double battle end: log contains `"Don't ignore bug Pokémon! / That really bugs me!"` → orphan `"Bug Catcher"` → `"WOJ got $528 / for winning!"`.
+  - Psychic Elijah Drowzee KO: log contains `"Vaporeon grew to / Lv. 17!"` → orphan `"Drowzee"` → `"Psychic Elijah is / about to send in Baltoy."`.
+  - Every wild-encounter open this session ("Slowpoke", "Buneary") prefixes the real "A wild X appeared!" with an orphan X.
+- **Expected**: `log` should contain only complete message-box lines. The Pokémon name standalone is an artifact of how the game splits message text into `[name][action]` pairs for the battle text engine — the parser should combine the name with its following macro, not emit it as its own entry.
+- **Actual**: Orphan name emitted as a separate `{"text": "...", "stop": "AUTO_ADVANCE"}` entry.
+- **Workaround**: Filter log entries whose text exactly matches a species name or trainer class (no newline, no punctuation). Not a correctness issue.
+- **Notes**: Distinct from BUG-009 (hex-code prefix leak). This one is a structural line-split issue — the text itself is correct, it's just chunked wrong. Probably fixable by looking for short single-word entries and concatenating with the next entry before emitting.
+
+---
+
+### BUG-010: `read_party` reports garbled `max_hp` (37988) for slot 3 Shinx; other fields and slots correct (TRANSIENT — clears after first battle transition)
+
+Session 9 (2026-04-17) newly observed on loading `eterna_forest_entered_south`. Only the slot-3 Pokémon (Shinx Lv6, PC-withdrawn earlier in the playthrough) is affected; slots 0–2 report sensible values. In-game party menu displays Shinx correctly at **HP 21/21**, so the underlying save data is fine — this is a read-side issue in `read_party` computing max_hp for this one slot.
+
+**Post-finding**: Garbled value **self-heals after the first battle transition** of the session. After Cheryl's solo test-battle ended and Cheryl's auto-heal cutscene ran, a fresh `read_party` returned Shinx as `21/21` correctly and stayed correct for the rest of the session across many battles. So the trigger is specifically: *freshly-loaded savestate + slot N contains a previously-PC-round-tripped mon*. Likely explanation: `read_party`'s max_hp path on load reads from a different memory region (or expects a decryption context) that gets populated/refreshed during the first script context the game enters (battle intro, menu open with stat recompute, etc.). Not game-breaking — the behaviour just confuses tools that rely on `max_hp` from a freshly-loaded state before any UI/battle happens.
+
+- **Tool**: `read_party`
+- **Severity**: minor (cosmetic, misleading — a heal/grind automator that respects max_hp would treat this mon as "nearly-fainted" forever)
+- **Save state**: `bug_shinx_max_hp_garbled_read_party` (loaded from `eterna_forest_entered_south`; player at (29,86) map 203 facing up in Eterna Forest, overworld idle, no dialogue/battle active). Also reproduces directly from the underlying state `eterna_forest_entered_south`.
+- **Call**: `read_party()` — no parameters. Reproducible across multiple invocations and after `advance_frames(60)`, so not a transient mid-frame artifact.
+- **Expected**: Slot 3 entry `{"name":"Shinx","level":6,"hp":21,"max_hp":21,...}` — matching the in-game party menu screenshot (HP 21/21, full HP bar).
+- **Actual**: Slot 3 entry shows `"hp":21,"max_hp":37988`, and the `formatted` pretty-print shows `HP 21/37988 [░░░░░░░░░░░░░░░░░░░░]` (a 20-segment empty bar because the ratio is tiny). All other fields for Shinx look correct (species 403, Lv6, IVs 9/21/0/4/24/5, Timid, Guts, etc.).
+- **Workaround**: None needed for gameplay — I simply don't use Shinx. A caller that relied on `max_hp` for decisions (e.g. auto-heal thresholds) would need to clamp or re-compute.
+- **Notes**: 37988 = `0x9464`. Suspicious that only slot 3 is wrong: slot 3 is the one Pokémon that was **deposited and withdrawn** from Box 1 this playthrough (see session 3/4 PC exercises). Possible cause: `read_party` using a stale/wrong pointer or decryption context for slots whose encryption state was last toggled by PC ops. Worth checking whether `read_party` re-runs after another party slot is modified (e.g. after battle damage or item use on slot 0) clear the garbled slot-3 field — haven't tested yet. Also worth trying a PC deposit→withdraw cycle on another party member to see if the corruption follows the "last-touched-by-PC" slot or is specific to Shinx's PID/blocks layout.
+
+---
+
 ### BUG-009: Hex text-format codes (`[01E0][01E1]`) leak in trainer-name prefix lines during battle
 
 Session 8 (2026-04-17) newly observed — BUG-008's `[0113]`/`[0114]`/`[0115]`/`[01C2]` family is genuinely fixed (4 clean item pickups this session: Destiny Knot on Route 205 N at (204,603), Repel at (204,603), Super Potion at (219,608), Antidote at Eterna Forest (15,81) — all parse clean `"WOJ put the X in the ITEMS/MEDICINE Pocket."`). But a distinct new code family surfaces in trainer-class-prefixed battle text against Cheryl in Eterna Forest.

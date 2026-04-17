@@ -228,50 +228,50 @@ Saved macros persist across sessions in `macros/`.
 
 - **Character**: WOJ (boy), rival **Barry**
 - **Badges**: 1 (**Coal**)
-- **Money**: ~¥12,500 (rough — +$600 Windworks grunt 1 + $560 grunt 2 + $1520 Mars + $480 Hiker Daniel + $512 Aroma Lady + $240 Camper Zackary + $272 Picnicker Siena + $512 Hiker Nicholas + $256 Battle Girl Kelsey + $256 Picnicker Karina + $2400 Cheryl = +$7,608 this session).
-- **Location**: **Eterna Forest** (map 203) mid-double-battle with Cheryl as partner. Load `eterna_forest_cheryl_doubles_mid_battle_buneary_paras` to resume mid-battle (vs Bug Catcher Jack's Paras Lv16 + Lass's Buneary Lv17 at 30/47 HP; Monferno 85/85, Chansey 76/136). **Cleaner restart: `eterna_forest_entered_south`** — just entered forest at (29,86), Cheryl still at (28,83) ready to be talked to. Also saved: `windworks_door_pre_unlock_works_key` (pre-Works-Key-prompt), `windworks_pre_mars_monferno_lv26` (pre-Mars battle), `bug008_cheryl_trainer_01e0_01e1_codes` (BUG-009 repro — mid-Cheryl-battle).
-- **Party** (all full HP from Cheryl's partner-heal after defeating her):
-  1. **Monferno** Lv28 (Quirky, Blaze) — Low Kick (PP 20/20) / **Flamethrower (PP 14/15, NEW this session, replaced Flame Wheel)** / Fake Out (PP 10/10) / Rock Smash (PP 15/15). 85/85 HP.
-  2. **Vaporeon** Lv16 (Serious, Water Absorb) — Water Pulse / Quick Attack / Bite / Covet. 72/72 HP. (Still un-leveled — EXP Share on Burmy, not rotated.)
-  3. **Burmy** Lv19 (Naive, Shed Skin), **holding Exp. Share** — Protect / Tackle / Bug Bite / Hidden Power. 47/47 HP. (+6 levels this session from heavy trainer traffic.)
-  4. **Shinx** Lv6 (Timid, Guts) — Tackle / Leer / Howl / Quick Attack. 21/21 HP. (Still un-leveled. Not usable in current dungeon — switch or box.)
-- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), Fashion Case, HM06 Rock Smash (on Monferno), Coal Badge, Works Key. No new key items this session.
-- **Bag** (new additions this session in bold):
-  - Medicine: prior stock **+ 1 Super Potion** (Route 205 N (219,608) Pokeball), **+ 1 Antidote** (Eterna Forest (15,81) Pokeball).
-  - Poké Balls: ~21 (unchanged).
-  - Items: prior stock **+ Destiny Knot** (Route 205 N (204,603) Pokeball), **+ Repel** (Route 205 N (203,603) Pokeball).
-  - TMs & HMs: unchanged.
+- **Money**: **$15,484** (verified via `read_trainer_status`).
+- **Location**: **Eterna City Cycle Shop interior** (map 71) at (7,11). Just entered through the south door from Eterna City map 65. Haven't talked to the Bike Shop owner yet. Cleanest resume point: **`eterna_cycle_shop_entered`** (just inside, ready to interact with owner). Alternative: **`eterna_city_arrived_post_forest`** (just arrived at Eterna from Route 205 forest exit, at (297,525) map 65, no actions taken yet). Backup: **`forest_exit_route205_north_post_cheryl`** (just exited Eterna Forest at (259,524) map 349, Cheryl gone).
+- **Party** (all full HP, Cheryl auto-healed repeatedly in forest):
+  1. **Monferno** Lv29 (Quirky, Blaze) — Low Kick (20/20) / Flamethrower (15/15) / Fake Out (10/10) / Rock Smash (15/15). 88/88 HP.
+  2. **Vaporeon** Lv17 (Serious, Water Absorb) — Water Pulse / Quick Attack / Bite / Covet. 76/76 HP. **(+1 level from Psychic Elijah Drowzee/Baltoy fight.)**
+  3. **Mothim** Lv21 (Naive, **Swarm**, formerly Burmy Shed Skin) **holding Exp. Share** — Protect / **Gust** (replaced Tackle at Lv20) / Bug Bite / Hidden Power (Rock type per IV math). 64/64 HP. **Evolved from male Burmy at Lv20.**
+  4. **Shinx** Lv6 (Timid, Guts) — Tackle / Leer / Howl / Quick Attack. 21/21 HP. (Still parked; per feedback memory, don't detour to PC just to deposit.)
+- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), Fashion Case, HM06 Rock Smash (on Monferno), Coal Badge, Works Key. No new key items.
+- **Bag** — new this session:
+  - Medicine: **+1 Antidote** (Eterna Forest (15,81)), **+1 Parlyz Heal** (Eterna Forest (41,59)).
+  - TMs & HMs: **+TM27 (×99, Cheryl's gift at forest exit — RP policy: 99-count, unsellable, $0).**
+  - Items: unchanged.
+  - Repels: **-1 Repel** (used on Route 205 N this session, now 9).
 - **Story flags** (new this session in bold):
   - All priors still valid.
-  - **Unlocked Valley Windworks door** with Works Key — `interact_with(243, 654)` triggered Yes/No prompt, confirmed, "Ker-chunk! The door to Valley Windworks opened!"
-  - **Cleared Valley Windworks interior (map 201)**: ran-off-grunt at (12,14) (no battle, flavor only), then Grunt M trainer_id=298 at (3,8) (Grimer Lv15 / Koffing Lv15) and Grunt M trainer_id=299 at (12,3) (Kakuna Lv14 / Pineco Lv14 / Metapod Lv14).
-  - **Defeated Commander Mars** — Zubat Lv18 / Bronzor Lv18 (Sitrus Berry, Levitate) / Yanma Lv18 (Speed Boost, Detect) / Purugly Lv19 (Thick Fat, Fake Out, Hypnosis, Sitrus Berry). Yanma's Air Cutter would 4x SE Monferno — lucky miss. Purugly flinched Monferno once via Fake Out, then Hypnosis missed twice. Full Charon/Papa/daughter post-battle cutscene played out. Papa mentions "I think the balloon Pokémon will come visiting again!" — foreshadows Drifloon.
-  - **Met Looker again** — he's at Valley Windworks exterior (242,659) after Mars's defeat, tells WOJ "Team Galactic hideout is in Eterna City."
-  - **Confirmed Route 205 N Galactic Grunts cleared after Mars** — went north through Route 205 N, no blockade, path clear to Eterna Forest.
-  - **Defeated all Route 205 N trainers**: Hiker Daniel (Diglett / Numel / Shieldon), Aroma Lady Elizabeth (Chikorita / Bulbasaur — note "Pokemon Breeder F" display name maps to "Aroma Lady" in-battle), Camper Zackary (Aipom / Taillow / Slakoth — **Monferno leveled up to 27 and learned Flamethrower after Aipom KO — forgot Flame Wheel**), Picnicker Siena (Pachirisu), Hiker Nicholas (Shellos / Onix), Battle Girl Kelsey (Machop / Meditite / Mankey), Picnicker Karina (Piplup / Chimchar).
-  - **Entered Eterna Forest (map 203)** via Route 205 N warps at (206-207, 581).
-  - **Defeated Cheryl as solo test-trainer** (Drifloon Lv19 / Wailmer Lv19 / Makuhita Lv19 Thick Fat / Chansey Lv20 with Hyper Voice/Ice Beam/Thunderbolt/Soft-Boiled) — **Monferno leveled up to 28 on Makuhita KO**. Cheryl joined as partner, auto-heals party between battles.
-  - **Currently mid-double-battle** — vs Bug Catcher Jack (Surskit Lv16 KO'd, Paras Lv16 at full) + Lass (Buneary Lv17 at 30/47, still has Jump Kick). Cheryl's Chansey at 76/136 HP (tanked a Jump Kick). Next `battle_turn` needed.
+  - **Defeated Cheryl solo test-trainer cleanly** (no mid-battle save needed). Strategy: Flamethrower Drifloon OHKO → Low Kick crit Wailmer OHKO → Flamethrower crit Makuhita OHKO (Monferno Lv27→28) → Low Kick Chansey SE OHKO. Cheryl joined as partner.
+  - **Cleared Eterna Forest (map 203) entirely**: Bug Catcher Jack + Lass Briana double trainer (Surskit Lv16/Paras Lv16/Venonat Lv16 + Buneary Lv17/Marill Lv17/Slakoth Lv15). Then two *solo* Psychic trainer battles (Cheryl-less despite her being partner — note that separate trainers trigger singles, not every forest fight is a double): Psychic Lindsey (Slowpoke Lv17 / Natu Lv17 / Exeggcute Lv17) and Psychic Elijah (Spoink Lv17 / Drowzee Lv17 / Baltoy Lv17). Plus 2 wild doubles (Paras+Buneary, Slakoth+Buneary).
+  - **Burmy → Mothim at Lv20** during the double battle. Taught Gust, replaced Tackle.
+  - **Received TM27 from Cheryl** at forest exit (86,36) Eterna Forest. Her farewell cutscene: "Oh! There's the exit!" / "Thank you so much!" / gift / "I'm sure we'll meet again somewhere!".
+  - **Arrived in Eterna City (map 65)** via Route 205 (map 349) → Eterna City warp at (296-297, 525).
+  - **Entered Cycle Shop (map 71)** via door at (310, 539). Haven't talked to the Bike Shop owner yet.
 - **Next session start**:
-  1. Load `eterna_forest_cheryl_doubles_mid_battle_buneary_paras` to resume the doubles, OR load `eterna_forest_entered_south` for a cleaner start and re-trigger Cheryl via `interact_with(object_index=1)`.
-  2. Finish Bug Catcher + Lass double battle — suggest Flamethrower target=1 on Buneary (Normal 1x × Fire 1x = neutral, STAB 135 pwr vs 22 Def should OHKO 30-HP Buneary); or Rock Smash on Buneary for 2x SE (safer OHKO). Chansey can handle Paras via Ice Beam (1x) or Thunderbolt (2x Ground-immune... wait Paras is Bug/Grass, Thunderbolt = 1x × 1x = 1x).
-  3. Clear rest of Eterna Forest (map 203) — exit north to Route 211 / Mt. Coronet connector or directly to Eterna City (map 429 likely).
-  4. Once in Eterna City: Gardenia's gym (TM86 Grass Knot), talk to Bike Shop owner to re-open Route 206 (RP-specific gate), pick up Porygon after Jupiter, grab HM01 Cut from Cynthia.
-  5. **Shinx still at Lv6** — consider depositing (Box 1 has only Shinx currently? check) since it's not surviving anywhere. Or dedicated grind session post-Cheryl when no partner restriction.
-  6. Moss Rock confirmed at (17, 66) in Eterna Forest — RP reassigns Eevee evolutions so this doesn't proc Leafeon anymore (Leaf Stone → Leafeon in RP). Informational only, we're already a Vaporeon.
+  1. Load **`eterna_cycle_shop_entered`** (inside Cycle Shop, one step in from the south door).
+  2. Find & talk to the Bike Shop owner to re-open **Route 206** (RP gate). Then exit shop back to Eterna City.
+  3. **Grab HM01 Cut from Cynthia** — she's somewhere in Eterna City near Eterna's east side (vanilla: Cynthia's Grandma's house, check for her there).
+  4. **Heal at Eterna PC** and stock Potions. Team is fine post-Cheryl but we'll need to top up PP for Gardenia.
+  5. **Pick up Porygon Lv22** from the Galactic Building (map 65 warp at (305,519) "T.G. Eterna Bldg") — but that requires defeating Jupiter first. Defer until Gardenia done.
+  6. **Challenge Gardenia (Gym 2, Grass-type)** — reward TM86 Grass Knot. Her signature is Roserade in RP. Monferno Flamethrower will cook her. Watch for Dustox (Grass-free Bug/Poison) and Gloom variants.
+  7. Consider PC-dumping Shinx *if* we naturally visit a PC anyway. No detour.
+  8. Optional: grab Chatot "Macaw" in-game trade at Eterna (give Snorunt, get Chatot, Modest, Sharp Beak) — but we have no Snorunt so skip unless we catch one later.
 - **Open QA bugs after this session**:
-  - **BUG-007** still open (post-battle token elision on Roark-class reward dialogue). Not re-triggered this session — no similar reward cutscene fired.
-  - **BUG-008** **VERIFIED FIXED (2026-04-17 session 8)** — 4 clean item pickups this session (Destiny Knot, Repel, Super Potion, Antidote), all parse cleanly with no hex-code leaks. Fix scope verified.
-  - **BUG-009 NEW (this session)** — `[01E0][01E1] Trainer Cheryl` prefix leak on trainer battle macro lines ("is about to send in X", "sent out X", "used one X", "Player defeated X"). Different code family from BUG-008, different text context (trainer class prefix vs pocket icon). Cheryl's base name + all her chat dialogue parse clean — only the scripted battle macro lines leak. See BUG_LOG.md.
+  - **BUG-007** still open (post-battle token elision on Roark-class reward dialogue). Not re-triggered this session.
+  - **BUG-008 FIXED (verified again)** — 2 more clean item pickups this session (Antidote, Parlyz Heal). Fix holds strong.
+  - **BUG-009** still open (`[01E0][01E1] Trainer Cheryl` prefix leak). **Confirmed class-specific** this session — Psychic Lindsey, Psychic Elijah, Bug Catcher Jack, Lass Briana all parse CLEAN ("Psychic Lindsey is about to send in Natu.", "Player defeated Psychic Elijah!", etc.). Only Cheryl's lines leak the `[01E0][01E1]` prefix, suggesting the code family is specific to the "Pokémon Trainer" class label rendering (not all trainer classes).
+  - **BUG-010 NEW (this session)** — `read_party` garbled `max_hp` for PC-round-tripped slot 3 (Shinx) on fresh savestate load. **Transient** — clears after first battle transition. See BUG_LOG.md.
+  - **BUG-011 NEW (this session)** — orphan Pokémon-name / trainer-class lines appear in `battle_turn` log entries around level-up and battle-end text sequences. Cosmetic but systematic. See BUG_LOG.md.
   - **Possible BUG-004 echo** (carried forward from session 7, still unverified).
-- **FR docket**: FR-003, FR-004, FR-005 still open. No new FRs filed this session. FR-005 applied without confusion again (target=0 / target=1 for Cheryl doubles).
-- **Session 8 highlights**:
-  - Monferno's Flame Wheel → Flamethrower upgrade at Lv27 is a big power jump (75 → 95 BP, Special with higher SpA vs Atk on Monferno is roughly similar, but Flamethrower's 100% accuracy and lack of contact is clean).
-  - Mars's team was harder than expected — Yanma with Speed Boost + Detect is a tool gym. Detect wasted a precious Flame Wheel PP.
-  - Cheryl as partner auto-heals — no need to heal between forest double battles. Nice quality-of-life.
-  - Drifloon as Cheryl's ace (replacing Mothim in vanilla) ties back to the Windworks papa/daughter cutscene's "balloon Pokémon" line — nice RP touch, confirmed.
-  - `interact_with` on objects with `flee_encounters=True` worked reliably for walking around trainers' sight lines and auto-fleeing the wild Buneary encounters on Route 205 N. Clean exercise of that parameter.
-  - **Wrong-building warp confusion**: warp at (214, 594) on Route 205 with dest="Route 205" actually enters a house (map 348) — not the Eterna Forest gate as I initially assumed. The real Eterna Forest entrance is further north at (206-207, 581). Worth noting for future routing.
+- **FR docket**: FR-003, FR-004, FR-005 still open. No new FRs filed this session. FR-005 (doubles target clarity) continues to work cleanly.
+- **Session 9 highlights**:
+  - **Mothim** is now a legitimate party member post-Lv20-evo. Swarm + Gust STAB + HP Rock coverage. Still slot 3 for EXP Share though.
+  - **view_map / map_name became desync'd** briefly after loading `eterna_forest_entered_south` — returned "Oreburgh Gate (0,0)" for several calls before correctly showing Eterna Forest. Cleared up after my first interaction with the world (walking on a warp + map transition). Didn't file a bug yet — one-off, needs more reproductions to characterise.
+  - Cheryl's **partner auto-heal** also fires after battles where she did *not* participate (e.g. the two Psychic singles). Very generous.
+  - **Wild doubles with Cheryl** were fun and fast — Chansey's Hyper Voice hits both enemies in doubles (spread move).
+  - Chained fleeing + Repel worked cleanly on Route 205 N wild encounters.
 
 ## Tips
 
