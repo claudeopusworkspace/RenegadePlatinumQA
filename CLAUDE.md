@@ -228,33 +228,49 @@ Saved macros persist across sessions in `macros/`.
 
 - **Character**: WOJ (boy), rival **Barry**
 - **Badges**: 1 (**Coal**)
-- **Money**: ¥4,260 (after 5 Super Potions @ ¥700 each in Floaroma Mart).
-- **Location**: Inside **Floaroma Mart** (map 427) at (3,7). Load `floaroma_mart_post_buy_super_potions`. Full-HP-healed backup: `floaroma_pc_healed_post_route204_trainers`.
-- **Party**:
-  1. **Monferno** Lv25 (Quirky, Blaze) — Low Kick / Flame Wheel / **Fake Out** (learned Lv23, replaced Ember) / Rock Smash. 76/76 HP.
-  2. **Vaporeon** Lv16 (Serious, **Water Absorb**) — **Water Pulse** (learned Lv16 — RP gave Water Pulse instead of vanilla's Water Gun!) / Quick Attack / Bite / Covet. 72/72 HP. Skipped Haze at Lv14.
-  3. **Burmy** Lv10 (Naive, Shed Skin), **holding Exp. Share** — Protect / Tackle / Bug Bite / Hidden Power. 29/29 HP.
-  4. **Shinx** Lv6 (Timid, Guts) — Tackle / Leer / Howl / Quick Attack. 21/21 HP.
-- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), **Fashion Case** (from Jubilife TV reporter post-Galactic-battle), **HM06 Rock Smash** (on Monferno), **Coal Badge**.
-- **Bag**: **5 Super Potions**, 9 Repels, 21 Poké Balls, **Exp. Share (on Burmy)**, **Silk Scarf**, **Oval Stone**, **Expert Belt** (Ravaged Path), **Miracle Seed** (Route 204N), TM39 Rock Tomb, TM58 Endure x99, TM76 Stealth Rock x99, HM06 Rock Smash.
-- **Story flags**:
-  - All priors, plus this session: **Jubilife Team Galactic cutscene done** (Dawn partnered, beat 2 Grunts: Stunky Lv13+Glameow Lv13, Cascoon+Silcoon sent in; won, got Fashion Case from Jubilife TV reporter).
-  - **Barry cutscene on Oreburgh exit** — no battle; he's off to Jubilife chasing the Eterna Badge.
-  - **Route 204 S trainers defeated**: Lass Sarah, Youngster Tyler (Magikarp dad), Lass Samantha.
-  - **Ravaged Path cleared** (entry → exit only; no HM-gated expansion, needs Surf for the water path). Items: Expert Belt, TM39 Rock Tomb.
-  - **Route 204 N trainers defeated**: Aroma Lady Taylor, Bug Catcher Brandon, Twins Liv & Liz (double battle). Items picked up: Miracle Seed.
-  - **Not yet fought**: Ace Trainer F on Route 204 N at (191,676) — skipped to heal first.
-  - Arrived in **Floaroma Town**, healed at PC, bought 5 Super Potions.
+- **Money**: ¥6,260 (Route 205 Camper ¥240 + Valley Windworks Grunt ¥560 + Meadow grunts double battle ¥1,200 = +¥2,000 since last session).
+- **Location**: **Floaroma Meadow** (map 256) at (12,48) immediately after winning the Galactic double battle. Load `meadow_cleared_works_key_obtained`. Backup: `meadow_doubles_post_spinarak_ko_ledyba_solo` (mid-battle, right before KO'ing Ledyba). Pre-meadow-fight: `floaroma_meadow_entry`. Pre-Windworks-grunt: `valley_windworks_pre_grunt_door`. Post-Windworks-grunt (door locked): `valley_windworks_post_grunt_locked`. Also saved `route205_pre_meadow_grunts_cutscene` before investigating the blockade.
+- **Party** (all full HP, healed at Floaroma PC mid-session after Mareep's Thunder Wave paralyzed Monferno):
+  1. **Monferno** Lv25 (Quirky, Blaze) — Low Kick (PP 18/20) / Flame Wheel (PP 10/15) / Fake Out (PP 10/10) / Rock Smash (PP 15/15). 76/76 HP.
+  2. **Vaporeon** Lv16 (Serious, Water Absorb) — Water Pulse (PP 18/20) / Quick Attack / Bite / Covet. 72/72 HP.
+  3. **Burmy** Lv13 (Naive, Shed Skin), **holding Exp. Share** — Protect / Tackle / Bug Bite / Hidden Power. 35/35 HP. (+3 levels this session from Exp. Share.)
+  4. **Shinx** Lv6 (Timid, Guts) — Tackle / Leer / Howl / Quick Attack. 21/21 HP. (Still un-leveled — Exp. Share didn't get rotated to Shinx.)
+- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), Fashion Case, HM06 Rock Smash (on Monferno), Coal Badge, **Works Key (NEW — from Meadow grunts, unlocks Valley Windworks)**.
+- **Bag** (new additions this session in bold):
+  - Medicine: 5 Super Potions, 9 Repels, **plus any Potions from prior — unchanged**.
+  - Poké Balls: 21.
+  - Items: Exp. Share (on Burmy), Silk Scarf, Oval Stone, Expert Belt, Miracle Seed, **Magnet (Windworks Pokeball)**, **Honey (Meadow reward)**.
+  - TMs & HMs: TM39 Rock Tomb, TM58 Endure x99, TM76 Stealth Rock x99, HM06 Rock Smash, **TM08 Bulk Up (Route 205 N Pokeball)**, **TM34 Shock Wave (Windworks Pokeball)**, **TM09 Bullet Seed (Route 204 N Pokeball at (162,682))**.
+- **Story flags** (new this session in bold):
+  - All priors still valid.
+  - **Exited Floaroma Mart**, went east to Route 205 S, crossed the Twin's "help my papa" dialogue at (211,661).
+  - **Defeated Camper Jacob on Route 205 S** (Ponyta Lv15 / Buizel Lv15 / Mareep Lv15) — Mareep paralyzed Monferno with Thunder Wave.
+  - **Verified the Route 205 N Galactic Grunts ARE permanent blockers for Eterna Forest path** (NOT the meadow blockade — my initial assumption was wrong). Their dialogue ("This is as far as you will go!") never triggers a battle at this stage; they clear only after Windworks → Dawn sends you to Eterna. The Meadow is accessed from a completely different warp (see below).
+  - **Healed at Floaroma PC** (map 428).
+  - **Picked up TM08 Bulk Up** from Route 205 N Pokeball at (213,640) and **TM09 Bullet Seed** from Route 204 N Pokeball at (162,682).
+  - **Crossed south bridge on Route 205 to Valley Windworks (map 200)** — bridge is at (216-218, 654-657), vertical crossing.
+  - **Defeated Galactic Grunt at Windworks door** (243,655) — Poochyena Lv14 / Gulpin Lv14 / Houndour Lv14. Grunt exits and locks door behind him ("Ker-chunk!"). `interact_with(243, 654)` now returns `"It's locked from inside!"` — confirmed.
+  - **Picked up Magnet at (246,660) and TM34 Shock Wave at (229,653)** inside Windworks exterior.
+  - **Found Floaroma Meadow entrance**: two adjacent warps at **(162,641) and (163,641)** on the Floaroma Town overworld (map 426) — northwest gate building. Accessed by going west of the central Floaroma square from (166,650) Camper NPC area. These warps were NOT visible on early `view_map` queries when I was near the mart — needed to walk to (166,651) area before the gate warps populated the `warps` list.
+  - **Defeated 2x Galactic Grunts in Floaroma Meadow (double battle)** — Zubat Lv15 + Croagunk Lv15 as leads, then Spinarak Lv15 + Ledyba Lv15 as backups. Got **Works Key + Honey** from the Pokefan M NPC afterward.
 - **Next session start**:
-  1. Load `floaroma_mart_post_buy_super_potions`. Exit mart south to Floaroma Town overworld.
-  2. Optional backtrack: fight Ace Trainer F on Route 204N (191,676) for XP — reachable via south exit of Floaroma.
-  3. Story path: Floaroma Meadow cutscene (Team Galactic grunts stealing Honey) → **Valley Windworks** (next gym progression beat — Commander Mars). Meadow is east of Floaroma; Windworks is further west. Check `view_map` from Floaroma overworld for the warps.
-  4. Grind Shinx (Lv6, falling behind) when convenient — Exp Share is currently on Burmy (Lv10), could rotate to Shinx.
+  1. Load `meadow_cleared_works_key_obtained`. Walk south out of meadow (warp at 12-13, 54) back to Floaroma Town.
+  2. Head east to Route 205 S, cross the south bridge (216-218, 654-657) to Valley Windworks. `interact_with(243, 654)` — the Works Key should now unlock it. Enter.
+  3. **Valley Windworks interior (map 201)**: fight Galactic Grunt(s) inside, then **Commander Mars** (her ace is Purugly in vanilla — Renegade Platinum will have extended/stronger team). **Save state pre-Mars.**
+  4. After Mars: Dawn cutscene, sent north through Eterna Forest (the Route 205 N grunts should now clear). Eterna City is the next hub.
+  5. Grind Shinx (Lv6, still falling behind) when convenient — Exp Share on Burmy is steady but Shinx needs focus. Could rotate or deposit for later.
+  6. **Do NOT repeat the Meadow-finding goose chase from this session** — the gate is at (162-163, 641) on Floaroma overworld, NOT on Route 205 (the Route 205 grunts are Eterna gate, unrelated to Meadow).
 - **Open QA bugs after this session**:
-  - **BUG-007** (post-battle reward dialogue elides `{ITEM}`/`{POCKET}`/`{ARTICLE}` tokens to empty strings). Still open from last session.
-  - **BUG-008 (NEW)**: Hex text-format codes leak through dialogue output — `[0113]` / `[0114]` / `[0115]` for pocket-name color codes, `[01C2]` for `&`, `[01D2]` for `%`, `[0120]` for `&` in trainer-name joins. Distinct code family from BUG-005's `[VAR]…` form, which was marked FIXED but its same-family siblings from the BUG-005 examples list (`[25BD]`, `[01A8]`, `[FFFE]`) likely still leak along this same path. Repro on any item pickup (`interact_with` Pokeball) or post-battle reward cutscene. Saves: `jubilife_galactic_grunts_double_battle_start`, `post_galactic_grunts_jubilife_fashion_case`.
-- **FR docket** (unchanged this session): FR-003, FR-004, FR-005 still open. No new FRs filed this session — FR-003 correctly primed me to reach for `use_battle_item` context (wasn't needed, no in-battle items used this session); FR-004 similarly unused (no stone evos); FR-005 unused (no mid-battle switches).
-- **Session 6 highlights**: `auto_grind` with new **`auto_heal=True`** cross-map mode performed flawlessly — 5 cross-map heal trips (grass → Jubilife PC → back to Route 204 grass) across one ~70-battle grind. That was previously blocked by BUG-002 and the coordinate-based auto-heal API; the new auto_heal parameter bypasses both. Also exercised `give_item`, `take_item` (both clean), and `use_medicine` with `priority` override (clean). Did NOT exercise HM obstacle (no Cut tree or Rock Smash rock in the path to Floaroma).
+  - **BUG-007** still open (post-battle token elision). Not re-triggered this session (no reward-ceremony dialogue comparable to Roark's — the Grunts and Meadow Pokefan used different text paths).
+  - **BUG-008** still open — **5 new repros collected this session** (TM08, Magnet, TM34, TM09, Works Key+Honey), all identical `[0113]`/`[0114]`/`[0115]`/`[01C2]` codes. Confirms this is deterministic on every item-acquisition cutscene. See BUG_LOG.md for the full list.
+  - **Possible BUG-004 echo** (unverified): Meadow double battle's post-Spinarak-KO turn (Ledyba solo) returned `final_state: "ACTION"` (not `"WAIT_FOR_ACTION"`). Save state `meadow_doubles_post_spinarak_ko_ledyba_solo` captures this. The *next* `battle_turn` call worked fine though — Monferno's Flame Wheel was submitted and then Vaporeon's prompt came up normally. So unlike BUG-004 (which stalled), this one accepted the next input. **Lower-confidence — may be a cosmetic final_state label issue rather than a stall.** Not filing a new BUG for now; flag if it recurs with a stall.
+  - Also observed double-printed "Ledyba used Reflect!" line (same turn, same Pokemon) in the battle log — cosmetic, Reflect took effect once. Very low priority, not worth filing standalone.
+- **FR docket** (unchanged this session): FR-003, FR-004, FR-005 still open. No new FRs filed. Notably: FR-005 was *highly relevant* this session — double battle used `target=0`/`target=1` repeatedly against `read_battle` slot 1 (left enemy) and slot 3 (right enemy), and the FR-005 context (slot numbering conventions) would have been what primed me to get targeting right. Applied without confusion.
+- **Session 7 highlights**:
+  - First meaningful double battle this session went clean — Flame Wheel on Croagunk (Dry Skin 1.25x) + Water Pulse on Zubat OHKO'd both leads. Then Flame Wheel on Spinarak (2x SE) and finished Ledyba cleanly.
+  - `interact_with` on Signposts (Arrow Signpost, Map Signpost, Signboard) all returned clean text with no BUG-008 leakage — only the item-pickup cutscene path surfaces the codes.
+  - Beauty NPC in Flower Shop has patrol movement and pops a Berries-for-Accessories menu when interacted with via navigation — NOT via `interact_with`. This got me stuck briefly; had to press B manually to dismiss. Not a bug, just a gotcha for future sessions.
+  - Navigation *away from* the Beauty NPC was also briefly blocked while her menu was up — `navigate_to` returned `warp_failed` with a misleading error (looks like a warp problem, was actually a menu). Worth noting but not filing.
 
 ## Tips
 
@@ -312,4 +328,5 @@ Track which tools/flows you've exercised. Update as you go.
 - [x] Sign/signpost interaction — Arrow Signpost on Route 203 ("Rt. 203 / Jubilife City")
 - [x] Buy item via overworld auto-nav — bought 4 Potions in Oreburgh from overworld (auto-navigated to mart)
 - [x] Multi-choice prompt — Roark's stone quiz ("What stone?" → "Water Stone")
+- [x] Double battle (trainer, story-scripted) — 2x Galactic Grunts in Floaroma Meadow (Zubat/Croagunk → Spinarak/Ledyba). Clean targeting via `target=0`/`target=1`.
 - [ ] HM obstacle (Cut tree, Rock Smash)

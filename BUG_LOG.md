@@ -41,6 +41,13 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
   - TM39 Rock Tomb from Ravaged Path Pokeball at (6,36): `"WOJ put the TM39 / in the [0115]TMs [01C2] HMs Pocket."`
   - Fashion Case (original Galactic-battle repro): `"in the [0114]KEY ITEMS Pocket."`
   The per-pocket format codes observed so far: `[0113]` = ITEMS, `[0114]` = KEY ITEMS, `[0115]` = TMs & HMs (with `[01C2]` for the literal `&` between "TMs" and "HMs"). Strong hint that the entire color-open/close + ampersand family of codes is bypassing the stripper. The `%` sign (`[01D2]`) from the Galactic cutscene fits the same class — all are in the `[01xx]` / `[0Bxx]`-ish range of low-hex format codes.
+- **Additional repros 2026-04-17 session 7** (confirms the same leaks remain across a fresh play session):
+  - TM08 Bulk Up from Route 205 N Pokeball at (213,640): `"WOJ put the TM08 / in the [0115]TMs [01C2] HMs Pocket."`
+  - Magnet from Valley Windworks Pokeball at (246,660): `"WOJ put the Magnet / in the [0113]ITEMS Pocket."`
+  - TM34 Shock Wave from Valley Windworks Pokeball at (229,653): `"WOJ put the TM34 / in the [0115]TMs [01C2] HMs Pocket."`
+  - TM09 Bullet Seed from Route 204 N Pokeball at (162,682): `"WOJ put the TM09 / in the [0115]TMs [01C2] HMs Pocket."`
+  - Works Key + Honey reward from Floaroma Meadow grunts (`meadow_cleared_works_key_obtained` save): `"WOJ put the Works Key / in the [0114]KEY ITEMS Pocket."` and `"WOJ put the Honey / in the [0113]ITEMS Pocket."`
+  All five repros 100% reproduce the same `[0113]` / `[0114]` / `[0115]` / `[01C2]` codes — this is a deterministic leak on *every* item-acquired cutscene text, not a one-off.
 
 ---
 
