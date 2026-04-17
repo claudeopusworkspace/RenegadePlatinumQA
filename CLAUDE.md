@@ -227,26 +227,27 @@ Saved macros persist across sessions in `macros/`.
 ## Game Progress
 
 - **Character**: WOJ (boy), rival **Barry**
-- **Badges**: 0
-- **Money**: ~¥3,248 (after Oreburgh Mart 4× Potion + 2 gym trainer wins at ¥208 each).
-- **Location**: **Oreburgh Gym** (map 47, elevation-aware L0-L3). Player at (7,12), **ready to fight Roark**. Load `oreburgh_gym_pre_roark_lv20_monferno`.
+- **Badges**: 1 (**Coal**)
+- **Money**: ¥5,168 (Roark paid out ¥1,920).
+- **Location**: Inside **Oreburgh Pokémon Center** (map 48) at (8,6), facing up. Load `post_roark_vaporeon_oreburgh_pc`.
 - **Party**:
-  1. **Monferno** Lv20 (Quirky, Blaze) — **Low Kick** (Fighting, variable BP), **Flame Wheel** (15 PP), **Ember** (25 PP), **Rock Smash** (Fighting STAB). 62/62 HP after 2 Potions.
-  2. **Eevee** Lv10 (Serious, Adaptability) — Tackle, Quick Attack, Bite, Covet. Full HP 33/33.
-  3. **Burmy** Lv6 (Naive, Shed Skin) — Protect, Tackle, Bug Bite, Hidden Power. Full HP 21/21.
-  4. **Shinx** Lv6 (Timid, Guts) — Tackle, Leer, Howl, Quick Attack. Full HP 21/21.
-- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), **Exp. Share**, **HM06 Rock Smash** (taught to Monferno).
-- **Bag**: 3 Potions, 9 Repels, 21 Poké Balls, **Silk Scarf**, **Oval Stone**, **Water Stone** (Roark's quiz gift — can evolve Eevee → Vaporeon), TM58 Endure x99 (odd qty — not investigated).
+  1. **Monferno** Lv22 (Quirky, Blaze) — Low Kick / Flame Wheel / Ember / Rock Smash. 67/67 HP.
+  2. **Vaporeon** Lv10 (Serious, **Water Absorb**) — Tackle, Quick Attack, Bite, Covet. **No Water moves yet** — learns Water Gun at Lv16 (vanilla; verify for RP). 48/48 HP.
+  3. **Burmy** Lv6 (Naive, Shed Skin) — Protect, Tackle, Bug Bite, Hidden Power. 21/21 HP.
+  4. **Shinx** Lv6 (Timid, Guts) — Tackle, Leer, Howl, Quick Attack. 21/21 HP.
+- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), **Exp. Share**, **HM06 Rock Smash** (taught to Monferno), **Coal Badge**.
+- **Bag**: 2 Potions, 9 Repels, 21 Poké Balls, **Silk Scarf**, **Oval Stone**, TM58 Endure x99, **TM76 Stealth Rock x99** (from Roark). Water Stone consumed on Eevee.
 - **Story flags**:
-  - Parcel delivered, Pokétch/Vs. Recorder/Exp. Share received, Route 203 Lass doubles beaten (Cubone/Psyduck + Azurill/Sunkern), Oreburgh Gate crossed (2 trainers beaten), HM06 obtained from Hiker in Oreburgh Gate.
-  - Met Roark at Oreburgh Mine — got **Water Stone** from Rock Smash boulder quiz (answer: "Water Stone"). Roark returned to gym.
-  - Gym: both **Youngsters defeated** (Rhyhorn+Omanyte+Kabuto / Aron+Anorith+Lileep).
+  - Parcel delivered, Pokétch/Vs. Recorder/Exp. Share received, Route 203 Lass doubles beaten, Oreburgh Gate crossed (2 trainers), HM06 obtained.
+  - Met Roark at mine → got Water Stone from his quiz.
+  - **Roark defeated** (Nosepass Lv15 Sturdy/Smooth Rock → Geodude Lv15 Rock Head/Expert Belt → Onix Lv15 Rock Head/Muscle Band → Larvitar Lv15 Guts/Flame Orb → Cranidos Lv16 Rock Head/Sitrus → Bonsly Lv15 Rock Head/Rindo). **RP changed the team substantially** — vanilla was 3 Pokemon, RP is 6.
+  - **Eevee → Vaporeon** evolved via Water Stone.
 - **Next session start**:
-  1. Load `oreburgh_gym_pre_roark_lv20_monferno`. Walk up to Roark at (5,3) via the L2→L3 ramp and interact. Monferno at full HP with Rock Smash (60 pwr Fighting STAB + Def-drop chance) and Low Kick (variable BP — **100 BP vs Onix @ 210 kg** due to weight table).
-  2. **Roark's RP team (verify with `read_battle` — RP changes movesets)**: vanilla had Geodude Lv12 / Onix Lv12 / Cranidos Lv14 all Rock. Expect buffed stats/moves. Watch for Sturdy (Onix/Geodude) — forces 2-shot KO at full HP.
-  3. Use Rock Smash for most; swap to Low Kick against Onix specifically. Flame Wheel for Cranidos if it's still pure Rock. Keep 3 Potions + 1 Super Potion buffer — Monferno is the only offensive mon, so don't let HP drop below ~15 without a heal.
-  4. After gym: heal at PC (already accessible), pick up Water Stone candidate moment for Eevee — Water typing would be **great vs Route 204/207 Ground+ foes**.
-- **Open QA bugs this session**: **BUG-004** (`battle_turn` stalls on target-pick sub-menu after partner faints in doubles — worked around with manual `tap_touch_screen` on the Azurill tile).
+  1. Load `post_roark_vaporeon_oreburgh_pc`. Exit PC via south warp at (8,12).
+  2. Head west to **Route 204** (entrance via north-west of Oreburgh). Floaroma Town is the direction.
+  3. Vaporeon needs ~6 levels to hit Lv16 for first Water move (Water Gun, verify in RP). Grind on Route 204 grass with Exp. Share on Vaporeon — Monferno can solo most encounters for Vaporeon-share XP.
+  4. Optional: teach TM76 Stealth Rock somewhere (Monferno learns it — tm_compatibility Monferno).
+- **Open QA bugs this session**: none new — BUG-005 (dialogue token leaks) observed again in Roark's post-battle dialogue ("Obtained the !" / " put the in the Pocket.") but already covered under BUG-005.
 
 ## Tips
 
@@ -275,6 +276,9 @@ Track which tools/flows you've exercised. Update as you go.
 - [x] Double battle (tag / wild / trainer) — Lass tag team on Route 203 (mid-battle save `route203_mid_double_battle_cubone_psyduck`)
 - [x] Catching Pokemon — Shinx caught on Route 202 (5 balls)
 - [x] Evolution (level-up) — Chimchar→Monferno at Lv14 (**BUG-003**: auto_grind canceled the first attempt; succeeded after manual dialogue dismissal + one more level-up)
+- [x] Evolution (stone) — Water Stone on Eevee → Vaporeon at Lv10 (manual bag use — no Renegade tool covers stone evolutions)
+- [x] In-battle BAG use — Potion on Monferno (slot 0) mid-Roark fight to survive Onix Bulldoze, manual touch flow since `battle_turn` has no item action
+- [x] Trainer item use (observed) — Roark used Super Potion on Nosepass, Potion on Bonsly — handled as trainer "turn" (Monferno still attacked normally)
 - [x] Move learning (< 4 moves) — Eevee learned Quick Attack via auto_grind
 - [x] Move learning (4 moves, forget) — Eevee Tail Whip → Quick Attack
 - [x] Move learning (4 moves, skip) — Eevee skipped Sand Attack
@@ -296,7 +300,7 @@ Track which tools/flows you've exercised. Update as you go.
 - [ ] Auto grind (with auto-heal loop) — **BUG-002 blocks this**
 - [x] Auto grind (smart move selection) — `backup_move` used (Ember/Scratch, Covet/Bite)
 - [x] Auto grind (target species) — Shinx search on Route 202
-- [ ] Gym battle (full team) — 2 gym trainers done, Roark next
+- [x] Gym battle (full team) — **Roark defeated** (6 Pokemon RP-extended team: Nosepass/Geodude/Onix/Larvitar/Cranidos/Bonsly)
 - [x] Story cutscene advancement — Parcel delivery, Pokétch gift, Looker, Oval Stone gift, Roark's Water Stone quiz
 - [x] Sign/signpost interaction — Arrow Signpost on Route 203 ("Rt. 203 / Jubilife City")
 - [x] Buy item via overworld auto-nav — bought 4 Potions in Oreburgh from overworld (auto-navigated to mart)

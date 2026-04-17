@@ -25,6 +25,9 @@
 | `oreburgh_rock_smash_taught_ready_for_roark` | Post-Mart + TM teach. Bought 4 Potions (5 total), **Monferno learned Rock Smash** (forgot Taunt). Moves: Scratch / Flame Wheel / Ember / Rock Smash. Player in Oreburgh City outside mart. Money ¥2,832. Next: head to Oreburgh Mine to trigger Roark quiz. |
 | `oreburgh_pre_roark_waterstone` | Pre-mine visit, post Rock Smash teach. Same state as above but player already positioned near mine entrance (302,795). |
 | `oreburgh_gym_pre_roark_lv20_monferno` | **Ready-for-Roark state.** Oreburgh Gym (map 47, L0-L3 elevation). Monferno Lv20 62/62 (Low Kick / Flame Wheel / Ember / Rock Smash). Both gym Youngsters defeated. **Water Stone in bag** from Roark's quiz. Player at (7,12). Walk up to Roark at (5,3) and battle. Verify team with `read_battle` — expect Geodude/Onix/Cranidos family but RP may tweak. |
+| `roark_switch_prompt_onix_incoming` | Mid-Roark fight, SWITCH_PROMPT after Geodude KO. Monferno Lv21 21/64 with **Spe -1** from Geodude's Bulldoze. Roark's 3rd Pokemon (**Onix Lv15**, Rock Head, Muscle Band, Bulldoze/RockTomb/StealthRock/Sandstorm) incoming. Used for BAG-Potion in-battle workaround testing. |
+| `post_roark_coal_badge_monferno_lv22` | **Coal Badge won.** Monferno Lv22 at (5,4) L3 in Oreburgh Gym facing Roark. Got TM76 Stealth Rock. Burmy fainted (sacrificed in fight). Money ¥5,168. |
+| `post_roark_vaporeon_oreburgh_pc` | **Post-gym cleanup state.** Party healed at Oreburgh PC. **Eevee evolved to Vaporeon Lv10** (Water Absorb, Tackle/Quick Attack/Bite/Covet — no water moves yet, level up for Water Gun). Player at (8,6) in Oreburgh PC (map 48). Bag: 2 Potions, 9 Repels, 21 Balls, Silk Scarf, Oval Stone, TM58 x99, TM76 x99, HM06. **Water Stone consumed.** Money ¥5,168. Next: head west to Route 204 toward Floaroma. |
 
 ## Bug Reproduction States
 
