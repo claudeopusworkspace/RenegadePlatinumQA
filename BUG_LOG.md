@@ -20,9 +20,28 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
+### BUG-009: Hex text-format codes (`[01E0][01E1]`) leak in trainer-name prefix lines during battle
+
+Session 8 (2026-04-17) newly observed — BUG-008's `[0113]`/`[0114]`/`[0115]`/`[01C2]` family is genuinely fixed (4 clean item pickups this session: Destiny Knot on Route 205 N at (204,603), Repel at (204,603), Super Potion at (219,608), Antidote at Eterna Forest (15,81) — all parse clean `"WOJ put the X in the ITEMS/MEDICINE Pocket."`). But a distinct new code family surfaces in trainer-class-prefixed battle text against Cheryl in Eterna Forest.
+
+- **Tool**: `battle_turn` (trainer-class prefix lines in `log` output) and also leaks into trainer dialogue rendered via `interact_with`'s battle transition
+- **Severity**: minor (cosmetic)
+- **Save state**: `bug008_cheryl_trainer_01e0_01e1_codes` — captured mid-Cheryl battle right after Drifloon Super Potion line; codes already surfaced in the log. For a deterministic from-scratch repro, load `eterna_forest_entered_south` and `interact_with(object_index=1)` (Cheryl at (28,83)) — her battle-start sequence will emit multiple lines.
+- **Call**: Any `battle_turn(...)` against Cheryl. Lines affected:
+  - `"[01E0][01E1] Trainer Cheryl / used one Super Potion!"`
+  - `"[01E0][01E1] Trainer Cheryl is / about to send in Wailmer."`
+  - `"[01E0][01E1] Trainer Cheryl sent / out Wailmer!"`
+  - `"Player defeated / [01E0][01E1] Trainer Cheryl!"`
+- **Expected**: Trainer-class prefix should render as the class label (vanilla Platinum prints e.g. `"Crasher Wake"` or `"Pok\xe9mon Trainer Cheryl"` — probably `"Pokémon Trainer Cheryl"` here given Cheryl is the partnered trainer in canonical Platinum).
+- **Actual**: The two-code prefix leaks through as bracketed hex. Text that should say `"Pokémon Trainer Cheryl"` (or similar class prefix) instead becomes `"[01E0][01E1] Trainer Cheryl"`.
+- **Workaround**: Strip the leading `[01E0][01E1] ` when parsing trainer names out of log lines. The trainer's base name (`Cheryl`) and all post-battle dialogue (Cheryl's chat lines when she joins as partner: "Ah, marvelous!", "WOJ decided to go with Cheryl!", "Cheryl: I'll keep your Pokémon in perfect health.") all parse cleanly — only the `is about to send in` / `sent out` / `used one X` / `Player defeated` formatted lines carry the prefix leak.
+- **Notes**: Same general family as BUG-008's fix — ROM text format codes (`[01xx]` range) slipping through the encoding layer — but different specific codes (`01E0` / `01E1`) and a different text context (trainer battle macros rather than item-pickup macros). The BUG-008 fix added entries for `0x0113`-`0x011A` (pocket sprite glyphs); this bug's `0x01E0`/`0x01E1` pair is likely the two glyphs for the Pokémon-sprite + word-joiner that render "Pokémon" as its ligatured icon in trainer class text. Could be a one-line CHAR_MAP addition. Not observed on the earlier Galactic Grunt / Mars battles this session — possibly specific to *partnered* trainers (Cheryl, Dawn), or specific to trainers whose class label includes the Pokémon sprite. Worth checking other partnered trainers (Riley on Iron Island, Mira in Wayward Cave, etc.) as the game progresses.
+
+---
+
 ### BUG-008: Hex text-format codes (`[01D2]`, `[0114]`) leak in Team Galactic post-battle cutscene dialogue — **FIXED (verified 2026-04-17 session 8)**
 
-Re-ran the Galactic-grunts double battle from `jubilife_galactic_grunts_double_battle_start`; post-battle `post_battle_dialogue` now returns "90% of all Pokémon are somehow tied to evolution!" and "WOJ put the Fashion Case in the KEY ITEMS Pocket." with no hex-code leaks. Fix added 10 entries to `renegade_mcp/text_encoding.py::CHAR_MAP`: `0x01C2`=`&`, `0x01D2`=`%` (alt-font variants), and `0x0113`–`0x011A` mapped to empty string (the 8 pocket-icon sprite glyphs enumerated from ROM file 396). 5 tests added to `TestQaBug008HexFormatCodeLeak`.
+Re-ran the Galactic-grunts double battle from `jubilife_galactic_grunts_double_battle_start`; post-battle `post_battle_dialogue` now returns "90% of all Pokémon are somehow tied to evolution!" and "WOJ put the Fashion Case in the KEY ITEMS Pocket." with no hex-code leaks. Fix added 10 entries to `renegade_mcp/text_encoding.py::CHAR_MAP`: `0x01C2`=`&`, `0x01D2`=`%` (alt-font variants), and `0x0113`–`0x011A` mapped to empty string (the 8 pocket-icon sprite glyphs enumerated from ROM file 396). 5 tests added to `TestQaBug008HexFormatCodeLeak`. **Session 8 re-verified on 4 fresh item pickups** (Destiny Knot, Repel, Super Potion, Antidote) — all parse clean. Fix holds.
 
 **Original entry retained below for reference.**
 
