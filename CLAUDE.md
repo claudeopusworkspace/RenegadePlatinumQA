@@ -228,27 +228,33 @@ Saved macros persist across sessions in `macros/`.
 
 - **Character**: WOJ (boy), rival **Barry**
 - **Badges**: 1 (**Coal**)
-- **Money**: ¥5,168 (Roark paid out ¥1,920).
-- **Location**: Inside **Oreburgh Pokémon Center** (map 48) at (8,6), facing up. Load `post_roark_vaporeon_oreburgh_pc`.
+- **Money**: ¥4,260 (after 5 Super Potions @ ¥700 each in Floaroma Mart).
+- **Location**: Inside **Floaroma Mart** (map 427) at (3,7). Load `floaroma_mart_post_buy_super_potions`. Full-HP-healed backup: `floaroma_pc_healed_post_route204_trainers`.
 - **Party**:
-  1. **Monferno** Lv22 (Quirky, Blaze) — Low Kick / Flame Wheel / Ember / Rock Smash. 67/67 HP.
-  2. **Vaporeon** Lv10 (Serious, **Water Absorb**) — Tackle, Quick Attack, Bite, Covet. **No Water moves yet** — learns Water Gun at Lv16 (vanilla; verify for RP). 48/48 HP.
-  3. **Burmy** Lv6 (Naive, Shed Skin) — Protect, Tackle, Bug Bite, Hidden Power. 21/21 HP.
-  4. **Shinx** Lv6 (Timid, Guts) — Tackle, Leer, Howl, Quick Attack. 21/21 HP.
-- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), **Exp. Share**, **HM06 Rock Smash** (taught to Monferno), **Coal Badge**.
-- **Bag**: 2 Potions, 9 Repels, 21 Poké Balls, **Silk Scarf**, **Oval Stone**, TM58 Endure x99, **TM76 Stealth Rock x99** (from Roark). Water Stone consumed on Eevee.
+  1. **Monferno** Lv25 (Quirky, Blaze) — Low Kick / Flame Wheel / **Fake Out** (learned Lv23, replaced Ember) / Rock Smash. 76/76 HP.
+  2. **Vaporeon** Lv16 (Serious, **Water Absorb**) — **Water Pulse** (learned Lv16 — RP gave Water Pulse instead of vanilla's Water Gun!) / Quick Attack / Bite / Covet. 72/72 HP. Skipped Haze at Lv14.
+  3. **Burmy** Lv10 (Naive, Shed Skin), **holding Exp. Share** — Protect / Tackle / Bug Bite / Hidden Power. 29/29 HP.
+  4. **Shinx** Lv6 (Timid, Guts) — Tackle / Leer / Howl / Quick Attack. 21/21 HP.
+- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), **Fashion Case** (from Jubilife TV reporter post-Galactic-battle), **HM06 Rock Smash** (on Monferno), **Coal Badge**.
+- **Bag**: **5 Super Potions**, 9 Repels, 21 Poké Balls, **Exp. Share (on Burmy)**, **Silk Scarf**, **Oval Stone**, **Expert Belt** (Ravaged Path), **Miracle Seed** (Route 204N), TM39 Rock Tomb, TM58 Endure x99, TM76 Stealth Rock x99, HM06 Rock Smash.
 - **Story flags**:
-  - Parcel delivered, Pokétch/Vs. Recorder/Exp. Share received, Route 203 Lass doubles beaten, Oreburgh Gate crossed (2 trainers), HM06 obtained.
-  - Met Roark at mine → got Water Stone from his quiz.
-  - **Roark defeated** (Nosepass Lv15 Sturdy/Smooth Rock → Geodude Lv15 Rock Head/Expert Belt → Onix Lv15 Rock Head/Muscle Band → Larvitar Lv15 Guts/Flame Orb → Cranidos Lv16 Rock Head/Sitrus → Bonsly Lv15 Rock Head/Rindo). **RP changed the team substantially** — vanilla was 3 Pokemon, RP is 6.
-  - **Eevee → Vaporeon** evolved via Water Stone.
+  - All priors, plus this session: **Jubilife Team Galactic cutscene done** (Dawn partnered, beat 2 Grunts: Stunky Lv13+Glameow Lv13, Cascoon+Silcoon sent in; won, got Fashion Case from Jubilife TV reporter).
+  - **Barry cutscene on Oreburgh exit** — no battle; he's off to Jubilife chasing the Eterna Badge.
+  - **Route 204 S trainers defeated**: Lass Sarah, Youngster Tyler (Magikarp dad), Lass Samantha.
+  - **Ravaged Path cleared** (entry → exit only; no HM-gated expansion, needs Surf for the water path). Items: Expert Belt, TM39 Rock Tomb.
+  - **Route 204 N trainers defeated**: Aroma Lady Taylor, Bug Catcher Brandon, Twins Liv & Liz (double battle). Items picked up: Miracle Seed.
+  - **Not yet fought**: Ace Trainer F on Route 204 N at (191,676) — skipped to heal first.
+  - Arrived in **Floaroma Town**, healed at PC, bought 5 Super Potions.
 - **Next session start**:
-  1. Load `post_roark_vaporeon_oreburgh_pc`. Exit PC via south warp at (8,12).
-  2. Head west to **Route 204** (entrance via north-west of Oreburgh). Floaroma Town is the direction.
-  3. Vaporeon needs ~6 levels to hit Lv16 for first Water move (Water Gun, verify in RP). Grind on Route 204 grass with Exp. Share on Vaporeon — Monferno can solo most encounters for Vaporeon-share XP.
-  4. Optional: teach TM76 Stealth Rock somewhere (Monferno learns it — tm_compatibility Monferno).
-- **Open QA bugs this session**: **BUG-007** (post-battle reward dialogue elides `{ITEM}`/`{POCKET}`/`{ARTICLE}` tokens to empty strings — "Obtained the !" / " put the in the Pocket." / "That contains the move Stealth Rock."). Distinct from BUG-005 (old `[VAR]…` leak) which was verified FIXED this session. BUG-001 through BUG-006 now all marked FIXED per Woj's dev-cycle pattern (re-verify on next repro).
-- **New FRs this session**: FR-003 (merge `use_battle_item` into `battle_turn` for discoverability — standalone tool exists but is easy to miss), FR-004 (stone evolution helper / Items-pocket `use_item`), FR-005 (surface active mon's species in `switch_to=0` error to correct battle-slot vs party-slot confusion). FR-006 draft (party-pick tap coords) withdrawn pending a proper timing+coordinate sweep next session.
+  1. Load `floaroma_mart_post_buy_super_potions`. Exit mart south to Floaroma Town overworld.
+  2. Optional backtrack: fight Ace Trainer F on Route 204N (191,676) for XP — reachable via south exit of Floaroma.
+  3. Story path: Floaroma Meadow cutscene (Team Galactic grunts stealing Honey) → **Valley Windworks** (next gym progression beat — Commander Mars). Meadow is east of Floaroma; Windworks is further west. Check `view_map` from Floaroma overworld for the warps.
+  4. Grind Shinx (Lv6, falling behind) when convenient — Exp Share is currently on Burmy (Lv10), could rotate to Shinx.
+- **Open QA bugs after this session**:
+  - **BUG-007** (post-battle reward dialogue elides `{ITEM}`/`{POCKET}`/`{ARTICLE}` tokens to empty strings). Still open from last session.
+  - **BUG-008 (NEW)**: Hex text-format codes leak through dialogue output — `[0113]` / `[0114]` / `[0115]` for pocket-name color codes, `[01C2]` for `&`, `[01D2]` for `%`, `[0120]` for `&` in trainer-name joins. Distinct code family from BUG-005's `[VAR]…` form, which was marked FIXED but its same-family siblings from the BUG-005 examples list (`[25BD]`, `[01A8]`, `[FFFE]`) likely still leak along this same path. Repro on any item pickup (`interact_with` Pokeball) or post-battle reward cutscene. Saves: `jubilife_galactic_grunts_double_battle_start`, `post_galactic_grunts_jubilife_fashion_case`.
+- **FR docket** (unchanged this session): FR-003, FR-004, FR-005 still open. No new FRs filed this session — FR-003 correctly primed me to reach for `use_battle_item` context (wasn't needed, no in-battle items used this session); FR-004 similarly unused (no stone evos); FR-005 unused (no mid-battle switches).
+- **Session 6 highlights**: `auto_grind` with new **`auto_heal=True`** cross-map mode performed flawlessly — 5 cross-map heal trips (grass → Jubilife PC → back to Route 204 grass) across one ~70-battle grind. That was previously blocked by BUG-002 and the coordinate-based auto-heal API; the new auto_heal parameter bypasses both. Also exercised `give_item`, `take_item` (both clean), and `use_medicine` with `priority` override (clean). Did NOT exercise HM obstacle (no Cut tree or Rock Smash rock in the path to Floaroma).
 
 ## Tips
 
@@ -291,14 +297,14 @@ Track which tools/flows you've exercised. Update as you go.
 - [x] Use medicine (single) — `use_item`/`use_medicine` Potion on Chimchar
 - [x] Use medicine (bulk) — `use_medicine` plan + confirm flow
 - [x] Use field item (Repel) — `use_field_item`
-- [ ] Give held item
-- [ ] Take held item
+- [x] Give held item — `give_item("Exp. Share", 1)` → Vaporeon, then again → Burmy after take-test
+- [x] Take held item — `take_item(1)` pulled Exp. Share off Vaporeon cleanly
 - [x] Teach TM/HM — `teach_tm("HM06", 0, forget_move=3)` taught Rock Smash to Monferno (forgot Taunt)
 - [x] Navigate multi-room dungeon — Oreburgh Gate (2 rooms / 2 trainers)
 - [x] Navigate elevation-aware map — Oreburgh Gate BDHC transitions + Oreburgh Mine (L0-L4) + Oreburgh Gym (L0-L3)
 - [x] Navigate with flee_encounters — used via auto_grind internally
 - [x] Auto grind (basic)
-- [ ] Auto grind (with auto-heal loop) — **BUG-002 blocks this**
+- [x] Auto grind (with auto-heal loop) — **new `auto_heal=True` cross-map mode** on Route 204 grass → Jubilife PC loop. 5 successful trips in one ~70-battle grind run. Coordinate-based variant untested, but new auto-detect mode supersedes it.
 - [x] Auto grind (smart move selection) — `backup_move` used (Ember/Scratch, Covet/Bite)
 - [x] Auto grind (target species) — Shinx search on Route 202
 - [x] Gym battle (full team) — **Roark defeated** (6 Pokemon RP-extended team: Nosepass/Geodude/Onix/Larvitar/Cranidos/Bonsly)

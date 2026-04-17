@@ -20,6 +20,30 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
+### BUG-008: Hex text-format codes (`[01D2]`, `[0114]`) leak in Team Galactic post-battle cutscene dialogue
+
+- **Tool**: `navigate_to` (trigger via entering Jubilife cutscene tile) → `battle_turn` `post_battle_dialogue` surface, and to a lesser extent mid-cutscene `read_dialogue`-style output from the same pipeline. Same code path as BUG-005 (marked FIXED this session for the `[VAR]…` family) but a different hex-code family is still slipping through.
+- **Severity**: minor (cosmetic)
+- **Save state**: `jubilife_galactic_grunts_double_battle_start` (pre-first-turn of the Team Galactic double battle, Dawn-as-partner vs. Stunky Lv13 + Glameow Lv13). Ending sequence is deterministic after finishing the battle — final Silcoon KO triggers the Rowan / Dawn / Jubilife-TV reward cutscene. Post-cutscene state also saved as `post_galactic_grunts_jubilife_fashion_case`.
+- **Call**: After the battle ends (any winning sequence works; I used `battle_turn(move_index=1, target=0)` on Silcoon), the returned `post_battle_dialogue` list contains leaked hex codes.
+- **Expected**: Human-readable lines, e.g.
+  ```
+  "…90% of all Pokémon are somehow tied to evolution!"
+  "WOJ put the Fashion Case in the KEY ITEMS Pocket."
+  ```
+- **Actual**: Two distinct hex-format codes surface as bracketed literals mid-line:
+  - `"According to his research, 90[01D2] of all / Pokémon are somehow tied to evolution!"` — `[01D2]` is the `%` symbol substitution (same family as BUG-005's `[01A8]` for ¥).
+  - `"WOJ put the Fashion Case / in the [0114]KEY ITEMS Pocket."` — `[0114]` looks like a color-open formatting code (blue-tint for item category / pocket name) that should have been stripped rather than surfaced.
+- **Workaround**: Ignore the noise — the game displays these correctly on-screen; only the text returned to the caller is affected. Cross-reference with `read_bag` to confirm item names/pockets if disambiguation matters.
+- **Notes**: Distinct from BUG-007 (the Roark-reward token-elision bug, where `{ITEM}`/`{POCKET}` are silently replaced with empty strings). This bug is the opposite failure mode — the stripper doesn't run at all on these specific codes and the raw `[XXXX]` hex leaks through. BUG-005 covered `[VAR][…]` *and* listed `[25BD]`, `[01A8]`, `[FFFE]` as examples of the same family — those were generically marked FIXED this session based on the "What will Chimchar do?" smoke test, but it looks like the fix only covered the `[VAR]…` escape prefix form, not the bare-hex-in-brackets form. Likely worth re-running the whole BUG-005 example list against this new code path (Galactic cutscene dialogue) rather than just the battle prompt. Also: the raw text also shows `;1: / ;2: / …` for Rowan's numbered list — the `;` prefix is probably a bullet-point control char that should render as `●` or be stripped; very low priority, but part of the same cleanup class.
+- **Additional repros collected same session** (all from `interact_with` on a Pokeball item pickup — no save state needed, deterministic from any item pickup):
+  - Expert Belt from Ravaged Path Pokeball at (11,36): `"WOJ put the Expert Belt / in the [0113]ITEMS Pocket."`
+  - TM39 Rock Tomb from Ravaged Path Pokeball at (6,36): `"WOJ put the TM39 / in the [0115]TMs [01C2] HMs Pocket."`
+  - Fashion Case (original Galactic-battle repro): `"in the [0114]KEY ITEMS Pocket."`
+  The per-pocket format codes observed so far: `[0113]` = ITEMS, `[0114]` = KEY ITEMS, `[0115]` = TMs & HMs (with `[01C2]` for the literal `&` between "TMs" and "HMs"). Strong hint that the entire color-open/close + ampersand family of codes is bypassing the stripper. The `%` sign (`[01D2]`) from the Galactic cutscene fits the same class — all are in the `[01xx]` / `[0Bxx]`-ish range of low-hex format codes.
+
+---
+
 ### BUG-007: Post-battle reward dialogue drops `{ITEM}` / `{POCKET}` / `{ARTICLE}` variable tokens entirely
 
 - **Tool**: `battle_turn` (post-battle dialogue auto-advance surfacing via `post_battle_dialogue`)
