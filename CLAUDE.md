@@ -282,7 +282,7 @@ Track which tools/flows you've exercised. Update as you go.
 - [x] PC deposit — deposited Shinx to Box 1
 - [x] PC withdraw — withdrew Shinx back to party
 - [x] Heal at Pokemon Center — `heal_party` with auto-navigate
-- [x] Buy items at PokeMart — bought 5 Potions (**FR-002 repro: shop UI stuck**)
+- [x] Buy items at PokeMart — bought 5 Potions (**BUG-006 repro: shop UI stuck**)
 - [x] Use medicine (single) — `use_item`/`use_medicine` Potion on Chimchar
 - [x] Use medicine (bulk) — `use_medicine` plan + confirm flow
 - [x] Use field item (Repel) — `use_field_item`

@@ -18,6 +18,38 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
+### BUG-006: `buy_item` leaves player stuck in shop UI on "How many?" prompt
+
+- **Tool**: `buy_item`
+- **Severity**: major (leaves game in a non-overworld state; subsequent tools misread the context)
+- **Save state**: `jubilife_mart_after_buy_5potions` (player inside Jubilife Mart at (3,7), money ¥1,948, 0 badges, party and bag are whatever they were mid-QA — irrelevant to the bug)
+- **Call**: `buy_item(item_name="Potion", quantity=1)`
+- **Expected**: After the purchase, the tool should drive inputs all the way back to full overworld control (same criteria other tools use for "completed") — through the quantity confirmation, the "Is there anything else? (BUY/SELL/SEE YA!)" main menu, and the cashier's "Please come again!" line.
+- **Actual**: Purchase succeeded — tool returned `success: true, item: "Potion", money_before: 1948, money_after: 1648, money_spent: 300`. **But the game is still inside the shop UI on the "Potion? Certainly. How many would you like?" quantity prompt** (screenshot captured: shop inventory list on top screen, quantity/dialogue box with "Potion? Certainly. / How many would you..." visible). Player has no overworld control.
+- **Workaround**: Manually press B several times to back out: quantity prompt → item list → main menu (BUY/SELL/SEE YA!) → "Please come again!" → overworld. Be careful on the 3-option main menu — down+A lands in the SELL bag view instead of SEE YA!, adding more backtrack.
+- **Notes**: The tool stops one state too early — it already knows the expected post-purchase states and just needs to keep driving inputs until the cashier's closing line resolves. Related side-effect: `read_dialogue(advance=True)` called in this lingering state presses A, which re-opens the shop quantity select instead of advancing to overworld — the dialogue tool doesn't recognize it's inside a shop menu rather than a plain dialogue box. Originally filed as FR-002; reclassified as a bug after live-verified repro on 2026-04-16 from the dedicated save state.
+
+---
+
+### BUG-005: ROM text-variable placeholders leak through `read_dialogue` / `battle_turn` output
+
+- **Tool**: `read_dialogue`, `battle_turn` (any tool surfacing in-game text)
+- **Severity**: minor (cosmetic — output is noisy and occasionally confusing to grep)
+- **Save state**: `fr001_repro_growlithe_battle_prompt` (mid-battle vs wild Growlithe Lv6 on Route 202, action prompt up, Chimchar Lv13 at 25/38 HP — deterministic one-call repro)
+- **Call**: `read_dialogue(advance=False, region="battle")` — returns `text: "What will Chimchar do?[VAR][0200][0001][0000]"` in a single call. Alternatively, `seek_encounter()` from `route202_chimchar_lv13` surfaces the same class of codes in the encounter `battle_log`.
+- **Expected**: In-game text returned to callers should be human-readable — names substituted from game state, currency symbols and line-break codes normalized, and unknown format/control codes stripped with a warning rather than surfaced raw.
+- **Actual**: Multiple ROM control-code families leak through verbatim. Examples observed in live play:
+  - `[VAR][0200][0001][0000]` / `[FFFE][0200][0001][0000]` — appear wrapping the "What will Chimchar do?" battle prompt and level-up lines. Same escape-byte category is labeled `[VAR]` by `read_dialogue` but `[FFFE]` by `battle_turn`/`seek_encounter` log formatting — probably two code paths stringifying the same raw bytes differently.
+  - `[25BD]` — page-break marker that should become a newline; leaks inline (e.g. `"Intimidate cuts Chimchar's[25BD]Attack!"` in the battle log for the Growlithe encounter).
+  - `[VAR][0103][0002][0000][0000]` — player/rival name placeholder. **Inconsistent**: resolves in some lines (Mom cutscene) but not others (Barry's bedroom) during the intro.
+  - `[VAR][FF00][0001][0001]Running Shoes[VAR][FF00][0001][0000]` — item name wrapped in color/format codes.
+  - `[01A8]10 million` / `[01A8]500` — currency symbol (P-with-stroke) not rendered.
+  - `[FFFE][0202][0001][0003]...[FFFE][0202][0001][0002]` — control codes seen in BUG-001's `formatted` output (the stripped "Gotcha! Shinx was caught!" line). Same bug class.
+- **Workaround**: Ignore noise, read around the placeholders.
+- **Notes**: Originally filed as FR-001; reclassified as a bug after live-verified repro on 2026-04-16. The *inconsistent* `[VAR][0103]` resolution (works in Mom cutscene, fails in Barry's bedroom) is the most interesting lead — suggests a pre-rendering pass that runs for some dialogue paths but not others, which could be repurposed to normalize all paths. Tied to BUG-001: the `throw_ball` formatter strips text wrapped by `[FFFE]...` codes, which is one specific fallout of this leak.
+
+---
+
 ### BUG-004: `battle_turn` stalls on target-pick sub-menu in doubles after partner Pokémon faints
 
 - **Tool**: `battle_turn`
