@@ -2,6 +2,8 @@
 
 Bugs discovered during QA playthrough. Each entry includes reproduction steps and a save state.
 
+**Session convention**: Bugs surfaced in a prior QA run are fixed by the dev team between runs. At the start of each session, re-verify old entries and mark them `**FIXED (verified YYYY-MM-DD session N)**` rather than deleting — the audit trail matters. Newly observed instances of a "same class" issue get a fresh BUG-N entry; don't resurrect old IDs.
+
 ## Template
 
 ```
@@ -18,7 +20,33 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-006: `buy_item` leaves player stuck in shop UI on "How many?" prompt
+### BUG-007: Post-battle reward dialogue drops `{ITEM}` / `{POCKET}` / `{ARTICLE}` variable tokens entirely
+
+- **Tool**: `battle_turn` (post-battle dialogue auto-advance surfacing via `post_battle_dialogue`)
+- **Severity**: minor (cosmetic, but harder to detect than BUG-005 was — instead of emitting visible `[VAR]…` placeholders, the tokens are silently replaced with empty strings, so the text reads almost correctly and it's easy to miss)
+- **Save state**: `oreburgh_gym_pre_roark_lv20_monferno` (pre-Roark; non-deterministic to hit exactly — must actually win the gym battle to trigger the TM76/Coal Badge reward ceremony). Also captured just-after state `post_roark_coal_badge_monferno_lv22` (dialogue already dismissed — use the pre-state if trying to re-trigger).
+- **Call**: Final `battle_turn(move_index=0)` against Roark's Bonsly; on KO the tool auto-advances the post-battle reward cutscene and returns `post_battle_dialogue` containing the leaked lines.
+- **Expected**: Token-substituted output like
+  ```
+  "Obtained the TM76!"
+  "WOJ put the TM76 in the TMs & HMs Pocket."
+  "That TM contains the move Stealth Rock."
+  ```
+- **Actual**: Tokens elided to empty strings — look closely at the whitespace:
+  ```
+  "Obtained the !"
+  " put the \nin the  Pocket.\n---"
+  "That  contains\nthe move Stealth Rock.\n---"
+  ```
+  Three distinct tokens are dropped: the player name (`WOJ`), the item name (`TM76`), the pocket name (`TMs & HMs`), and the item-article/category (`TM`).
+- **Workaround**: Cross-reference the actual received item via `read_bag` after the battle (confirmed `TM76` appeared in the TMs & HMs pocket with qty 99). The ceremony completes correctly in-game — only the returned dialogue text is corrupted.
+- **Notes**: BUG-005 was verified fixed this session — `read_dialogue(advance=False, region="battle")` from `fr001_repro_growlithe_battle_prompt` now returns a clean `"What will Chimchar do?"`. So this is a new class of token leak, not a regression. The prior BUG-005 manifested as raw `[VAR][XXXX]` escape sequences leaking through; this one manifests as the substitution pass *running* but resolving the tokens to empty strings. Likely a narrow regression or a dialogue code path (the "obtain+store item" event script) whose token resolver isn't wired up. Also worth checking other item-reward events (Oval Stone, Silk Scarf, Exp. Share cutscenes) for the same class of issue.
+
+---
+
+### BUG-006: `buy_item` leaves player stuck in shop UI on "How many?" prompt — **FIXED (verified 2026-04-16 session 5)**
+
+Re-ran `buy_item(item_name="Potion", quantity=1)` from `jubilife_mart_after_buy_5potions`. Tool now drives all the way back to overworld — post-call screenshot shows player in mart with Pokétch visible on bottom screen, no lingering shop UI. Money ¥1,948 → ¥1,648 correctly recorded.
 
 - **Tool**: `buy_item`
 - **Severity**: major (leaves game in a non-overworld state; subsequent tools misread the context)
@@ -31,7 +59,11 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-005: ROM text-variable placeholders leak through `read_dialogue` / `battle_turn` output
+### BUG-005: ROM text-variable placeholders leak through `read_dialogue` / `battle_turn` output — **FIXED (verified 2026-04-16 session 5)**
+
+Re-ran `read_dialogue(advance=False, region="battle")` from `fr001_repro_growlithe_battle_prompt`. Output is now clean: `text: "What will Chimchar do?"` with no `[VAR]…` tail. See BUG-007 for a *narrower* new class of token leak observed this session on post-battle reward dialogue.
+
+**Original entry retained below for reference.**
 
 - **Tool**: `read_dialogue`, `battle_turn` (any tool surfacing in-game text)
 - **Severity**: minor (cosmetic — output is noisy and occasionally confusing to grep)
@@ -50,7 +82,9 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-004: `battle_turn` stalls on target-pick sub-menu in doubles after partner Pokémon faints
+### BUG-004: `battle_turn` stalls on target-pick sub-menu in doubles after partner Pokémon faints — **FIXED (assumed fixed per Woj 2026-04-16; no doubles battle encountered this session to re-verify live)**
+
+**Original entry retained below for reference.**
 
 - **Tool**: `battle_turn`
 - **Severity**: major (can't take any action, blocks the fight unless worked around with raw button taps)
@@ -63,7 +97,9 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-003: `auto_grind` cancels Chimchar→Monferno evolution and leaves dialogue hanging
+### BUG-003: `auto_grind` cancels Chimchar→Monferno evolution and leaves dialogue hanging — **FIXED (assumed fixed per Woj 2026-04-16; no Chimchar-stage auto_grind this session to re-verify live — stone evolution path exercised instead)**
+
+**Original entry retained below for reference.**
 
 - **Tool**: `auto_grind`
 - **Severity**: major (misses an evolution, and the residual dialogue jams subsequent tool calls)
@@ -78,7 +114,9 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-002: `auto_grind` auto-heal stops on wild-battle FAINT_SWITCH prompt
+### BUG-002: `auto_grind` auto-heal stops on wild-battle FAINT_SWITCH prompt — **FIXED (assumed fixed per Woj 2026-04-16; no auto_grind auto-heal cycle exercised this session to re-verify live)**
+
+**Original entry retained below for reference.**
 
 - **Tool**: `auto_grind`
 - **Severity**: major (breaks the auto-heal loop)
@@ -91,7 +129,9 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-001: `throw_ball` formatted output reports `State: TIMEOUT` after successful catch
+### BUG-001: `throw_ball` formatted output reports `State: TIMEOUT` after successful catch — **FIXED (assumed fixed per Woj 2026-04-16; no catch attempts this session to re-verify live)**
+
+**Original entry retained below for reference.**
 
 - **Tool**: `throw_ball`
 - **Severity**: minor (cosmetic)

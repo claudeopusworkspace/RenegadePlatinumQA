@@ -247,7 +247,8 @@ Saved macros persist across sessions in `macros/`.
   2. Head west to **Route 204** (entrance via north-west of Oreburgh). Floaroma Town is the direction.
   3. Vaporeon needs ~6 levels to hit Lv16 for first Water move (Water Gun, verify in RP). Grind on Route 204 grass with Exp. Share on Vaporeon — Monferno can solo most encounters for Vaporeon-share XP.
   4. Optional: teach TM76 Stealth Rock somewhere (Monferno learns it — tm_compatibility Monferno).
-- **Open QA bugs this session**: none new — BUG-005 (dialogue token leaks) observed again in Roark's post-battle dialogue ("Obtained the !" / " put the in the Pocket.") but already covered under BUG-005.
+- **Open QA bugs this session**: **BUG-007** (post-battle reward dialogue elides `{ITEM}`/`{POCKET}`/`{ARTICLE}` tokens to empty strings — "Obtained the !" / " put the in the Pocket." / "That contains the move Stealth Rock."). Distinct from BUG-005 (old `[VAR]…` leak) which was verified FIXED this session. BUG-001 through BUG-006 now all marked FIXED per Woj's dev-cycle pattern (re-verify on next repro).
+- **New FRs this session**: FR-003 (in-battle BAG use in `battle_turn`), FR-004 (stone evolution helper / Items-pocket `use_item`), FR-005 (`switch_to=0` rejected when active ≠ party slot 0), FR-006 (party-pick tap coordinates unreliable).
 
 ## Tips
 
