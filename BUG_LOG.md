@@ -20,7 +20,19 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-012: All renegade memory-read tools return stale/wrong values after `load_state` (blocking)
+### BUG-012: All renegade memory-read tools return stale/wrong values after `load_state` (blocking) — **FIXED (verified 2026-04-18 session 10)**
+
+Re-ran the QA repro sequence (load `eterna_forest_entered_south` → `read_trainer_status` + `map_name` + `read_party`) against the fixed code: money $11,468, badges 1 (Coal), map Eterna Forest (203), party = Monferno/Vaporeon/Burmy/Shinx — all correct. Cross-save switch (Playtest ↔ Wayne's E4 save) also verified — `revalidate()` self-heals the stale delta across saves with different heap layouts.
+
+Root cause: `addresses._name_length_at()` accepted runs of 8+ consecutive valid Gen4 name chars "as a 7-char name" via a max-length fallback. The party block's encrypted region contains 8-character Pokémon species names (Monferno, Vaporeon, Bronzong…) at offsets that coincide with the scan's `+0x68` canary for certain deltas. With `name_len * 10` dominating the scoring, an 8-char nickname (score 83) would outrank the real 1–7 char player name (score 33) and lock `detect_shift` onto a bogus delta. Every subsequent `addr()` lookup returned garbage — manifesting as Mystery Zone / $36M money / Combusken species.
+
+Fix in `renegade_mcp/addresses.py`:
+1. `_name_length_at`: strictly require the 0xFFFF terminator within positions 0..7. 8 consecutive name chars now returns 0 (rejected as not a player name).
+2. `revalidate`: replaced the 1-char fast-path with full `_name_length_at` validation, so stale deltas pointing at random name-shaped bytes can't mask stale state.
+
+4 regression tests added in `TestQaBug012NameLengthCap` / `TestQaBug012RevalidateCrossSaveSwitch` (`tests/test_detect_shift.py`). Full suite passes.
+
+**Original entry retained below for reference.**
 
 Session 10 (2026-04-18) first observation — but the session-9 notes flagged a brief post-load desync of `view_map`/`map_name` as a candidate. This session the symptom is present on *every* `load_state` attempted (three different states, including ones never touched before this session), persistent across `reset_emulator` + `reload_tools`, and affects every memory-read tool in the `renegade` namespace. Cannot safely navigate, read party, or trigger `navigate_to`/`interact_with` until fixed.
 
