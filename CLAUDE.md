@@ -228,50 +228,56 @@ Saved macros persist across sessions in `macros/`.
 
 - **Character**: WOJ (boy), rival **Barry**
 - **Badges**: 1 (**Coal**)
-- **Money**: **$15,484** (verified via `read_trainer_status`).
-- **Location**: **Eterna City Cycle Shop interior** (map 71) at (7,11). Just entered through the south door from Eterna City map 65. Haven't talked to the Bike Shop owner yet. Cleanest resume point: **`eterna_cycle_shop_entered`** (just inside, ready to interact with owner). Alternative: **`eterna_city_arrived_post_forest`** (just arrived at Eterna from Route 205 forest exit, at (297,525) map 65, no actions taken yet). Backup: **`forest_exit_route205_north_post_cheryl`** (just exited Eterna Forest at (259,524) map 349, Cheryl gone).
-- **Party** (all full HP, Cheryl auto-healed repeatedly in forest):
-  1. **Monferno** Lv29 (Quirky, Blaze) — Low Kick (20/20) / Flamethrower (15/15) / Fake Out (10/10) / Rock Smash (15/15). 88/88 HP.
-  2. **Vaporeon** Lv17 (Serious, Water Absorb) — Water Pulse / Quick Attack / Bite / Covet. 76/76 HP. **(+1 level from Psychic Elijah Drowzee/Baltoy fight.)**
-  3. **Mothim** Lv21 (Naive, **Swarm**, formerly Burmy Shed Skin) **holding Exp. Share** — Protect / **Gust** (replaced Tackle at Lv20) / Bug Bite / Hidden Power (Rock type per IV math). 64/64 HP. **Evolved from male Burmy at Lv20.**
-  4. **Shinx** Lv6 (Timid, Guts) — Tackle / Leer / Howl / Quick Attack. 21/21 HP. (Still parked; per feedback memory, don't detour to PC just to deposit.)
-- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), Fashion Case, HM06 Rock Smash (on Monferno), Coal Badge, Works Key. No new key items.
+- **Money**: **$16,092** (+$608 from Hiker Louis on Route 211).
+- **Location**: **Route 211 West** at (380, 532), map 365, just emerged from Mt. Coronet R0112 west exit. Standing next to the Arrow Signpost. Best resume point: **`session11_end_route211_west_mt_coronet_exit`** (on Route 211 West, Mt. Coronet exit behind me, post Hiker Louis fight). Alternative: **`eterna_city_hm01_cut_acquired`** (back in Eterna with HM01 just received from Cynthia, at (306, 522) map 65 — good for pivoting to a different plan).
+- **Party** (Monferno topped up with 2× Super Potions post-Hiker fight):
+  1. **Monferno** Lv29 (Quirky, Blaze) — Low Kick (17/20) / Flamethrower (15/15) / Fake Out (10/10) / Rock Smash (14/15). 88/88 HP. +513 EXP this session.
+  2. **Vaporeon** Lv17 — unchanged. 76/76 HP.
+  3. **Mothim** Lv21 holding Exp. Share — unchanged. 64/64 HP. +513 EXP this session.
+  4. **Shinx** Lv6 — unchanged.
+- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), Fashion Case, HM06 Rock Smash (on Monferno), Coal Badge, Works Key, **+HM01 Cut (this session)**.
 - **Bag** — new this session:
-  - Medicine: **+1 Antidote** (Eterna Forest (15,81)), **+1 Parlyz Heal** (Eterna Forest (41,59)).
-  - TMs & HMs: **+TM27 (×99, Cheryl's gift at forest exit — RP policy: 99-count, unsellable, $0).**
-  - Items: unchanged.
-  - Repels: **-1 Repel** (used on Route 205 N this session, now 9).
+  - Medicine: **-2 Super Potion** (used on Monferno after Beldum Zen Headbutt crit) — **4 Super Potion** remaining.
+  - TMs & HMs: **+HM01 Cut** (from Cynthia, Eterna City).
+  - Items/Repels/Balls: unchanged.
 - **Story flags** (new this session in bold):
   - All priors still valid.
-  - **Defeated Cheryl solo test-trainer cleanly** (no mid-battle save needed). Strategy: Flamethrower Drifloon OHKO → Low Kick crit Wailmer OHKO → Flamethrower crit Makuhita OHKO (Monferno Lv27→28) → Low Kick Chansey SE OHKO. Cheryl joined as partner.
-  - **Cleared Eterna Forest (map 203) entirely**: Bug Catcher Jack + Lass Briana double trainer (Surskit Lv16/Paras Lv16/Venonat Lv16 + Buneary Lv17/Marill Lv17/Slakoth Lv15). Then two *solo* Psychic trainer battles (Cheryl-less despite her being partner — note that separate trainers trigger singles, not every forest fight is a double): Psychic Lindsey (Slowpoke Lv17 / Natu Lv17 / Exeggcute Lv17) and Psychic Elijah (Spoink Lv17 / Drowzee Lv17 / Baltoy Lv17). Plus 2 wild doubles (Paras+Buneary, Slakoth+Buneary).
-  - **Burmy → Mothim at Lv20** during the double battle. Taught Gust, replaced Tackle.
-  - **Received TM27 from Cheryl** at forest exit (86,36) Eterna Forest. Her farewell cutscene: "Oh! There's the exit!" / "Thank you so much!" / gift / "I'm sure we'll meet again somewhere!".
-  - **Arrived in Eterna City (map 65)** via Route 205 (map 349) → Eterna City warp at (296-297, 525).
-  - **Entered Cycle Shop (map 71)** via door at (310, 539). Haven't talked to the Bike Shop owner yet.
+  - **Entered Eterna Cycle Shop (map 71)** and talked to the Youngster attendant (NPC index 1). He said: "The manager's gone off to the Team Galactic building and hasn't returned." So the Bike Shop owner is AT the TG Eterna Bldg — will return after Jupiter is defeated there.
+  - **Exited Cycle Shop** back to Eterna City (310, 540). Walked west, healed at Eterna PC (map 69, `heal_party` auto-navigated fine).
+  - **Walked east from PC area**: triggered the **Cyrus + Barry "Pokémon statue" cutscene** at the east side of Eterna. Barry's "make sure all your attacks hit" spiel, Cyrus's spiral-of-time-and-space monologue, all captured cleanly by `navigate_to`'s dialogue auto-advance.
+  - **Got HM01 Cut from Cynthia** at ~(306, 522) just south of the T.G. Eterna Bldg. She triggered as a scripted obstacle along my path. Dialogue was clean: "Obtained the HM01!" / "WOJ put the HM01 in the TMs & HMs Pocket." No BUG-007 token elision visible (HM01 isn't a `{ITEM}` substitution though, so this doesn't fully re-test that).
+  - **Gym Guide at (312, 563) blocks the gym door** (312, 562). His dialogue: "Gardenia went over to Route 216 to look for some Grass-type Pokémon." "I'm sure she'd come back to the Gym if you go and talk to her." **This is an RP-specific story gate CLAUDE.md did NOT document.** Gym entrance is the ONLY approach (walls on N/E/W), so we cannot skip.
+  - **Galactic Grunt at (305, 520) blocks T.G. Eterna Bldg door** (305, 519). His dialogue confirms: "You don't have a Forest Badge either, so your Pokémon must be weak!" — so Jupiter fight is **locked behind Gardenia**. Circular: Gardenia requires Route 216 trip; Jupiter requires Forest Badge. Forest Badge is Gardenia.
+  - **Explored Route 211 West** (map 365). Triggered trainer **Hiker Louis** (trainer_id 326) at (377, 529). Team: Geodude Lv19 → Beldum Lv19 (got a crit SE Zen Headbutt for 62 dmg on Monferno) → Slugma Lv19. All OHKO'd by Low Kick (Beldum weight abused) / Rock Smash (Geodude SE Fighting). Got $608.
+  - **Mt. Coronet R0112 (west entrance, map 218) is a dead-end shortcut** connecting Route 211 west ↔ Route 211 east. Only 2 warps both back to Route 211. One stairs_W warp at (11, 10) leads to R0113 (map 219) which is a water-filled dead-end needing Surf. **No path north to higher Mt. Coronet floors from this entrance** with current HMs (Cut, Rock Smash). Strength Boulders (indices 8-11) visible but not reachable from R0112 open-accessible tiles. **Route 216 is not reachable at this point with current HMs** — we need Strength (Riley, Iron Island, post-Canalave) or a different route I haven't found.
+  - **Route 211 East (map 366)** explored briefly via the cave shortcut — lots of trainers I didn't engage, Ace Trainer F / Ruin Maniac / Ninja Boy / Black Belt. No obvious connection to Route 216 from here at this point.
+- **Unsolved story puzzle**: How to bring Gardenia back. Options to try next session:
+  - (a) Revisit every NPC in Eterna City proper — maybe one triggers Gardenia's return once you have HM01.
+  - (b) Try entering the gym from a different approach (e.g. walk into the Gym Guide pre-HM01 vs post-HM01 — maybe his dialogue gates on Cut).
+  - (c) Look for another Mt. Coronet entrance — maybe Route 207 / Oreburgh Gate connects higher floors and RP opened a shortcut to 216. (Worth checking Oreburgh Gate B1F with Rock Smash.)
+  - (d) Check T.G. Eterna Warehouse / Route 206 area — CLAUDE.md says HM02 Fly is in the Galactic Warehouse; that's possibly accessible via east Eterna or south once Bike Shop opens.
+  - (e) Accept the gate is later-story and proceed to another city (Hearthome?) — but Route 206 is blocked and I don't see another exit.
 - **Next session start**:
-  1. Load **`eterna_cycle_shop_entered`** (inside Cycle Shop, one step in from the south door).
-  2. Find & talk to the Bike Shop owner to re-open **Route 206** (RP gate). Then exit shop back to Eterna City.
-  3. **Grab HM01 Cut from Cynthia** — she's somewhere in Eterna City near Eterna's east side (vanilla: Cynthia's Grandma's house, check for her there).
-  4. **Heal at Eterna PC** and stock Potions. Team is fine post-Cheryl but we'll need to top up PP for Gardenia.
-  5. **Pick up Porygon Lv22** from the Galactic Building (map 65 warp at (305,519) "T.G. Eterna Bldg") — but that requires defeating Jupiter first. Defer until Gardenia done.
-  6. **Challenge Gardenia (Gym 2, Grass-type)** — reward TM86 Grass Knot. Her signature is Roserade in RP. Monferno Flamethrower will cook her. Watch for Dustox (Grass-free Bug/Poison) and Gloom variants.
-  7. Consider PC-dumping Shinx *if* we naturally visit a PC anyway. No detour.
-  8. Optional: grab Chatot "Macaw" in-game trade at Eterna (give Snorunt, get Chatot, Modest, Sharp Beak) — but we have no Snorunt so skip unless we catch one later.
+  1. Load **`session11_end_route211_west_mt_coronet_exit`** to resume at the Mt. Coronet exit, OR load **`eterna_city_hm01_cut_acquired`** to restart from a clean Eterna City state.
+  2. First action: **re-test the gym door and every Eterna NPC with HM01 in the bag** — option (b) above. Read the Gym Guide's dialogue AGAIN now that Cut is acquired to see if it changes.
+  3. If still gated: walk the full Eterna NPC list via `view_map` and `interact_with` on each one. Skipped NPCs last session: Bug Catcher (302, 538), Expert M (300, 550), Pokemon Breeder F (312, 552), Ace Trainer F (308, 551), Pokemon Breeder M (303, 561), Ninja Boy (330, 527), Grunt M (331, 539), and the Pokeball at (317, 558) near the gym and (327, 516) unreachable one.
+  4. If still nothing: check **Oreburgh Gate B1F** — Rock Smash boulders there might open a new path.
+  5. Defer actually challenging Gardenia until she's back at the Gym.
+  6. **Fix BUG-013**: when the session starts, the first thing to do is the two-load workaround (`load_state("post_starter_twinleaf_eevee")` → advance 300 → `load_state(target)` → advance 300) to avoid the cold-start desync. Do NOT use `qa_base_bedroom` — that did not reliably clear the desync mid-session.
 - **Open QA bugs after this session**:
-  - **BUG-007** still open (post-battle token elision on Roark-class reward dialogue). Not re-triggered this session.
-  - **BUG-008 FIXED (verified again)** — 2 more clean item pickups this session (Antidote, Parlyz Heal). Fix holds strong.
-  - **BUG-009** still open (`[01E0][01E1] Trainer Cheryl` prefix leak). **Confirmed class-specific** this session — Psychic Lindsey, Psychic Elijah, Bug Catcher Jack, Lass Briana all parse CLEAN ("Psychic Lindsey is about to send in Natu.", "Player defeated Psychic Elijah!", etc.). Only Cheryl's lines leak the `[01E0][01E1]` prefix, suggesting the code family is specific to the "Pokémon Trainer" class label rendering (not all trainer classes).
-  - **BUG-010 NEW (this session)** — `read_party` garbled `max_hp` for PC-round-tripped slot 3 (Shinx) on fresh savestate load. **Transient** — clears after first battle transition. See BUG_LOG.md.
-  - **BUG-011 NEW (this session)** — orphan Pokémon-name / trainer-class lines appear in `battle_turn` log entries around level-up and battle-end text sequences. Cosmetic but systematic. See BUG_LOG.md.
-  - **Possible BUG-004 echo** (carried forward from session 7, still unverified).
-- **FR docket**: FR-003, FR-004, FR-005 still open. No new FRs filed this session. FR-005 (doubles target clarity) continues to work cleanly.
-- **Session 9 highlights**:
-  - **Mothim** is now a legitimate party member post-Lv20-evo. Swarm + Gust STAB + HP Rock coverage. Still slot 3 for EXP Share though.
-  - **view_map / map_name became desync'd** briefly after loading `eterna_forest_entered_south` — returned "Oreburgh Gate (0,0)" for several calls before correctly showing Eterna Forest. Cleared up after my first interaction with the world (walking on a warp + map transition). Didn't file a bug yet — one-off, needs more reproductions to characterise.
-  - Cheryl's **partner auto-heal** also fires after battles where she did *not* participate (e.g. the two Psychic singles). Very generous.
-  - **Wild doubles with Cheryl** were fun and fast — Chansey's Hyper Voice hits both enemies in doubles (spread move).
-  - Chained fleeing + Repel worked cleanly on Route 205 N wild encounters.
+  - **BUG-013 NEW (this session)** — **blocking on cold start**. Same symptom class as BUG-012 (all renegade memory reads garbage: Mystery Zone / $36M / Combusken / empty bag). Triggers on (a) the FIRST `load_state` after `init_emulator` + `load_rom`, and (b) sometimes mid-session without any `load_state` call (observed after several dialogues + building entry/exits). Workaround: load a post-starter save (`post_starter_twinleaf_eevee`) with 300 frame advancement, then reload target. `qa_base_bedroom` double-load was NOT reliable for mid-session recovery. Full details + repro states in BUG_LOG.md.
+  - **BUG-007** still open. Not re-triggered this session (HM01 dialogue didn't have a `{ITEM}` token).
+  - **BUG-009** still open. No trainer-class prefix leaks observed this session (Hiker Louis parsed cleanly: "Player defeated Hiker Louis!" and "Hiker Louis is about to send in Beldum."). Consistent with BUG-009 being specifically limited to the "Pokémon Trainer" class label.
+  - **BUG-010, BUG-011, BUG-012** marked FIXED per session 10 commits; BUG-010/011 not re-triggered this session (no PC round-trip or level-up observed).
+  - **map_name display inconsistency (minor — not filed)**: At the Eterna PC (map 69, code C04PC0101) `map_name` returns `display: "Eterna City"` rather than "Pokemon Center" or similar. Other PCs likely have the same behavior. Cosmetic. Not filing BUG yet — needs repro at a few more PCs to characterize.
+  - **view_map legend includes unlabeled tile-behavior placeholders (`?=0x83 ?=0x85 ?=0xe1 ?=0xe5` etc.)** inside buildings. Cosmetic/minor — indicates some tile-behavior IDs aren't in the renegade tool's symbol table yet. Not a bug per se, but worth a FR for completeness.
+- **FR docket**: FR-003, FR-004, FR-005 still open. Possible new minor FR candidates (not filed yet): `map_name` display coherency for sub-maps; unknown tile-behavior legend entries in `view_map`.
+- **Session 11 highlights**:
+  - BUG-013 regression discovery and characterization — the fix for BUG-012 does NOT cover the cold-start or mid-session paths.
+  - Confirmed RP story gate at Gardenia's gym that CLAUDE.md didn't document — the in-game Gym Guide is the source of truth, not CLAUDE.md for this particular gate.
+  - Mt. Coronet R0112 mapped (one room, 2 Route 211 warps + 1 stairs to R0113 water dead-end).
+  - HM01 Cut acquired cleanly, Cyrus statue cutscene cleared cleanly.
+  - Monferno is a beast — Low Kick vs heavy mons (Beldum ~120 BP) is one-shotting trainer battles.
 
 ## Tips
 

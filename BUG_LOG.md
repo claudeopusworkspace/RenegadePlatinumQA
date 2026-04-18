@@ -20,6 +20,37 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
+### BUG-013: BUG-012 symptoms return on the FIRST `load_state` after `init_emulator` + `load_rom` (session 11, 2026-04-18) — blocking until worked around
+
+Fresh QA session startup triggers the identical memory-read desync that BUG-012 was supposed to fix. Symptoms match BUG-012 exactly — `map_name`→Mystery Zone, `read_party` slot 0 = Combusken species 256 + slots 1-5 "???", `read_trainer_status` money = $36,302,676 / badges=0 / on_bicycle=true, `read_bag` returns empty pockets with nonsense total, `view_map` → "Could not resolve terrain". Every renegade RAM read is pointing at the wrong heap offset. BUG-012's fix to `addresses._name_length_at` / `revalidate` must have been bypassed by the cold-ROM-init code path.
+
+- **Tool**: `map_name`, `view_map`, `read_party`, `read_trainer_status`, `read_bag` (every renegade memory-read tool tested; likely universal).
+- **Severity**: **blocking on cold start**, but has a clean in-session workaround (see below).
+- **Save state**: `bug_012_regression_post_load_eterna_cycle_shop_session11` (captured immediately after `load_state("eterna_cycle_shop_entered")` on fresh init, desync already present). Also `bug_012_regression_session11_after_mapexit` (after exiting the Cycle Shop back to Eterna City — desync persists across the map transition).
+- **Call** (exact cold-start repro):
+  ```
+  init_emulator()
+  load_rom("/workspace/RenegadePlatinumQA/RenegadePlatinum.nds", "qa-run-3-session-11")
+  load_state("eterna_cycle_shop_entered")
+  advance_frames(150)
+  map_name()             # Mystery Zone (0,0)
+  read_party()           # Combusken slot 0, ??? slots 1-5
+  read_trainer_status()  # $36,302,676 / 0 badges / bicycle ON
+  read_bag("Key Items")  # empty list, formatted header says "79 items" though
+  view_map()             # {"error":"Could not resolve terrain"}
+  ```
+- **Expected**: On `eterna_cycle_shop_entered` → map_id=71 (Cycle Shop), $15,484, 1 badge (Coal), on_bicycle=false, party = Monferno/Vaporeon/Mothim/Shinx.
+- **Actual**: All reads produce the EXACT BUG-012 signature garbage values (money always $36,302,676, slot-0 species always 256). On-screen rendering is correct — top screen shows the Cycle Shop interior with the player next to the owner, the game is playable. Desync does NOT clear from: waiting 600+ frames, walking one tile in any direction, or a full door-warp map transition from Cycle Shop → Eterna City.
+- **Workaround (reliable, but requires settling frames between loads)**: **load any other fully-initialized save state, advance frames, then load the target state, advance frames again**. Exact sequence that works: `load_state("qa_base_bedroom")` → `advance_frames(120)` → `load_state("eterna_cycle_shop_entered")` → `advance_frames(120)`. After that, all renegade reads return correct values. Back-to-back loads with NO `advance_frames` between them **do not** fix the desync (retested in session 11 — the second `load_state` still produced Mystery Zone / $36M). So the workaround is specifically "let the intermediate state run for 1-2 seconds of emulated time before switching to the target state" — the revalidate pass needs a valid initialized heap to detect the correct signature offset, and a freshly-loaded state with no advancement apparently doesn't expose that yet.
+- **Notes**:
+  - Exact same garbage fingerprint as original BUG-012 (money `$36,302,676` = `0x229DEB4`, species 256 = Combusken) — so the BUG-012 fix to `_name_length_at` / `revalidate` is not being invoked on the cold-start path, or is being invoked before heap state is valid and its own "no valid name signature" probe locks onto a zero/ghost region.
+  - One read showed slot 4's nature flip from "Lonely" to "Modest" between calls while every other field stayed identical — data IS coming from somewhere, just the wrong pointer. Not a pure zero read.
+  - After the two-load workaround, the session is stable — follow-up `read_party` / `read_trainer_status` / `view_map` / `map_name` all match in-game state exactly.
+  - This is arguably a different bug from BUG-012 (different trigger: ROM cold-start vs. mid-session reload) but the same symptom class. Filing as BUG-013 per session convention rather than re-opening BUG-012.
+  - **Addendum (same session, later)**: Desync can also trigger *during gameplay* with no `load_state` call in between. After completing the HM01 Cut Cynthia cutscene, entering+exiting two Eterna buildings, and talking to the Gym Guide via `interact_with`, a subsequent `navigate_to(305, 520)` returned `"Could not read map state (chunk resolution failed)"` and all reads flipped to garbage. Repro state: `bug_013_mid_session_desync_post_gym_guide`. The `qa_base_bedroom` + target double-load workaround *failed* on this instance — reads stayed garbage even with 120 frames between loads. What *did* recover was loading `post_starter_twinleaf_eevee` (a very different save, well past name-entry, early party state) → advance 300 frames → load target state → advance 300 frames. So the workaround is: use a save with a *fully-initialized post-starter party block* and give ample settling frames, not just any pre-starter state. `reload_tools()` alone did not recover.
+
+---
+
 ### BUG-012: All renegade memory-read tools return stale/wrong values after `load_state` (blocking) — **FIXED (verified 2026-04-18 session 10)**
 
 Re-ran the QA repro sequence (load `eterna_forest_entered_south` → `read_trainer_status` + `map_name` + `read_party`) against the fixed code: money $11,468, badges 1 (Coal), map Eterna Forest (203), party = Monferno/Vaporeon/Burmy/Shinx — all correct. Cross-save switch (Playtest ↔ Wayne's E4 save) also verified — `revalidate()` self-heals the stale delta across saves with different heap layouts.
