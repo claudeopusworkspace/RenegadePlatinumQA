@@ -20,6 +20,37 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
+### BUG-012: All renegade memory-read tools return stale/wrong values after `load_state` (blocking)
+
+Session 10 (2026-04-18) first observation — but the session-9 notes flagged a brief post-load desync of `view_map`/`map_name` as a candidate. This session the symptom is present on *every* `load_state` attempted (three different states, including ones never touched before this session), persistent across `reset_emulator` + `reload_tools`, and affects every memory-read tool in the `renegade` namespace. Cannot safely navigate, read party, or trigger `navigate_to`/`interact_with` until fixed.
+
+- **Tool**: `map_name`, `view_map`, `read_trainer_status`, `read_party` (likely all renegade memory reads; others not yet tested because navigation is blocked).
+- **Severity**: **blocking** — QA run cannot continue without map data, party data, or trainer status.
+- **Save state**: `bug_012_memory_desync_post_cycle_shop_load` (captured after loading `eterna_cycle_shop_entered` and pressing down once; desync is already present). Also reproduces from any `load_state` call in a fresh MCP session — tested with `eterna_cycle_shop_entered`, `eterna_city_arrived_post_forest`, and `qa_base_bedroom`.
+- **Call** (fresh MCP / Claude session startup sequence):
+  ```
+  init_emulator()
+  load_rom("/workspace/RenegadePlatinumQA/RenegadePlatinum.nds", "x")
+  load_state("eterna_cycle_shop_entered")
+  advance_frames(300)   # let the game settle and render
+  map_name()            # returns Mystery Zone (map_id=0)
+  read_trainer_status() # returns money=36,302,676, badges=0, on_bicycle=true
+  read_party()          # returns 6 slots, slot 0="Combusken" species 256, slots 1-5="???", all hp=0, flagged as "[stale data] (moves/IVs/EVs unavailable — encrypted data stale)"
+  view_map()            # returns {"error":"Could not resolve terrain", ...}
+  ```
+- **Expected**: Post-load reads should report the actual state. For the `eterna_cycle_shop_entered` save: map_id=71 (Eterna Cycle Shop), money=$15,484, badges=1, on_bicycle=false, party = Monferno/Vaporeon/Mothim/Shinx.
+- **Actual**: All reads return the exact same garbage values regardless of which state is loaded. Specifically, `money` is **always** `36,302,676` (= `0x229DEB4` — looks like it could be an address pointer bleed-through) and `slot 0 species` is **always** `256` (Combusken). `on_bicycle` varies (true from some states, false from others) — so that one field might be reading the right location.
+- **Workaround**: None found. Tried: `advance_frames(60/120/180/300/600/1800)`, `reload_tools()`, `reset_emulator()` + `load_rom()` + `load_state()` (same bug), loading an older unrelated save state (same garbage values), opening the X menu (same garbage). The game itself is rendering correctly — top screen shows the right map, the X menu opens with "WOJ" as the trainer name, door warps trigger normally.
+- **Notes**:
+  - **Critical clue from pre-save-file error** (reset_emulator + advance 1800 frames, no state loaded, game at Pokémon-logo splash): `read_trainer_status` raises `Could not detect save-block heap shift. Scanned deltas -0x200..+0x200 (step 4) for player-name signature at SAVE_BLOCK_BASE + 0x68 but found no valid Gen4-encoded name. Has the game finished name entry?` → confirms the renegade tools use a **signature-based heap-shift resolver** keyed on the Gen4-encoded player name at `SAVE_BLOCK_BASE + 0x68`. The fact that reads **succeed but return consistent wrong values** after `load_state` suggests the scan is finding *a* match but the wrong match — e.g. locking onto a ghost/old save block still resident in RAM at a different offset, or matching on a secondary buffer rather than the active one.
+  - `$36,302,676` decoded as hex = `0x229DEB4`. Not obviously a real DS RAM address (DS main RAM is 0x02000000–0x023FFFFF), but `0x0229DEB4` would fit inside main RAM — possible read from a pointer field rather than the money field.
+  - `Species 256` is Combusken; Combusken is the first Pokemon of species-id-order pool 256+ (3rd-gen). Reading from `species_id_0 = 256` from a fresh/zeroed party-extension block would happen if the encryption context hasn't been restored. Slot 0 having `species=256` across **all three loaded states** (including `qa_base_bedroom` which predates catching any non-starter) is a dead giveaway that no real party data is being read.
+  - Load-state visual restoration takes a noticeable time (~300 frames) but the MCP reads never converge on correct values within any wait I tested (up to 1800 frames).
+  - Session 9's ending-notes mentioned a brief `view_map` / `map_name` desync after loading `eterna_forest_entered_south` that cleared "after my first interaction with the world." That precursor did NOT clear in this session's reproductions — walking one tile, opening/closing X menu, triggering a door warp all failed to fix it. Either the session-9 self-heal was coincidental or something about this session's bug is worse.
+  - Hypothesis for the dev team: the save-block heap-shift resolver needs to either (a) re-scan after every `load_state` (not once per MCP server startup), (b) verify its match by cross-checking money / badge / location against some sanity bound, or (c) pick the match whose surrounding memory layout is self-consistent rather than the first match.
+
+---
+
 ### BUG-011: Orphan Pokémon-name / trainer-class lines appear in `battle_turn` log around level-up & battle-end macros — **FIXED (verified 2026-04-17 session 10)**
 
 Re-ran `seek_encounter` from `forest_exit_route205_north_post_cheryl` and the Cheryl battle from `eterna_forest_entered_south`. The orphan `"Slowpoke"` before `"A wild Slowpoke appeared!"` is gone; the orphan `"Water Pulse"` / `"Drifloon"` entries that used to sandwich the level-up and faint macros no longer appear. Fix in `battle_tracker._is_orphan_name_text()`: filter AUTO_ADVANCE log entries with no newline, no terminal punctuation, and ≤24 chars — covers every bare species/move/trainer-class name observed in session 9 without touching real narration. Applied in both `BattleTracker.poll` and `turn._wait_for_action_prompt`. 6 tests in `TestQaBug011OrphanNameFilter` (5 unit + 1 integration via `seek_encounter`).
