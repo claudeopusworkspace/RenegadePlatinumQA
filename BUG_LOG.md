@@ -20,7 +20,17 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-014: `battle_turn(use_item=...)` / `use_battle_item` party_slot targets wrong Pokemon after a switch (session 12, 2026-04-19)
+### BUG-014: `battle_turn(use_item=...)` / `use_battle_item` party_slot targets wrong Pokemon after a switch (session 12, 2026-04-19) — **FIXED (verified 2026-04-19 session 12 dev)**
+
+Re-ran the Route 216 Blake repro: `load_state(qa_session12_route216_entry)` → `interact_with(Blake)` → `battle_turn(switch_to=1)` → `use_battle_item("Super Potion", party_slot=1)`. Post-fix, the tool reports `target: "Vaporeon", role: "active", old_hp: 44, new_hp: 30` — Super Potion correctly applied to the on-field Vaporeon (the 44→30 tail is the enemy's Charge Beam + hail landing after the heal animation, not a misroute). Pre-switch calls (`party_slot=0` vs active Monferno) still resolve correctly — the identity partyOrder case is unchanged.
+
+Root cause: `use_battle_item` tapped `PARTY_TOUCH_XY[party_slot]` directly, treating `party_slot` as a UI position into the battle party grid. After a mid-battle switch the Gen 4 engine updates `BattleContext.partyOrder[0]` (the UI→persistent-slot map) without physically reordering the party block — so persistent slot 1 (Vaporeon) moves to UI position 0, and the tool's direct tap hit UI position 1 (now Monferno).
+
+Fix in `renegade_mcp/use_battle_item.py`: read `PARTY_ORDER_ADDR` and translate the caller's persistent `party_slot` to the current UI position via `_persistent_to_ui_pos()` before tapping. HP verification splits on active vs bench — active reads live HP from the BattleMon struct (verifiable diff); bench relies on the UI tap + "HP unverifiable" message, since the party block isn't updated in real time for switched-out mons (see BUG-015). The response now carries a `role` field (`"active"`/`"bench"`) so callers can disambiguate.
+
+6 regression tests added in `TestQaBug014UseItemPartySlotAfterSwitch` (3 unit + 3 integration — post-switch heal, identity-map sanity, persistent→UI translation edge cases).
+
+**Original entry retained below for reference.**
 
 Using a healing item mid-battle with `party_slot=<active battler's slot>` skips the active battler and routes the heal to a bench Pokemon that happens to be at that party index. The tool's reply is also misleading — says "Slot N (bench — HP unverifiable)" for what the caller intended as the active slot.
 
@@ -36,7 +46,15 @@ Using a healing item mid-battle with `party_slot=<active battler's slot>` skips 
 
 ---
 
-### BUG-015: `read_party` during battle returns stale/pre-switch party order (session 12, 2026-04-19)
+### BUG-015: `read_party` during battle returns stale/pre-switch party order (session 12, 2026-04-19) — **FIXED (verified 2026-04-19 session 12 dev)**
+
+Re-verified against `qa_session12_route216_entry` → Blake battle → `battle_turn(switch_to=1)`. Post-fix `read_party` entries now carry `battle_ui_slot` (position in the battle party grid, read from `BattleContext.partyOrder[0]`) and `battle_role` (`"active"` / `"bench"`), and the active battler's `hp`/`max_hp`/`status_conditions` are refreshed from the live BattleMon struct. Persistent `slot` stays unchanged so callers keyed off stable identifiers still work. Verified in-battle: Vaporeon → `slot:1, battle_ui_slot:0, battle_role:"active"`; Monferno → `slot:0, battle_ui_slot:1, battle_role:"bench"`; HP for Vaporeon matches `read_battle` live value. `formatted` shows `"[UI 0 · active]"` tags per entry.
+
+Clarification on the QA "physical swap" hypothesis: the Gen 4 engine does *not* reorder encrypted party blocks on switch — it updates `partyOrder[4][6]` (a `[battler_index][ui_position] → persistent_slot` indirection table at `0x022C5B60`). `switch_to` / use_item targeting by UI position worked for unrelated reasons; the real signal is the partyOrder array, which this fix surfaces.
+
+Fix in `renegade_mcp/party.py`: `_read_battle_context()` snapshots `partyOrder` + live BattleMon data whenever battleEndFlag is zero. `read_party` then enriches each slot with `battle_ui_slot`/`battle_role`, and overrides the active battler's HP/status with the BattleMon value. No change when out of battle. 4 tests added in `TestQaBug015ReadPartyBattleEnrichment` (overworld = no enrichment, post-switch UI/role tags, live HP matches BattleMon, formatted output).
+
+**Original entry retained below for reference.**
 
 During a battle where a Pokemon has been switched out and a new one switched in, the Gen 4 engine physically swaps the two Pokemon's positions in the party block. `read_party` does not reflect this mid-battle — it keeps returning the pre-battle order until the battle ends.
 
@@ -51,7 +69,20 @@ During a battle where a Pokemon has been switched out and a new one switched in,
 
 ---
 
-### BUG-016: Level-up / stat-gain dialogue emits malformed text tokens mid-battle (session 12, 2026-04-19)
+### BUG-016: Level-up / stat-gain dialogue emits malformed text tokens mid-battle (session 12, 2026-04-19) — **FIXED (verified 2026-04-19 session 12 dev)**
+
+Root-caused via ROM scan: the two leak patterns come from the level-up summary UI labels, not a new text-substitution class.
+
+* `"Mothim@\nLv. 23"` — ROM file 368 index 944: `{NAME}{COLOR_ON}@{COLOR_OFF}\nLv. {LEVEL}` — party-panel summary label with a literal `@` glyph (renders as a sprite icon in-game). The decoder strips the `{0xFF00,...}` color VAR blocks around it, leaving the bare `@`.
+* `"Sp. Def"` — ROM file 368 index 947: a standalone stat-name VAR (`{0x010D,...}`) that drives the "stat rose by N!" summary graphic. Only the stat name leaks into the scan region.
+
+Both are party-panel rendering artifacts scraped from the battle text scan buffer alongside the real narration. They never carried actual story text — the real "grew to Lv. N!" and "<stat> rose!" lines are separate scan entries (from template indices 3 and 750–755 respectively), which still render cleanly.
+
+Fix in `renegade_mcp/battle_tracker.py`: new `_is_level_summary_artifact()` filter matches the `<name>[@*]?\nLv. <num>` shape (name ≤10 chars — Gen 4 nickname max — so real narration like "Monferno grew to\nLv. 30!" is not caught) plus a list of standalone stat-name tokens (HP / Atk / Def / SpA / SpD / Spe / Attack / Defense / Speed / Sp. Atk / Sp. Def / Sp. Attack / Sp. Defense / accuracy / evasion). Applied alongside BUG-011's `_is_orphan_name_text` in both `BattleTracker.poll` and `turn._wait_for_action_prompt`.
+
+7 regression tests added in `TestQaBug011OrphanNameFilter.test_bug016_*` (covers @-marker label, *-marker label, no-marker label, every standalone stat name, real narration negative cases, empty-text edge case).
+
+**Original entry retained below for reference.**
 
 When Mothim leveled from 22 → 23 mid-battle after a Natu wild fight on Route 211, `read_dialogue`'s conversation array contained a garbled line: `"Mothim@\nLv. 23"`. This looks like an unresolved text substitution — expected shape is something like `"Mothim reached\nLv. 23!"` or the classic Gen 4 `"{MON_NAME} is\ntrying to learn\n{MOVE_NAME}."`. Separately, during the Togetic fight earlier in the session, Monferno leveled from 29 → 30 and the battle log emitted a standalone line `"Sp. Def"` (no value, no "rose by X"), followed by the next game event — so the stat-gain numbers appear to be dropped entirely in one of the two level-up paths.
 
