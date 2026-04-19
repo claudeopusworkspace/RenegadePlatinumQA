@@ -16,7 +16,9 @@ Ideas for improving the Renegade MCP tooling, surfaced during QA playthroughs. T
 
 ---
 
-### FR-006: `view_map` legend does not document the walkable-floor character; easy to misread sparse-land rooms as "fully blocked"
+### FR-006: `view_map` legend does not document the walkable-floor character; easy to misread sparse-land rooms as "fully blocked" — **DONE (2026-04-19)**
+
+Resolved in `renegade_mcp/map_state.py::render_map`. Cave-floor (behavior `0x08`) now renders as `·` (middle dot) instead of a bare space, and both `_=ground` and `·=cave_floor` are tracked in `behaviors_seen` so they appear in the `Key:` legend whenever the map contains them. Void tiles (val==0, outside map) keep `.` so the three are visually distinct. Tests: `TestFr006FloorLegend` in `tests/test_map_tools.py` (5 cases).
 
 - **Area**: navigation / developer experience
 - **Priority**: medium — I wasted a session's Route-216 attempt because of this.
@@ -34,7 +36,9 @@ Ideas for improving the Renegade MCP tooling, surfaced during QA playthroughs. T
 
 ---
 
-### FR-003: Consider merging `use_battle_item` into `battle_turn` as a fourth action type
+### FR-003: Consider merging `use_battle_item` into `battle_turn` as a fourth action type — **DONE (2026-04-17)**
+
+Resolved: `battle_turn(use_item="Potion", party_slot=0, target=N)` delegates to `use_battle_item` at ACTION prompt and returns the unified shape. Standalone tool kept for back-compat. See `renegade_mcp/turn.py` + `TestFr003BattleTurnUseItemDelegation`.
 
 - **Area**: battle
 - **Priority**: medium (pure discoverability / UX — existing `use_battle_item` tool already covers the capability, just easy to miss)
@@ -52,7 +56,9 @@ Ideas for improving the Renegade MCP tooling, surfaced during QA playthroughs. T
 
 ---
 
-### FR-004: No helper for evolution-stone use; `use_item` is Medicine-pocket only
+### FR-004: No helper for evolution-stone use; `use_item` is Medicine-pocket only — **DONE (2026-04-17)**
+
+Resolved: `use_item` now dispatches on the item's ROM `fieldUseFunc` and covers healing / berries / evo stones / Gracidea / TMs & HMs / Repel / Bicycle / Escape Rope / Honey. Single signature `use_item(item_name, party_slot=-1, forget_move=-1)`. See `renegade_mcp/use_item.py`.
 
 - **Area**: inventory / menu
 - **Priority**: medium
@@ -63,7 +69,9 @@ Ideas for improving the Renegade MCP tooling, surfaced during QA playthroughs. T
 
 ---
 
-### FR-005: Make `battle_turn`'s "slot 0 is the active battler" error self-describing
+### FR-005: Make `battle_turn`'s "slot 0 is the active battler" error self-describing — **DONE (2026-04-17)**
+
+Resolved: `_switch_to_zero_error(emu)` now reads battle slot 0 species and names it in the error across all three validation paths (ACTION / SWITCH_PROMPT / FAINT_FORCED). Server docstring also clarifies battle-slot vs party-slot numbering. See `renegade_mcp/turn.py` + `TestFr005SwitchToZeroErrorMessage`.
 
 - **Area**: battle / developer experience
 - **Priority**: low (pure signaling — the behavior is correct, the message just didn't land for me)
