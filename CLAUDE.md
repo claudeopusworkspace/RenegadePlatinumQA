@@ -228,40 +228,37 @@ Saved macros persist across sessions in `macros/`.
 
 - **Character**: WOJ (boy), rival **Barry**
 - **Badges**: 1 (**Coal**)
-- **Money**: **$9,222** (spent ~$8,250 at Eterna Mart restocking).
-- **Location**: **Route 211 West** at (356, 532), map 365, heading east back toward Mt. Coronet after a supply run to Eterna. Best resume point: **`session12_end_route211_stocked`** (healed + stocked + already 1 step into Route 211 from Eterna, ready to push back to Route 216). Alternative: **`session12_eterna_stocked`** (inside Eterna Mart post-buy, if you want to re-plan routing from the city).
-- **Party** (all fully healed at Eterna PC):
-  1. **Monferno** Lv30 (Quirky, Blaze) — Low Kick (20/20) / Flamethrower (15/15) / Fake Out (10/10) / Rock Smash (15/15). 91/91 HP. **Leveled up this session** (Lv29 → Lv30 vs Togetic).
-  2. **Vaporeon** Lv17 — 76/76 HP. Fainted vs Vigoroth on Route 216, revived at PC. Still painfully underleveled for the region — grind candidate.
-  3. **Mothim** Lv23 holding Exp. Share — Protect / Gust / Bug Bite / Hidden Power (unknown type — confirmed SE vs Poison/Flying AND Fairy/Flying, so likely Electric, Ice, or Rock). 70/70 HP. **Leveled up this session** (Lv21 → Lv23). Skipped learning Confusion at Lv23 (Gust is STAB and stronger after STAB bonus).
-  4. **Shinx** Lv6 — unchanged. Still just bait.
+- **Money**: **~$11,000** (gained from Edward $640 + Garrett $1,320 + Laura + Caroline $352 this session; rough estimate, verify next session).
+- **Location**: **Eterna Gym** (map 67) at elevation L1, (14, 23) facing up — mid-gym after defeating Lass Caroline. Gardenia + 2 Pokemon Breeder F trainers still pending. Best resume point: **`session13_end_gym_healed_post_lass`** (full HP, post-Lass, positioned inside gym ready to engage next trainer).
+- **Party** (all fully healed via `use_medicine`):
+  1. **Monferno** Lv31 (Quirky, Blaze) — Low Kick (11/20) / Flamethrower (**4/15 — LOW**) / Fake Out (8/10) / Rock Smash (15/15). 93/93 HP. **Leveled up this session** (Lv30 → Lv31 vs Scyther). Skipped learning **Feint** (priority +2 Normal, 30 BP) at Lv31. Spe 69, outspeeds Lv22 Scyther.
+  2. **Vaporeon** Lv17 — 76/76 HP. Unchanged this session (only 1 wild Geodude KO for exp). Still painfully underleveled for gym.
+  3. **Mothim** Lv25 holding Exp. Share — Protect (10/10) / Gust (35/35) / Bug Bite (14/20) / Hidden Power (15/15). 75/75 HP. **Leveled up TWICE this session** (Lv23 → Lv25 via Route 216 trainers + Lass Caroline). **Bug Bite is the MVP for Gardenia's grass team**.
+  4. **Shinx** Lv6 — unchanged. Still bait.
 - **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), Fashion Case, HM06 Rock Smash (on Monferno), HM01 Cut, Coal Badge, Works Key.
-- **Bag** (post-restock):
-  - Medicine: **Super Potion x10**, **Antidote x5**, **Awakening x3**, Parlyz Heal x1.
-  - Items: Repel x9, Silk Scarf, Oval Stone, Expert Belt, Miracle Seed, Magnet, Honey x10, Destiny Knot, **Moon Stone (new — R0112 pickup)**, **Soft Sand (new — R0113 at (2, 60))**, **Prism Scale (new — R0113 at (6, 18))**.
+- **Bag** (post Lass-fight heal):
+  - Medicine: **Super Potion x1 (LOW — needs restock)**, Antidote x5, Awakening x1, Parlyz Heal x0 (used on Mothim vs Shroomish).
+  - Items: **Repel x7**, Silk Scarf, Oval Stone, Expert Belt, Miracle Seed, Magnet, Honey x10, Destiny Knot, Moon Stone, Soft Sand, Prism Scale.
   - TMs & HMs: TM08/09/27/34/39/58/76 (x99 each), HM01, HM06.
   - Balls: Poké Ball x21.
 - **Story flags** (new this session in bold):
   - All priors still valid.
-  - **BUG-013 workaround still applied precautionarily** at session start (load_state post_starter_twinleaf_eevee → 300f → target → 300f). All reads clean immediately. Per BUG_LOG.md, next session can drop the warmup dance — BUG-013's root-cause fix is holding.
-  - **Reached Route 216** via the Mt. Coronet R0112 → R0113 → R0111 chain. R0113's WEST LAND STRIP is the correct path north (cols 0-8 walkable floor, not water as the legend `≈=sea` suggests). Took 3 consumable rewards on the way: Moon Stone on R0112 at (12, 37), Soft Sand on R0113 at (2, 60), Prism Scale on R0113 at (6, 18).
-  - **R0111 (map 217)** is the floor above R0113 — 4 warps: (10, 27) back-down to R0113, (2, 18) **out to Route 216**, (15, 16) labeled as both Mt. Coronet and Iceberg Ruins (untested, likely post-Regice event). First time routing through R0111.
-  - **Route 216 entry at (375, 403) map 383**. Snowy route with hail and steep BDHC elevation — many Pokeballs/trainers visible on view_map are unreachable from entry without Rock Climb. Mothim was Toxic'd by a wild Zubat in R0111 before this; cured with Antidote + Super Potion at entry.
-  - **Defeated Ace Trainer Blake (trainer 132) on Route 216** at (355, 402). Team: Porygon Lv23 (Trace → copied Blaze, kept spamming Charge Beam to +3 SpA while Monferno slept — very close call, used 2 Super Potions) → Vigoroth Lv23 (Crush Claw -Def'd and KO'd Vaporeon, Monferno came back in from switch and OHKO'd with Low Kick SE). +$1,380.
-  - **Failed against Ace Trainer Laura (trainer 134) at (328, 405)**. Team: Togetic Lv23 (Fairy/Flying per RP retyping, Serene Grace, Wish/Safeguard/Air Cutter/Ancient Power) → Swellow Lv23 (Guts, Aerial Ace SE on Fighting). Mothim got OHKO'd by Swellow Aerial Ace on switch-in (bad call — Mothim's Bug/Flying takes 1x but the damage was still ~67); Monferno then outsped but Swellow's Aerial Ace is SE vs Fighting and one-shot Monferno from 40 HP. Reverted to `session12_route216_post_blake` and retreated to heal + stock.
-  - **Retreat path**: Route 216 (2, 18) warp → Mt. Coronet R0111 → R0113 (had to traverse the west strip again) → R0112 → Route 211 West → Eterna City south border. `heal_party` auto-nav to Eterna PC worked cleanly.
-  - **Restocked at Eterna Mart**: +10 Super Potion ($7k), +5 Antidote ($500), +3 Awakening ($750). Revive + Hyper Potion still gated (need 3/4 badges respectively).
+  - **BUG-013 fix holds — no workaround needed at session start.** Loaded `session12_end_route211_stocked` cold, all reads clean immediately.
+  - **Rematched and defeated Ace Trainer Laura (trainer 134) on Route 216** at (328, 405). Plan worked: Fake Out Togetic (flinched, ~16 dmg) → Flamethrower Togetic (did 36 dmg, Togetic put up Safeguard) → Flamethrower OHKO'd Togetic from 11 HP. Swellow came in; declined switch; took Wing Attack SE (63 dmg) and Monferno's Flamethrower OHKO'd Swellow. +cash.
+  - **Defeated Skier Edward (trainer 137)** at (314, 404) — Snover/Swinub/Snorunt Lv20-ish. Easy Flamethrower/Low Kick. +$640.
+  - **Defeated Ace Trainer Garrett (trainer 133, "Ace Trainer Snow M")** at (299, 394) — Mr. Mime Lv22 (Psychic/Fairy, Filter) → Scyther Lv22 (Bug/Flying, Technician, moves Agility/Wing Attack/Slash/Night Slash) → Nuzleaf Lv22 (Grass/Dark, Chlorophyll, Fake Out). **Key realization: Monferno Spe 66-69 outspeeds Lv22 Scyther** — Flamethrower OHKO'd (would've been KO'd if slower). +$1,320.
+  - **Workers at (304, 385)/(305, 385) block further west on Route 216**: "We're very sorry, but this way is currently closed right now. The weather is too dangerous for anyone to continue forward." Confirms weather-gate mid-route.
+  - **Gardenia found inside Snowbound Lodge (map 384) at (5, 3)** — lodge door at Route 216 (303, 398). Gardenia dialogue: "I'm Eterna City's Gym Leader! ... came here hoping to catch a SNOVER ... I'll go back to the Gym. I'll be waiting for you, Trainer!" — triggers her return to Eterna Gym.
+  - **Returned to Eterna and entered gym (map 67 elevation L1)** via the gym door at Eterna (312, 563). Gardenia now spawned at gym coord (11, 3). Gym has 3 intermediate trainers: Lass (14, 22), Pokemon Breeder F (20, 17), Pokemon Breeder F (2, 7). Gym Guide at (9, 25) says "You can't challenge the Gym Leader until you beat all the Gym's Trainers."
+  - **Defeated Lass Caroline** (first gym trainer): Lotad / Cacnea / Shroomish / Exeggcute all Lv22. Mothim Bug Bite SE OHKO'd all. +$352. Post-battle dialogue: "This gym's floral clock... You can walk on its hands. That's how you get to the next Trainer." — confirms the clock-tile-walking gym puzzle is active.
 - **Next session start**:
-  1. BUG-013 workaround no longer needed per this session's verification — but if anything weird happens on first read, fall back to the `post_starter_twinleaf_eevee` → 300f → target → 300f pattern from session 11.
-  2. Load **`session12_end_route211_stocked`** (Route 211 West at (356, 532) with full HP and full bag) — drops you 1 step inside Route 211 from Eterna, already pointed east toward Mt. Coronet.
-  3. **Primary objective: rematch Ace Trainer Laura on Route 216 and continue west.** Route back: Route 211 East → Mt. Coronet R0112 stairs_W (11, 10) → R0113 → R0111 (10, 27 stairs) → (2, 18) warp to Route 216.
-  4. **Strategy vs Laura**:
-     - Fake Out Togetic (flinch, ~15 dmg).
-     - Flamethrower Togetic twice — NVE (Fire vs Fairy/Flying = 0.5x) but STAB still 2HKOs from Lv30 Monferno against Togetic's ~58 SpD. Use `force=True` when the effectiveness warning blocks.
-     - Swellow comes in: Monferno is faster (Spe 66 vs ~65, tied at best). Flamethrower for STAB neutral damage OR switch out to a Fake Out user (only Monferno has Fake Out — not useful after one use). Most reliable: Super Potion Monferno on the turn Swellow enters, then Flamethrower from full HP twice = KO. Expect 1-2 Super Potions spent.
-  5. **Then push west on Route 216.** Other trainers visible: Ace Trainer Snow F (trainer 135) at (344, 411), Skier F/M at (366, 395) / (346, 392), Black Belt (258) at (337, 392). Laura's defeat should unlock west-strip of the route.
-  6. **Goal still: find Gardenia on Route 216.** The objects list at my furthest checkpoint (340, 402) did NOT surface her as a named NPC, so she's further west. The overworld pattern `G` on the ASCII map at grid coords like (343, 530) turned out to be the Map Signpost (symbol `G` reused for multiple NPC types — first-letter of NPC name or class). Don't trust ASCII letters; use the `objects` list for NPC names.
-  7. **Vaporeon is critically underleveled.** Consider a grind stop between Mt. Coronet R0112 and Route 216 — wild Geodude/Beldum/Nosepass/Metang give nice Exp, and Vaporeon's Water Pulse handles Geodude/Nosepass SE. Or deposit Vaporeon and pull a Lv-appropriate box mon.
+  1. Load **`session13_end_gym_healed_post_lass`** (full HP, inside gym, post-Lass).
+  2. **Primary objective: clear remaining 2 Breeders, then challenge Gardenia.** The gym uses floral clock hand tiles for navigation. Pokemon Breeder F (object 4) at (20, 17) is the next closest trainer.
+  3. **Strategy vs Gardenia**: She's Grass-type. In RP her team is likely 4-6 mons (inflated vs vanilla). Monferno's Flamethrower + Mothim's Bug Bite (2x SE on pure Grass, 4x on Grass/Poison) are the key moves. **Watch Flamethrower PP — only 4 left.** May want to get to the Move Reminder at Pastoria (free) eventually, but for now rely on Bug Bite spam from Mothim.
+  4. **Flamethrower PP is critical** (4 left). Consider healing party via `heal_party` auto-nav back to Eterna PC → Mart buy Super Potions (need at least 5-10) → return. The gym exit warp is at (11, 27).
+  5. **Mart restock needed**: Super Potion down to 1. Need minimum 8-10 for gym + next route. Consider also buying Ether if available — no, Ethers are rare. Just play around PP.
+  6. **Vaporeon is still Lv17 — useless against Gardenia's Grass team.** Leave in party for Exp. Share if possible, or switch Exp. Share to Vaporeon (currently on Mothim).
+  7. **Gardenia's expected reward**: **TM86 Dazzling Gleam** (NOT Grass Knot — RP retyped TM86 per CLAUDE.md story gates section). Also Forest Badge.
 - **Open QA bugs after this session**:
   - **BUG-014 NEW** — `battle_turn(use_item=..., party_slot=...)` / `use_battle_item` route heals to the wrong Pokemon after a mid-battle switch. Proved the Super Potion went to benched Monferno, not active Vaporeon, and the tool returned `"Slot N (bench — HP unverifiable)"` for what the caller intended as the active slot. Repro: `session12_route216_entry`. Details in BUG_LOG.md.
   - **BUG-015 NEW** — `read_party` during battle keeps pre-switch slot order (and pre-battle HP). Makes party_slot math for BUG-014 impossible to reason about without consulting the `battle_state.party` response from `battle_turn`. Repro: same as BUG-014.
@@ -280,6 +277,13 @@ Saved macros persist across sessions in `macros/`.
   - 1 trainer defeated on Route 216 (Blake), 1 failed (Laura) — planned retry route next session.
   - Discovered BUG-014 + BUG-015 + BUG-016 through actual play — the item-target bug nearly cost me a whiteout.
   - Mothim hit Lv23 and is starting to pull its weight; Vaporeon is falling behind badly.
+- **Session 13 highlights**:
+  - **Rematched Laura successfully** on Route 216 — plan from session 12 worked almost exactly. Monferno outspeed Swellow was the key surprise (Spe 66 > Scyther/Swellow Lv22-23).
+  - **Beat Skier Edward + Ace Trainer Garrett** — cleared mid-Route 216. Monferno hit Lv31 (+Feint skipped).
+  - **Discovered the Gardenia fetch-quest trigger is inside the Snowbound Lodge (map 384), not past the Workers.** Lodge is at Route 216 (303, 398). Gardenia at (5, 3) inside. After dialogue she teleports back to Eterna Gym.
+  - **Workers at (304, 385)/(305, 385) are a permanent(?) weather gate** blocking further west progress on Route 216. Likely lifted by later story event.
+  - **Re-entered Eterna Gym** — Gardenia now spawned inside at (11, 3). Lass Caroline (first gym trainer) defeated. 2 Breeders + Gardenia pending.
+  - No new bugs discovered (BUG-007, BUG-009 still open but untriggered this session). BUG-013/014/015/016 untriggered — no mid-battle item uses needed, no new level-up text observed closely.
 
 ## Tips
 

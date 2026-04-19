@@ -55,6 +55,16 @@
 | `session12_eterna_healed_post_retreat` | Post-retreat from Route 216 to Eterna PC — full heal (Vaporeon revived). Player at Eterna PC (map 69, 8, 6). Bag: 1 Parlyz Heal (post-heal, pre-shop). Good "reset to safety" checkpoint. |
 | `session12_eterna_stocked` | Post-Mart visit, bag: Super Potion x10, Antidote x5, Awakening x3, Parlyz Heal x1. Money ¥9,222. Player at Eterna Mart (map 66). |
 | `session12_end_route211_stocked` | **Session 12 end state.** Player on Route 211 West at (356, 532) — just crossed from Eterna City, fled a wild Machop, heading back to Mt. Coronet for the Route 216 Ace Trainer Laura rematch. Party fully healed, bag fully stocked. Monferno Lv30, Mothim Lv23 (**new**), Vaporeon Lv17, Shinx Lv6. Money $9,222. Items gained this session: Moon Stone (R0112), Soft Sand (R0113), Prism Scale (R0113). |
+| `session13_route216_pre_laura` | Route 216 at (375, 403) just re-entered from Mt. Coronet. Pre-westward-push state. |
+| `session13_laura_adjacent` | Route 216 at (330, 405), one tile east of Ace Trainer Laura (trainer_id 134) at (328, 405). `interact_with(object_index=2)` re-triggers the fight. |
+| `session13_post_laura_stocked` | Route 216 at (329, 405) post-Laura-win. Party full HP. Good re-entry point for the rest of the route. |
+| `session13_pre_ace_snow_m` | Route 216 at (299, 395) facing up, adjacent to **Ace Trainer Garrett** (trainer_id 133, "Ace Trainer Snow M"). `interact_with(object_index=5)` triggers Mr. Mime/Scyther/Nuzleaf Lv22 fight. |
+| `session13_vs_scyther` | Mid-Garrett-fight after Mr. Mime KO, SWITCH_PROMPT with Scyther Lv22 incoming. Good repro for the "Monferno Spe 69 outspeeds Lv22 Scyther" matchup check. |
+| `session13_route216_weather_block` | Route 216 at (305, 399) near Snowbound Lodge. Workers at (304, 385)/(305, 385) confirm "way is currently closed" — weather gate blocks further west on Route 216. Gardenia is inside the Lodge, not past the Workers. |
+| `session13_gardenia_triggered` | **Snowbound Lodge interior (map 384)** at (5, 4), one tile south of Gardenia NPC. Gardenia dialogue triggered — she returns to Eterna Gym. |
+| `session13_eterna_gym_entry` | **Eterna Gym (map 67)** at (11, 27) elevation L1. Gardenia now spawned in the gym at (11, 3). Gym Guide at (9, 25). 3 gym trainers (Lass, 2 Breeders) still in the way. |
+| `session13_end_gym_post_lass` | Mid-gym post-Lass-Caroline-win. Lotad/Cacnea/Shroomish/Exeggcute Lv22 KO'd. Mothim paralyzed + Leech Seeded. |
+| `session13_end_gym_healed_post_lass` | **Session 13 end state.** Post-Lass-Caroline, full HP party. Monferno Lv31 (**new**, 93/93), Vaporeon Lv17, Mothim Lv25 (**new**, 75/75), Shinx Lv6. Player in Eterna Gym map 67 at (14, 23) elevation L1 facing up. Bag: Super Potion x1, Antidote x5, Awakening x1, Parlyz Heal **depleted**, Repel x7. Gardenia + 2 Pokemon Breeder F trainers pending. Next: engage Pokemon Breeder F at (20, 17), then (2, 7), then Gardenia at (11, 3). **Also needs Mart restock — only 1 Super Potion left.** |
 
 ## Bug Reproduction States
 
