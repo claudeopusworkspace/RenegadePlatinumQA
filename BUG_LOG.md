@@ -20,7 +20,13 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-013: BUG-012 symptoms return on the FIRST `load_state` after `init_emulator` + `load_rom` (session 11, 2026-04-18) — blocking until worked around
+### BUG-013: BUG-012 symptoms return on the FIRST `load_state` after `init_emulator` + `load_rom` (session 11, 2026-04-18) — **FIXED 2026-04-19 (awaiting re-verification next session)**
+
+Root cause: BUG-012's fix made `name_length × 10` dominate delta scoring, which works when the decoy is a *longer* name (Monferno, 8 chars) than the real player name. In QA's save the player name is "WOJ" (3 chars), and a ROM text-buffer in main RAM contains the string "Destiny Knot". The 4-char substring `"Knot"` scored 40+2=42 at delta=-0x100, beating the real `"WOJ"` at delta=-0x20 with score 30+3=33. The secondary canaries at the decoy were wildly out of range (party_count=36,299,880 and money=$36,302,676 — the reported "always $36,302,676" fingerprint), but the scoring treated them as missed bonuses, not disqualifications.
+
+Fix in `renegade_mcp/addresses.py`: structural gate `_save_block_structural_ok()` disqualifies any candidate where `party_count ∉ [0, 6]` OR `money > 999,999` (Platinum's hard invariants). Applied to both `_detect_save_block_delta` (during the scan) and `revalidate` (so a cached decoy delta can't stay stuck). 4 regression tests added in `TestQaBug013ShortPlayerNameDecoy` (test_detect_shift.py), covering cold-start, mid-session, the unit-level gate, and revalidate. Full detect_shift suite (18 tests) passes; pre-starter, BUG-012 name-length cap, and cross-save-switch tests unaffected.
+
+**Original entry retained below for reference.**
 
 Fresh QA session startup triggers the identical memory-read desync that BUG-012 was supposed to fix. Symptoms match BUG-012 exactly — `map_name`→Mystery Zone, `read_party` slot 0 = Combusken species 256 + slots 1-5 "???", `read_trainer_status` money = $36,302,676 / badges=0 / on_bicycle=true, `read_bag` returns empty pockets with nonsense total, `view_map` → "Could not resolve terrain". Every renegade RAM read is pointing at the wrong heap offset. BUG-012's fix to `addresses._name_length_at` / `revalidate` must have been bypassed by the cold-ROM-init code path.
 
