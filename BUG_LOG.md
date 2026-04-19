@@ -20,7 +20,45 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-017: `navigate_to` / `interact_with` silently teleport player to (15, 13) when pathing across Eterna Gym floral-clock tiles (session 14, 2026-04-19)
+### BUG-017: `navigate_to` / `interact_with` silently teleport player to (15, 13) when pathing across Eterna Gym floral-clock tiles (session 14, 2026-04-19) — **FIXED (verified 2026-04-19 session 14 dev)**
+
+Re-ran the canonical repro on `bug_navigate_eterna_gym_clock_tile_stuck`:
+`navigate_to(11, 27)` from (15, 13) now completes with 70 steps → player
+exits to Eterna City (map 65, (312, 562)). `interact_with(object_index=4)`
+on the east Breeder at (20, 17) also reaches adjacency cleanly. Before
+the fix both calls collapsed to "warp_failed, repaths: 15, final=(15, 13)".
+
+Root cause was **not** dynamic clock rotation or UI/RAM desync — it was
+an L0↔L1 gap in the 3D BFS. Eterna Gym's BDHC defines an L0 strip
+(height = -2, just a shallow-grass tile behavior) at row 20 separating
+the upper clock area (L1) from the lower warp perimeter (L1). The only
+connector across rows 17–21 at col 11 is the L2 ramp on the south clock
+arm. With that arm fountain-blocked, the pathfinder had to route along
+the outer L1 perimeter — but `_bfs_pathfind_level` refused to cross from
+L1 (height 0) to L0 (height -2) without a dedicated ramp, so no alternate
+route existed and the repath loop ran against the south arm until the
+cap triggered. The observed "teleport to (15, 13)" was the bug *log*
+artifact, not a real teleport — execution simply never left the east
+arm.
+
+Fix in `renegade_mcp/pathfinding.py` + `renegade_mcp/nav_constants.py`:
+new `STEPPABLE_HEIGHT = 4` constant. `_bfs_pathfind_level._tile_on_level`
+now accepts same-level neighbours whose defined elevation is within 4
+height-units of the current level — so L0↔L1 (diff 2) walks through as a
+small step, while L1↔L2 (diff 16) still requires a ramp. Also updated
+`renegade_mcp/interaction.py` to use 3D BFS when elevation data is
+available (it was 2D-only before), so `interact_with` respects the same
+elevation logic `navigate_to` uses.
+
+5 regression tests added in
+`tests/test_qa_bug017_clock_navigation.py::TestQaBug017ClockNavigation`
+(save-state sanity, STEPPABLE_HEIGHT bounds, L1 BFS crossing the row-20
+L0 strip, navigate_to reaches the south warp, interact_with east Breeder
+succeeds). Existing 3D-nav test (`test_clock_hand_dynamic_blocks`)
+updated to note that clean 3D paths now typically find the route without
+exercising the repath safety net.
+
+**Original entry retained below for reference.**
 
 - **Tool**: `navigate_to`, `interact_with` (object_index mode)
 - **Severity**: major — makes it effectively impossible to auto-navigate inside Eterna Gym (map 67) post-clock-rotation; forces `press_buttons` to move between arms/hub.
@@ -37,7 +75,40 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-018: Mid-battle `MOVE_LEARN` response returns wrong `learning_pokemon` and `current_moves` after the leveling mon is NOT the active battler (session 14, 2026-04-19)
+### BUG-018: Mid-battle `MOVE_LEARN` response returns wrong `learning_pokemon` and `current_moves` after the leveling mon is NOT the active battler (session 14, 2026-04-19) — **FIXED (verified 2026-04-19 session 14 dev)**
+
+Root cause in the decomp: `BattleContext.levelUpMons` (address
+`0x022C5B3D`) is a **cumulative** OR-mask for the whole battle. The only
+write in `ref/pokeplatinum/src/battle/battle_script.c:10090` is
+`data->battleCtx->levelUpMons |= FlagIndex(slot);` — never paired with
+any clear. When Monferno (slot 0) leveled up earlier in the Gardenia
+fight (30 → 31) and then fainted, bit 0 stayed set. When Mothim (slot 2)
+later leveled 28 → 29 and triggered the Poison Powder prompt, the mask
+was `0b00000101` (bits 0 and 2). The paired `GET_EXP_PARTY_SLOT`
+(`tmpData[6]`) is a **lower-bound scan index**, not the current-slot
+cursor — it's only incremented at `SEQ_GET_EXP_CHECK_DONE` *after* a
+slot finishes processing, so during Mothim's move-learn prompt the scan
+index was still 1 (or 0). The old "lowest set bit ≥ scan index"
+heuristic returned slot 0 → Monferno.
+
+Fix in `renegade_mcp/turn.py::_get_move_learn_info`: cross-reference
+each set bit against the species' level-up learnset
+(`data/level_up_moves.json`). The mon whose learnset contains
+`(current_level, move_id)` is the one actually in the move-learn flow —
+Monferno Lv31 learns Slack Off (move 303), not Poison Powder, so bit 0
+is filtered out and bit 2 (Mothim Lv29 → Poison Powder, move 77) is
+returned. The scan heuristic stays as a fallback when the ROM learnset
+has no match (unknown species, custom movepool overrides, etc.).
+
+8 regression tests added in
+`tests/test_qa_bug018_move_learn_identification.py::TestQaBug018MoveLearnLearnsetMatch`
+— canonical Monferno/Mothim repro (mocked memory), single-level-up
+correctness, fallback when no species matches, null task pointer,
+zero-mask, out-of-range move id, fainted-earlier-leveler repro. One
+extra grep-style assertion in `TestQaBug018LevelUpMaskAccumulation`
+guards against a future decomp upgrade silently clearing the mask.
+
+**Original entry retained below for reference.**
 
 - **Tool**: `battle_turn` (MOVE_LEARN state); `battle_tracker` move-learn detection.
 - **Severity**: major — caller could call `forget_move=N` expecting to overwrite slot N of the *leveling* Pokemon's moveset and instead corrupt an unrelated party member's moves. The defensive `forget_move=-1` (skip) path is safe, but anyone scripting auto-learns would trust the wrong data.
