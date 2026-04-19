@@ -20,6 +20,36 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
+### BUG-017: `navigate_to` / `interact_with` silently teleport player to (15, 13) when pathing across Eterna Gym floral-clock tiles (session 14, 2026-04-19)
+
+- **Tool**: `navigate_to`, `interact_with` (object_index mode)
+- **Severity**: major — makes it effectively impossible to auto-navigate inside Eterna Gym (map 67) post-clock-rotation; forces `press_buttons` to move between arms/hub.
+- **Save state**: `bug_navigate_eterna_gym_clock_tile_stuck` (captured mid-bug at (15, 13) L2 on the east clock arm after the 1st repro). Cleaner repro available from `session13_end_gym_healed_post_lass` (pre-Lass) followed by defeating Lass + the Breeder at (20, 17) so the clock has rotated to expose the layout that triggers this.
+- **Call (canonical repro from bug state)**:
+  ```
+  load_state("bug_navigate_eterna_gym_clock_tile_stuck")
+  navigate_to(11, 27)         # south-exit warp
+  ```
+- **Expected**: Pathfinder walks from the current clock-arm tile, down the hub ramp, onto the south arm, and through the warp to Eterna City.
+- **Actual**: Consistently returns `warp_failed: true`, `repaths: 15`, and reports path like `"left x3 -> down x14"` / `"down x14"` / `"down x13"` depending on start tile — but the player actually ends at **(15, 13) L2** every single time, regardless of start. From (11, 13) hub (L3) the tool reported `"down x14"` and physically moved the player **east 4 tiles** back onto the east arm. Tried starts (20, 18), (15, 13), (14, 13), (13, 13), (12, 13), (11, 13) hub, (11, 14) ramp — all of them collapsed to final position (15, 13). Reported `path` string is inconsistent with the actual executed movement.
+- **Workaround**: Use `press_buttons(["down"|"up"|"left"|"right"], frames=8)` with 30-frame settling between presses to walk tile-by-tile across the clock manually; `navigate_to` / `interact_with` start working normally again once the player is off the `2`/`3`/`/`/`\` tiles and back on an L1 floor tile (e.g. after reaching (1, 7) or similar L1 region). `interact_with(object_index=2)` on Gardenia from outside the clock (at (11, 27) after re-entering) *did* succeed post-clock-rotation, so the bug is specifically about pathing **across/through** the floral-clock elevation structure — once the clock is "solved enough" for the hand to align with the target, the straight hub→arm→target path works.
+- **Notes**: This is likely specific to the Eterna Gym BDHC + the dynamic clock-tile elevation state (tiles rotate between L2 and walls with each trainer defeat). The BFS seems to see a valid path but the stepper's elevation-transition logic places the player at (15, 13) as a fallback/stuck destination. See also: `view_map` claims the player was at (11, 14) after a `down` press, but the corresponding screenshot clearly showed the player visually on the east arm near (15, 13) — possible coordinate/render desync in addition to the pathfinder failure (could be symptom of the same root cause — player's authoritative grid position read from RAM disagrees with the collision grid the pathfinder is steering from).
+
+---
+
+### BUG-018: Mid-battle `MOVE_LEARN` response returns wrong `learning_pokemon` and `current_moves` after the leveling mon is NOT the active battler (session 14, 2026-04-19)
+
+- **Tool**: `battle_turn` (MOVE_LEARN state); `battle_tracker` move-learn detection.
+- **Severity**: major — caller could call `forget_move=N` expecting to overwrite slot N of the *leveling* Pokemon's moveset and instead corrupt an unrelated party member's moves. The defensive `forget_move=-1` (skip) path is safe, but anyone scripting auto-learns would trust the wrong data.
+- **Save state**: `session14_pre_gardenia_healed_stocked` (pre-Gardenia, everything stocked). Repro: load → interact_with Gardenia (walk up through clock, press A), fight through Bellossom → Roserade. Monferno fainted vs Roserade's Sludge crit; after swapping Mothim in and KOing 3 more of Gardenia's mons, Mothim hit Lv29 learning Poison Powder. Vanilla-path, no weirdness needed.
+- **Call**: `battle_turn(move_index=2)` (Bug Buzz) that KOs Grotle — exp rollup levels Mothim 28 → 29, triggering MOVE_LEARN.
+- **Expected**: Response's `move_to_learn: "Poison Powder"`, `learning_pokemon: {slot: 2, name: "Mothim", level: 29}`, `current_moves: [Protect, Gust, Bug Buzz, Hidden Power]` (Mothim's live moveset).
+- **Actual**: `move_to_learn: "Poison Powder"` was correct, but `learning_pokemon: {slot: 0, name: "Monferno", level: 31}` (Monferno had fainted several turns earlier) and `current_moves: [Low Kick, Flamethrower, Fake Out, Rock Smash]` (Monferno's moves, not Mothim's). The on-screen prompt was asking about Mothim — passing `forget_move=0` would likely have overwritten Monferno's Low Kick on-cartridge if the game uses the caller's choice directly, OR the game would have corrected to Mothim but the tool's reported slot index would have overwritten the wrong move. Either way the tool's pre-call response is describing the wrong party member.
+- **Workaround**: `forget_move=-1` skips learning safely; then use overworld `relearn_move` from Pastoria later.
+- **Notes**: `learning_pokemon: slot 0` is **party-slot 0**, which was Monferno (fainted). The actually-leveling Pokemon was **party-slot 2 (Mothim)** with `battle_ui_slot=0` / `battle_role="active"`. The tool looks like it's reading the learning mon from party-slot 0 (or from the active `BattleMon` struct's persistent slot mapping) instead of cross-referencing against the EXP/level delta or the UI-active `battle_ui_slot`. Feels related to the BUG-014/BUG-015 family (persistent-slot vs UI-slot confusion) — the fix there re-derived `battle_ui_slot`/`battle_role` but the MOVE_LEARN path probably wasn't updated to use that mapping.
+
+---
+
 ### BUG-014: `battle_turn(use_item=...)` / `use_battle_item` party_slot targets wrong Pokemon after a switch (session 12, 2026-04-19) — **FIXED (verified 2026-04-19 session 12 dev)**
 
 Re-ran the Route 216 Blake repro: `load_state(qa_session12_route216_entry)` → `interact_with(Blake)` → `battle_turn(switch_to=1)` → `use_battle_item("Super Potion", party_slot=1)`. Post-fix, the tool reports `target: "Vaporeon", role: "active", old_hp: 44, new_hp: 30` — Super Potion correctly applied to the on-field Vaporeon (the 44→30 tail is the enemy's Charge Beam + hail landing after the heal animation, not a misroute). Pre-switch calls (`party_slot=0` vs active Monferno) still resolve correctly — the identity partyOrder case is unchanged.

@@ -227,49 +227,48 @@ Saved macros persist across sessions in `macros/`.
 ## Game Progress
 
 - **Character**: WOJ (boy), rival **Barry**
-- **Badges**: 1 (**Coal**)
-- **Money**: **~$11,000** (gained from Edward $640 + Garrett $1,320 + Laura + Caroline $352 this session; rough estimate, verify next session).
-- **Location**: **Eterna Gym** (map 67) at elevation L1, (14, 23) facing up — mid-gym after defeating Lass Caroline. Gardenia + 2 Pokemon Breeder F trainers still pending. Best resume point: **`session13_end_gym_healed_post_lass`** (full HP, post-Lass, positioned inside gym ready to engage next trainer).
-- **Party** (all fully healed via `use_medicine`):
-  1. **Monferno** Lv31 (Quirky, Blaze) — Low Kick (11/20) / Flamethrower (**4/15 — LOW**) / Fake Out (8/10) / Rock Smash (15/15). 93/93 HP. **Leveled up this session** (Lv30 → Lv31 vs Scyther). Skipped learning **Feint** (priority +2 Normal, 30 BP) at Lv31. Spe 69, outspeeds Lv22 Scyther.
-  2. **Vaporeon** Lv17 — 76/76 HP. Unchanged this session (only 1 wild Geodude KO for exp). Still painfully underleveled for gym.
-  3. **Mothim** Lv25 holding Exp. Share — Protect (10/10) / Gust (35/35) / Bug Bite (14/20) / Hidden Power (15/15). 75/75 HP. **Leveled up TWICE this session** (Lv23 → Lv25 via Route 216 trainers + Lass Caroline). **Bug Bite is the MVP for Gardenia's grass team**.
-  4. **Shinx** Lv6 — unchanged. Still bait.
-- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), Fashion Case, HM06 Rock Smash (on Monferno), HM01 Cut, Coal Badge, Works Key.
-- **Bag** (post Lass-fight heal):
-  - Medicine: **Super Potion x1 (LOW — needs restock)**, Antidote x5, Awakening x1, Parlyz Heal x0 (used on Mothim vs Shroomish).
-  - Items: **Repel x7**, Silk Scarf, Oval Stone, Expert Belt, Miracle Seed, Magnet, Honey x10, Destiny Knot, Moon Stone, Soft Sand, Prism Scale.
-  - TMs & HMs: TM08/09/27/34/39/58/76 (x99 each), HM01, HM06.
+- **Badges**: **2 (Coal, Forest)** — Gardenia defeated session 14.
+- **Money**: **$8,786** (post-Mart restock of 8 Super Potions, verified from `buy_item` response).
+- **Location**: **Eterna PC (map 69)** at (8, 6) facing up, immediately post-heal. Best resume point: **`session14_end_post_gardenia_healed`** (full HP, full PP, fresh from Joy).
+- **Party** (all fully healed):
+  1. **Monferno** Lv32 (Quirky, Blaze) — Low Kick (20/20) / Flamethrower (12/15) / Fake Out (10/10) / Rock Smash (15/15). 96/96 HP. **Leveled Lv31 → Lv32 this session** (vs Gardenia's Bellossom). Fainted vs Roserade's Sludge crit while paralyzed — revived at PC.
+  2. **Vaporeon** Lv17 — 76/76 HP. Still unused, still underleveled. Needs grinding.
+  3. **Mothim** Lv29 (Naive, Swarm) holding Exp. Share — Protect (10/10) / Gust (35/35) / **Bug Buzz (10/10 — upgraded from Bug Bite at Lv26)** / Hidden Power (15/15). 85/85 HP. **Leveled Lv25 → Lv29 this session** (huge XP haul from Gardenia). **MVP** — Bug Buzz carried Gardenia after Monferno fell. Skipped **Poison Powder** offered at Lv29 (BUG-018 wrote the learning_pokemon wrong anyway — see bug log).
+  4. **Shinx** Lv6 — unused bait.
+- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), Fashion Case, HM06 Rock Smash (on Monferno), HM01 Cut, **Coal Badge, Forest Badge**, Works Key.
+- **Bag** (post-heal, post-restock):
+  - Medicine: **Super Potion x9** (bought 8 @ $700 = $5,600 during session), Antidote x5, Awakening x1, Parlyz Heal x0.
+  - Items: Repel x7, Silk Scarf, Oval Stone, Expert Belt, Miracle Seed, Magnet, Honey x10, Destiny Knot, Moon Stone, Soft Sand, Prism Scale.
+  - TMs & HMs: TM08/09/27/34/39/58/76 (x99 each), HM01, HM06, **TM86 Grass Knot x99 (NEW — Gardenia reward; note this is still Grass Knot in RP despite CLAUDE.md session-13 misread of TM85)**.
   - Balls: Poké Ball x21.
 - **Story flags** (new this session in bold):
   - All priors still valid.
-  - **BUG-013 fix holds — no workaround needed at session start.** Loaded `session12_end_route211_stocked` cold, all reads clean immediately.
-  - **Rematched and defeated Ace Trainer Laura (trainer 134) on Route 216** at (328, 405). Plan worked: Fake Out Togetic (flinched, ~16 dmg) → Flamethrower Togetic (did 36 dmg, Togetic put up Safeguard) → Flamethrower OHKO'd Togetic from 11 HP. Swellow came in; declined switch; took Wing Attack SE (63 dmg) and Monferno's Flamethrower OHKO'd Swellow. +cash.
-  - **Defeated Skier Edward (trainer 137)** at (314, 404) — Snover/Swinub/Snorunt Lv20-ish. Easy Flamethrower/Low Kick. +$640.
-  - **Defeated Ace Trainer Garrett (trainer 133, "Ace Trainer Snow M")** at (299, 394) — Mr. Mime Lv22 (Psychic/Fairy, Filter) → Scyther Lv22 (Bug/Flying, Technician, moves Agility/Wing Attack/Slash/Night Slash) → Nuzleaf Lv22 (Grass/Dark, Chlorophyll, Fake Out). **Key realization: Monferno Spe 66-69 outspeeds Lv22 Scyther** — Flamethrower OHKO'd (would've been KO'd if slower). +$1,320.
-  - **Workers at (304, 385)/(305, 385) block further west on Route 216**: "We're very sorry, but this way is currently closed right now. The weather is too dangerous for anyone to continue forward." Confirms weather-gate mid-route.
-  - **Gardenia found inside Snowbound Lodge (map 384) at (5, 3)** — lodge door at Route 216 (303, 398). Gardenia dialogue: "I'm Eterna City's Gym Leader! ... came here hoping to catch a SNOVER ... I'll go back to the Gym. I'll be waiting for you, Trainer!" — triggers her return to Eterna Gym.
-  - **Returned to Eterna and entered gym (map 67 elevation L1)** via the gym door at Eterna (312, 563). Gardenia now spawned at gym coord (11, 3). Gym has 3 intermediate trainers: Lass (14, 22), Pokemon Breeder F (20, 17), Pokemon Breeder F (2, 7). Gym Guide at (9, 25) says "You can't challenge the Gym Leader until you beat all the Gym's Trainers."
-  - **Defeated Lass Caroline** (first gym trainer): Lotad / Cacnea / Shroomish / Exeggcute all Lv22. Mothim Bug Bite SE OHKO'd all. +$352. Post-battle dialogue: "This gym's floral clock... You can walk on its hands. That's how you get to the next Trainer." — confirms the clock-tile-walking gym puzzle is active.
+  - **Defeated Aroma Lady Jenna** (gym Breeder #1 at (20, 17)): Weepinbell/Ivysaur/Gloom Lv23 all 2x SE'd. **view_map labels her "Pokemon Breeder F" but in-battle class is "Aroma Lady"** — minor display-vs-class mismatch (cosmetic, same class as earlier non-filed notes). +$736.
+  - **Defeated Aroma Lady Angela** (gym Breeder #2 at (2, 7)): Roselia/Bayleef/Skiploom Lv23. Burned the last 2 Flamethrower PP on Roselia+Bayleef, then had to cheese Skiploom (no attacking moves, just Leech Seed + Cotton Spore + Worry Seed + Sleep Powder) with a slow Rock Smash grind from Monferno.
+  - **Defeated Gardenia** (Leader, map 67): 6-mon team **Bellossom Lv25 → Roserade Lv26 → Tangela Lv25 → Cherrim Lv25 → Breloom Lv25 → Grotle Lv25**. Bellossom had Wide Lens + Stun Spore (paralyzed Monferno T1 — that's what ultimately let Roserade Sludge-crit Monferno to 0 next fight). Roserade had Sitrus Berry + Technician + Extrasensory (which hits Monferno Fire/Fighting for 2x!) + Dazzling Gleam — **Fighting-type answer is very thin now that Roserade has Psychic + Fairy coverage**. Cherrim had Focus Sash + Sunny Day setup. Breloom Lv25 (Grass/Fighting) dies 4x to Gust but also has Thunder Punch 2x on Mothim Flying — very close call. Grotle pure Grass (not dual-type in RP), Leftovers + Protect, OHKO by Bug Buzz once Protect broke. Mothim grew **Lv26 → Lv29** on the Gardenia XP haul.
+  - **TM86 confirmed = Grass Knot** in RP (per Gardenia's post-battle dialogue). My session-13 note that called this "TM86 Dazzling Gleam" was wrong — TM85 is Dazzling Gleam, TM86 still = Grass Knot. CLAUDE.md section "TM Changes and Gym Leader Rewards" was correct all along.
+  - **Eterna Gym floral clock**: confirmed the dialogue flavor — **the clock hand rotates on each trainer defeat**, unlocking the next trainer's arm. Gym Guide's "You can go to Pokemon Center during your challenge" works — the south-exit warp (11, 27) stays reachable once you step off the clock back onto the L1 floor.
+  - **BUG-017 discovered** — `navigate_to`/`interact_with` teleport the player to the east clock arm at (15, 13) every time when trying to path *across* the clock tiles, regardless of start position or destination. Manual `press_buttons` is the only way to move between arms/hub once you're on `2`/`3`/`/`/`\` tiles. Details in BUG_LOG.md. 
+  - **BUG-018 discovered** — mid-battle MOVE_LEARN response's `learning_pokemon` and `current_moves` fields report the party-slot-0 Pokemon (Monferno, fainted) instead of the actually-leveling Pokemon (Mothim at party slot 2). Triggered via Mothim 28 → 29 on Grotle KO. Looks related to the BUG-014/015 persistent-slot vs UI-slot family; the MOVE_LEARN path likely wasn't updated when `battle_ui_slot` / `battle_role` were added.
+  - **`heal_party` auto-navigates perfectly** from Eterna City (map 65) → PC (map 69) → nurse dialogue → heal → same flow used to leave the gym for a mid-challenge restock. `buy_item("Super Potion", 8)` **also** auto-navigates from the overworld into the mart, to the correct cashier, and executes — great tool coverage moment.
 - **Next session start**:
-  1. Load **`session13_end_gym_healed_post_lass`** (full HP, inside gym, post-Lass).
-  2. **Primary objective: clear remaining 2 Breeders, then challenge Gardenia.** The gym uses floral clock hand tiles for navigation. Pokemon Breeder F (object 4) at (20, 17) is the next closest trainer.
-  3. **Strategy vs Gardenia**: She's Grass-type. In RP her team is likely 4-6 mons (inflated vs vanilla). Monferno's Flamethrower + Mothim's Bug Bite (2x SE on pure Grass, 4x on Grass/Poison) are the key moves. **Watch Flamethrower PP — only 4 left.** May want to get to the Move Reminder at Pastoria (free) eventually, but for now rely on Bug Bite spam from Mothim.
-  4. **Flamethrower PP is critical** (4 left). Consider healing party via `heal_party` auto-nav back to Eterna PC → Mart buy Super Potions (need at least 5-10) → return. The gym exit warp is at (11, 27).
-  5. **Mart restock needed**: Super Potion down to 1. Need minimum 8-10 for gym + next route. Consider also buying Ether if available — no, Ethers are rare. Just play around PP.
-  6. **Vaporeon is still Lv17 — useless against Gardenia's Grass team.** Leave in party for Exp. Share if possible, or switch Exp. Share to Vaporeon (currently on Mothim).
-  7. **Gardenia's expected reward**: **TM86 Dazzling Gleam** (NOT Grass Knot — RP retyped TM86 per CLAUDE.md story gates section). Also Forest Badge.
+  1. Load **`session14_end_post_gardenia_healed`** (full HP, all PP, Eterna PC at (8, 6)).
+  2. **Primary objective: start the Hearthome arc.** Standard route after Eterna is Eterna Forest → Route 205 N → Eterna Forest West (meet Cheryl escort) → Route 211 East side → Hearthome City for Fantina (Ghost gym) — but the Cheryl escort is the canonical path and she's at the Eterna Forest south entrance. Alternate: Cycling Road (Route 206) south once bike shop is open (already triggered).
+  3. **Vaporeon leveling**: still Lv17 and almost useless. **Move Exp. Share from Mothim to Vaporeon** before starting the next area — Mothim is way over-leveled (Lv29) for Route 205's Lv18-22 wilds. Do this via `give_item("Exp. Share", 1)` on Vaporeon after `take_item(2)` off Mothim.
+  4. **Consider `relearn_move`** on Mothim later — she has no dedicated Bug physical move anymore (Bug Bite dropped for Bug Buzz). The move relearner is at Pastoria (FREE in RP). Not urgent, Bug Buzz is enough.
+  5. **Fighting-type weakness note**: Gardenia's team proved that Fighting types are now vulnerable to both Psychic AND Fairy (retyped RP world) — Monferno's survivability dropped sharply at Lv30+. Consider building Vaporeon/Mothim as primary damage and Monferno as Fire-clutch only.
+  6. **Exercise `use_fly` next session** if/when we hit Canalave (FLY HM is in Galactic Warehouse, post-Fantina). Currently no HM02 in bag.
+  7. **Path to consider**: Eterna (exit south) → Eterna Forest → pick up Cheryl → Route 205 N → Floaroma loop (already cleared) or Route 206 Cycling Road → Oreburgh? No, Hearthome is east via Route 211 E. Might need to detour through Mt. Coronet gate again.
 - **Open QA bugs after this session**:
-  - **BUG-014 NEW** — `battle_turn(use_item=..., party_slot=...)` / `use_battle_item` route heals to the wrong Pokemon after a mid-battle switch. Proved the Super Potion went to benched Monferno, not active Vaporeon, and the tool returned `"Slot N (bench — HP unverifiable)"` for what the caller intended as the active slot. Repro: `session12_route216_entry`. Details in BUG_LOG.md.
-  - **BUG-015 NEW** — `read_party` during battle keeps pre-switch slot order (and pre-battle HP). Makes party_slot math for BUG-014 impossible to reason about without consulting the `battle_state.party` response from `battle_turn`. Repro: same as BUG-014.
-  - **BUG-016 NEW** — Level-up / stat-gain text emits malformed lines (`"Mothim@\nLv. 23"`, `"Sp. Def"` alone) mid-battle on exp rollup. Cosmetic but possibly related to BUG-007 token-substitution class. Repro: grind from `session12_route216_post_blake` until the next party level-up triggers mid-battle.
-  - **BUG-013 VERIFIED FIXED this session** — holds through heavy use (many `load_state`s, many battles, map transitions, exits/entries). Marker flipped in BUG_LOG.md.
-  - **BUG-007** still open. Possibly related to new BUG-016 — same class of text-substitution issue.
-  - **BUG-009** still open. No "Pokémon Trainer" class label fights this session (all trainers had specific class names).
-  - **BUG-010, BUG-011, BUG-012** still FIXED.
-  - **Arrow Signpost null dialogue (minor, not filed)**: `interact_with(object_index=<Arrow Signpost>)` on Route 211 West at (353, 531) returned `dialogue: null`, note `"Arrow Signpost did not produce any dialogue when interacted with."` — other Arrow Signposts DID produce dialogue earlier (Rt. 216 / Mt. Coronet marker). Possibly the sign-overlay-capture path missed this one. Worth a targeted repro later.
-  - **map_name display inconsistency (still minor, not filed)**: Same as session 11 note.
-  - **view_map legend unlabeled tile-behavior placeholders** — not filed, cosmetic.
+  - **BUG-017 NEW** — `navigate_to`/`interact_with` on Eterna Gym clock tiles teleport player to (15, 13) regardless of path. Repro: `bug_navigate_eterna_gym_clock_tile_stuck`. Likely BDHC + dynamic-tile interaction.
+  - **BUG-018 NEW** — MOVE_LEARN response returns wrong `learning_pokemon` / `current_moves` fields when the leveling mon is not party slot 0. Repro: `session14_pre_gardenia_healed_stocked` → fight Gardenia through Grotle.
+  - **BUG-014, BUG-015** still holding FIXED post-session (no new repros, and the switch flow worked correctly this session including the free mid-battle switch at SWITCH_PROMPT via `switch_to=<battle_ui_slot>`).
+  - **BUG-016** still FIXED — Mothim's Lv26/Lv27/Lv28/Lv29 and Monferno's Lv31/Lv32 level-ups all emitted clean `"X grew to Lv. N!"` text this session, no `@`/`\n`/bare-stat leaks.
+  - **BUG-013** still FIXED — loaded `session13_end_gym_healed_post_lass` cold on session start, all reads clean immediately.
+  - **BUG-007**, **BUG-009** still open, untriggered this session.
+  - **Arrow Signpost null dialogue (minor, not filed)** — no signpost interactions this session.
+  - **map_name display inconsistency (still minor, not filed)** — same.
+  - **view_map "Pokemon Breeder F" vs battle class "Aroma Lady"** — cosmetic object-label vs trainer-class mismatch observed twice this session (Jenna + Angela). Not blocking; not filed.
 - **FR docket**: FR-003, FR-004, FR-005, FR-006 still open. FR-006 (R0113 water-tile rendering ambiguity) got a real-world dogfood this session — the west land strip IS traversable, legend should probably distinguish "shallow/crossable" vs "deep-needs-surf" water tiles or mark floor tiles that are surrounded by sea more prominently.
 - **Session 12 highlights**:
   - BUG-013 re-verified as fixed under heavy use (many state loads, many battles).
@@ -284,6 +283,13 @@ Saved macros persist across sessions in `macros/`.
   - **Workers at (304, 385)/(305, 385) are a permanent(?) weather gate** blocking further west progress on Route 216. Likely lifted by later story event.
   - **Re-entered Eterna Gym** — Gardenia now spawned inside at (11, 3). Lass Caroline (first gym trainer) defeated. 2 Breeders + Gardenia pending.
   - No new bugs discovered (BUG-007, BUG-009 still open but untriggered this session). BUG-013/014/015/016 untriggered — no mid-battle item uses needed, no new level-up text observed closely.
+- **Session 14 highlights**:
+  - **Forest Badge obtained.** Gardenia cleared in a single gym trip (one Eterna-PC restock mid-run).
+  - **BUG-017 discovered** — Eterna Gym floral-clock tiles break `navigate_to` pathing; player teleports to (15, 13) east arm regardless of target. Manual `press_buttons` workaround.
+  - **BUG-018 discovered** — MOVE_LEARN wrong-pokemon bug at Mothim 28→29 (reported Monferno as the learning mon).
+  - **Mothim is now the team carry**: Bug Buzz 90 BP Special STAB upgraded from Bug Bite at Lv26. 2x SE on pure Grass, 4x SE Gust on Grass/Fighting Breloom. Lv29 by end of run.
+  - **Monferno sustained a KO** vs Roserade crit — first gym leader loss in this QA run. Not a whiteout since Mothim was the MVP clean-up.
+  - **`heal_party` + `buy_item` overworld auto-nav chain** worked perfectly for mid-challenge restock (Eterna Gym → PC → Mart → back). Good dogfooding.
 
 ## Tips
 
