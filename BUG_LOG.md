@@ -20,6 +20,49 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
+### BUG-019: Double-battle log duplicates "fainted" and "gained Exp." lines (session 15, 2026-04-19)
+
+- **Tool**: `battle_turn` (double battle) — `log` / `formatted` fields.
+- **Severity**: minor (cosmetic, log-only).
+- **Save state**: `session15_galactic_bldg_pre_stairs` → take upper-floor `(20, 6)` stair → engage the (19, 8) double-grunt pair (Koffing + Ekans → Nidoran@ + Nidoran*).
+- **Call**: Any `battle_turn(..., target=...)` within the double battle that KOs a single enemy.
+- **Expected**: One "The foe's X fainted!" line per KO, and one "Y gained N Exp. Points!" line per gainer.
+- **Actual**: Multiple duplicated lines per event. Examples observed this session:
+  - After Vaporeon's crit Water Pulse KO'd Ekans: `"The foe's Ekans fainted! /"` appeared **twice** in `log` (and in `formatted`).
+  - After Vaporeon's crit Water Pulse KO'd Nidoran*: `"The foe's Nidoran* fainted! /"` appeared **twice**.
+  - On the same Nidoran* KO: `"Vaporeon gained / 220 Exp. Points! /"` appeared **twice**.
+  - Also observed: `"Vaporeon is paralyzed! / It can't move!"` printed twice in the same turn when only one Vaporeon action was submitted.
+- **Workaround**: Ignore duplicate lines; trust the final `battle_state` / `read_party` for authoritative HP / level / XP.
+- **Notes**: Looks double-battle-specific — the same KO text presumably runs once per enemy-slot in the partner loop. Exp duplication isn't reflected in actual XP gained (Vaporeon only leveled once despite the double line), so it's a log-render issue, not a gameplay one. Similar to BUG-001's formatter artifact (cosmetic but breaks downstream parsers that count KOs from log text).
+
+---
+
+### BUG-020: `view_map` `object.name` disagrees with in-battle trainer class for Route 211 W Bird Keeper (session 15, 2026-04-19)
+
+- **Tool**: `view_map` — `objects[].name`.
+- **Severity**: cosmetic.
+- **Save state**: `session15_route211_west_entry` (re-entry point to Route 211 west from Eterna).
+- **Call**: `view_map()` on Route 211 (map 365) with the unbattled "Ace Trainer F" at `(367, 524)` visible.
+- **Expected**: Either the trainer class on-screen (when battle fires) matches `object.name`, or `object.name` is a neutral sprite/class label acknowledged as approximate.
+- **Actual**: `view_map` labeled the NPC `"Ace Trainer F"` with `trainer_id=76`. Walking into her line-of-sight triggers `"You are challenged by Bird Keeper Alexandra!"` and Natu/Swablu/Staravia — a **Bird Keeper**, not an Ace Trainer. Post-battle, `view_map` correctly toggled `defeated=true` for `trainer_id=76`, so the ID mapping is right — the displayed `name` is the sprite class, not the trainer-data class.
+- **Workaround**: Don't trust `object.name` for trainer class when planning type matchups; cross-reference `trainer_id` via `read_trainer_status` or engage and read `battle_state`.
+- **Notes**: Same family as the "Pokemon Breeder F" vs in-battle "Aroma Lady" mismatch noted informally in sessions 13–14 (not filed). Renegade Platinum often re-uses overworld sprites for different trainer classes, so the sprite-name lookup lags the actual trainer class. Could be resolved by reading the trainer table directly rather than the overworld sprite class.
+
+---
+
+### BUG-021: `view_map` marks non-battleable flavor NPC as `trainer=true defeated=true` (session 15, 2026-04-19)
+
+- **Tool**: `view_map` — `objects[].trainer` / `defeated`.
+- **Severity**: cosmetic (but misleading for completionist logic).
+- **Save state**: `session15_route211_west_entry` (Route 211 west, before any Route 211 W trainers engaged).
+- **Call**: `view_map()` on first entry to Route 211 west.
+- **Expected**: The "Hiker" at `(377, 529)` — who only delivers the flavor line `"Mt. Coronet has long been known as an ancient and mysterious mountain."` on A — should either have `trainer=false` (pure flavor NPC) or, if he's data-classed as a trainer, show `defeated=false` on first-ever approach (since the player has never fought Route 211 west before this session).
+- **Actual**: `view_map()` on first entry (no battles on this map yet in the entire playthrough) already shows `{name: "Hiker", trainer: true, trainer_id: 326, defeated: true}`. Interacting with him via `interact_with(object_index=2)` only yields the flavor dialogue, no battle prompt.
+- **Workaround**: Don't treat `trainer=true defeated=true` on an unexplored map as "already cleared" — verify by interacting first.
+- **Notes**: The `trainer_id` 326 likely indexes a real battle entry (the decomp's trainer table), but the NPC script never invokes that battle. Two possibilities: (a) the `defeated` flag is reading the wrong bitfield for this NPC — e.g., bit 326 of VarsFlags happens to be set by an unrelated story flag; or (b) the NPC's trainer data is real but gated behind a Drayano-reassigned script path that never fires. Either way, `view_map` exposes trainer metadata that doesn't correspond to a runnable battle. Same session also saw a similar-smelling issue on Route 211 W's "Ace Trainer F" at `(367, 524)` going to `defeated=true` after I fought Bird Keeper Alexandra — suggesting a shared `trainer_id→flag-bit` mapping issue across the whole route. (Since Alexandra's battle DID happen and the flag flip IS correct for her, BUG-020's label bug is the one to chase there; BUG-021 here specifically targets a never-battled NPC being flagged defeated on fresh entry.)
+
+---
+
 ### BUG-017: `navigate_to` / `interact_with` silently teleport player to (15, 13) when pathing across Eterna Gym floral-clock tiles (session 14, 2026-04-19) — **FIXED (verified 2026-04-19 session 14 dev)**
 
 Re-ran the canonical repro on `bug_navigate_eterna_gym_clock_tile_stuck`:

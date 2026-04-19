@@ -227,19 +227,19 @@ Saved macros persist across sessions in `macros/`.
 ## Game Progress
 
 - **Character**: WOJ (boy), rival **Barry**
-- **Badges**: **2 (Coal, Forest)** — Gardenia defeated session 14.
-- **Money**: **$8,786** (post-Mart restock of 8 Super Potions, verified from `buy_item` response).
-- **Location**: **Eterna PC (map 69)** at (8, 6) facing up, immediately post-heal. Best resume point: **`session14_end_post_gardenia_healed`** (full HP, full PP, fresh from Joy).
-- **Party** (all fully healed):
-  1. **Monferno** Lv32 (Quirky, Blaze) — Low Kick (20/20) / Flamethrower (12/15) / Fake Out (10/10) / Rock Smash (15/15). 96/96 HP. **Leveled Lv31 → Lv32 this session** (vs Gardenia's Bellossom). Fainted vs Roserade's Sludge crit while paralyzed — revived at PC.
-  2. **Vaporeon** Lv17 — 76/76 HP. Still unused, still underleveled. Needs grinding.
-  3. **Mothim** Lv29 (Naive, Swarm) holding Exp. Share — Protect (10/10) / Gust (35/35) / **Bug Buzz (10/10 — upgraded from Bug Bite at Lv26)** / Hidden Power (15/15). 85/85 HP. **Leveled Lv25 → Lv29 this session** (huge XP haul from Gardenia). **MVP** — Bug Buzz carried Gardenia after Monferno fell. Skipped **Poison Powder** offered at Lv29 (BUG-018 wrote the learning_pokemon wrong anyway — see bug log).
-  4. **Shinx** Lv6 — unused bait.
+- **Badges**: **2 (Coal, Forest)**.
+- **Money**: **~$12,906** (8,786 entry + 640 Alexandra + 152 Zach + 528 Sean + 960 Forest-Badge Grunt + 1,840 double grunts — recompute on load).
+- **Location**: **T.G. Eterna Bldg (map 72)** at (19, 8) mid-raid arc, mid-floor ground level, party beat up. Best resume point: **`session15_end_post_double_grunts_eterna_hq`** (BUT needs heal + status cure). Cleaner alternative: `session14_end_post_gardenia_healed` (pristine, pre-arc) if restarting from scratch is preferred.
+- **Party** (post-double-grunt, battered):
+  1. **Monferno** Lv33 (Quirky, Blaze) — Low Kick (20/20) / **Flamethrower (1/15 — critical, needs PP Up or PC)** / Fake Out (9/10) / Rock Smash (14/15). 23/99 HP. **⚠ Paralysis.** Leveled Lv32 → Lv33 this session (Golbat KO).
+  2. **Vaporeon** Lv21 (Serious, Water Absorb) holding Exp. Share — **Water Pulse / Quick Attack / Bite / Aurora Beam (NEW — learned at Lv19, replaced Covet)**. 20/91 HP. **⚠ Paralysis.** **Leveled Lv17 → Lv21 this session** via Exp. Share haul on Route 211 W and the HQ grunts. Aurora Beam gives her Ice coverage (2x vs Grass/Flying/Dragon/Ground).
+  3. **Mothim** Lv29 (Naive, Swarm) — Protect (10/10) / Gust (34/35) / Bug Buzz (9/10) / Hidden Power (15/15). 52/85 HP. **⚠ Toxic (badly poisoned).** Switched in vs Nidoran♀ Poison-Fang + toxic tick.
+  4. **Shinx** Lv6 — still unused bait.
 - **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), Fashion Case, HM06 Rock Smash (on Monferno), HM01 Cut, **Coal Badge, Forest Badge**, Works Key.
-- **Bag** (post-heal, post-restock):
-  - Medicine: **Super Potion x9** (bought 8 @ $700 = $5,600 during session), Antidote x5, Awakening x1, Parlyz Heal x0.
-  - Items: Repel x7, Silk Scarf, Oval Stone, Expert Belt, Miracle Seed, Magnet, Honey x10, Destiny Knot, Moon Stone, Soft Sand, Prism Scale.
-  - TMs & HMs: TM08/09/27/34/39/58/76 (x99 each), HM01, HM06, **TM86 Grass Knot x99 (NEW — Gardenia reward; note this is still Grass Knot in RP despite CLAUDE.md session-13 misread of TM85)**.
+- **Bag** (post-double-grunts, pre-heal):
+  - Medicine: Super Potion x9 (untouched this session — Monferno only fainted vs Roserade in s14), Antidote x5, Awakening x1, **Parlyz Heal x0 — BUY NEXT SESSION** (both active mons paralyzed). Need ~3+ for safe HQ clear.
+  - Items: Repel x7, **Fire Stone (NEW — Route 211 East drop at (433, 535))**, Silk Scarf, Oval Stone, Expert Belt, Miracle Seed, Magnet, Honey x10, Destiny Knot, Moon Stone, Soft Sand, Prism Scale, **Escape Rope (NEW — Mt. Coronet drop at (28, 43))**.
+  - TMs & HMs: TM08/09/27/34/39/58/76/86 (x99 each), HM01, HM06, **TM12 Taunt (NEW — R211W (368, 535))**, **TM69 Rock Polish (NEW — Mt. Coronet (2, 31))**, **TM73 Thunder Wave (NEW — T.G. Eterna Bldg L1 map 73 at (3, 12))**.
   - Balls: Poké Ball x21.
 - **Story flags** (new this session in bold):
   - All priors still valid.
@@ -252,23 +252,26 @@ Saved macros persist across sessions in `macros/`.
   - **BUG-018 discovered** — mid-battle MOVE_LEARN response's `learning_pokemon` and `current_moves` fields report the party-slot-0 Pokemon (Monferno, fainted) instead of the actually-leveling Pokemon (Mothim at party slot 2). Triggered via Mothim 28 → 29 on Grotle KO. Looks related to the BUG-014/015 persistent-slot vs UI-slot family; the MOVE_LEARN path likely wasn't updated when `battle_ui_slot` / `battle_role` were added.
   - **`heal_party` auto-navigates perfectly** from Eterna City (map 65) → PC (map 69) → nurse dialogue → heal → same flow used to leave the gym for a mid-challenge restock. `buy_item("Super Potion", 8)` **also** auto-navigates from the overworld into the mart, to the correct cashier, and executes — great tool coverage moment.
 - **Next session start**:
-  1. Load **`session14_end_post_gardenia_healed`** (full HP, all PP, Eterna PC at (8, 6)).
-  2. **Primary objective: start the Hearthome arc.** Standard route after Eterna is Eterna Forest → Route 205 N → Eterna Forest West (meet Cheryl escort) → Route 211 East side → Hearthome City for Fantina (Ghost gym) — but the Cheryl escort is the canonical path and she's at the Eterna Forest south entrance. Alternate: Cycling Road (Route 206) south once bike shop is open (already triggered).
-  3. **Vaporeon leveling**: still Lv17 and almost useless. **Move Exp. Share from Mothim to Vaporeon** before starting the next area — Mothim is way over-leveled (Lv29) for Route 205's Lv18-22 wilds. Do this via `give_item("Exp. Share", 1)` on Vaporeon after `take_item(2)` off Mothim.
-  4. **Consider `relearn_move`** on Mothim later — she has no dedicated Bug physical move anymore (Bug Bite dropped for Bug Buzz). The move relearner is at Pastoria (FREE in RP). Not urgent, Bug Buzz is enough.
-  5. **Fighting-type weakness note**: Gardenia's team proved that Fighting types are now vulnerable to both Psychic AND Fairy (retyped RP world) — Monferno's survivability dropped sharply at Lv30+. Consider building Vaporeon/Mothim as primary damage and Monferno as Fire-clutch only.
-  6. **Exercise `use_fly` next session** if/when we hit Canalave (FLY HM is in Galactic Warehouse, post-Fantina). Currently no HM02 in bag.
-  7. **Path to consider**: Eterna (exit south) → Eterna Forest → pick up Cheryl → Route 205 N → Floaroma loop (already cleared) or Route 206 Cycling Road → Oreburgh? No, Hearthome is east via Route 211 E. Might need to detour through Mt. Coronet gate again.
+  1. Load **`session15_end_post_double_grunts_eterna_hq`** (battered, mid-raid in T.G. Eterna Bldg). Or `session15_post_grunt_ledian_ariados` for a cleaner mid-session resume (one fight earlier, party at similar HP but before the Toxic-spikes/paralysis mess).
+  2. **Immediately retreat south** from the HQ: south warp at (11, 15) → Eterna City map 65 → `heal_party()` to auto-nav the PC (healed in session 14 from same position, so `heal_party` is battle-tested). Cure Paralysis + Toxic + HP.
+  3. **Restock at Eterna Mart**: buy **Parlyz Heal x5+** (crucial — 2 paralysis per double-battle has been common) and more Super Potions (currently 9, should be fine). `buy_item` on the overworld auto-navs now (exercised session 14).
+  4. **Return to T.G. Eterna Bldg (305, 519)** and take the **OTHER stair — (20, 6)**, NOT (14, 6). Looker (disguised as a "Grunt F" object at (18, 8)) hinted 2 stairs = 1 trap. Session 15 took the left one (14, 6) → map 73 dead-end loop (4 stairs all same map, the only way up was going back). **Prediction: (20, 6) is the correct stair** — but verify before committing.
+  5. **Goal of the raid arc**: find the manager of the Cycle Shop (dialogue said he's "at the Team Galactic building and hasn't returned"). Once he's freed, he returns to the Cycle Shop, and talking to him opens **Route 206 Cycling Road** — the actual path to Hearthome. (Session 15 confirmed the south-of-Eterna warp at (315, 548) goes to a residential building chain, NOT Cycling Road.)
+  6. **Actual Eterna → Hearthome path** (revised from session 14's wrong guess): **Route 206 Cycling Road south** → Route 207 → Route 208 → Hearthome. Route 211 East is **blocked** until post-game (Collector at (445, 526) demands SlowpokeTail "for $1,000,000" — permanent hard gate).
+  7. **Consider routing order**: the Grunt at (305, 520) who blocks Galactic HQ entrance respawned after Forest Badge and dropped the post-Jupiter flag — he's a new story trigger and is now defeated (Ledian Lv24 + Ariados Lv24 team). Similar respawns likely on the 2nd floor.
+  8. **Vaporeon leveling update**: Exp. Share got her to Lv21 in one session from Lv17 — Aurora Beam Ice coverage is now useful. Keep Exp. Share on Vaporeon.
+  9. **Monferno Flamethrower PP = 1/15** — critical for the HQ raid. Either PC-heal restores PP (yes, heal_party refills PP too) or use Rock Smash as chip until Flamethrower restored. Post-heal should be fine.
+  10. **Fighting-type weakness note** still applies — Roserade-style Psychic/Fairy coverage wrecks Monferno at Lv32+. Rely on Vaporeon Aurora Beam + Mothim Bug Buzz for bulk of damage.
 - **Open QA bugs after this session**:
-  - **BUG-017 NEW** — `navigate_to`/`interact_with` on Eterna Gym clock tiles teleport player to (15, 13) regardless of path. Repro: `bug_navigate_eterna_gym_clock_tile_stuck`. Likely BDHC + dynamic-tile interaction.
-  - **BUG-018 NEW** — MOVE_LEARN response returns wrong `learning_pokemon` / `current_moves` fields when the leveling mon is not party slot 0. Repro: `session14_pre_gardenia_healed_stocked` → fight Gardenia through Grotle.
-  - **BUG-014, BUG-015** still holding FIXED post-session (no new repros, and the switch flow worked correctly this session including the free mid-battle switch at SWITCH_PROMPT via `switch_to=<battle_ui_slot>`).
-  - **BUG-016** still FIXED — Mothim's Lv26/Lv27/Lv28/Lv29 and Monferno's Lv31/Lv32 level-ups all emitted clean `"X grew to Lv. N!"` text this session, no `@`/`\n`/bare-stat leaks.
-  - **BUG-013** still FIXED — loaded `session13_end_gym_healed_post_lass` cold on session start, all reads clean immediately.
-  - **BUG-007**, **BUG-009** still open, untriggered this session.
-  - **Arrow Signpost null dialogue (minor, not filed)** — no signpost interactions this session.
-  - **map_name display inconsistency (still minor, not filed)** — same.
-  - **view_map "Pokemon Breeder F" vs battle class "Aroma Lady"** — cosmetic object-label vs trainer-class mismatch observed twice this session (Jenna + Angela). Not blocking; not filed.
+  - **BUG-019 NEW** — Double-battle logs duplicate "fainted" and "gained N Exp. Points" lines (cosmetic). Repro: `session15_galactic_bldg_pre_stairs` → right-stair double-grunt fight.
+  - **BUG-020 NEW** — `view_map` `object.name` reports sprite class, not battle class. Route 211 W "Ace Trainer F" trainer_id 76 is actually a Bird Keeper in battle. Cosmetic but affects matchup planning. Repro: `session15_route211_west_entry`.
+  - **BUG-021 NEW** — `view_map` shows non-battleable flavor NPCs as `trainer=true defeated=true` on FIRST entry to a never-visited map (Route 211 W "Hiker" trainer_id 326, only gives flavor dialogue). Repro: `session15_route211_west_entry`.
+  - **BUG-017 (Eterna Gym clock)** and **BUG-018 (MOVE_LEARN wrong-mon)** still FIXED — no repros this session. MOVE_LEARN on Vaporeon Lv18→19 Aurora Beam correctly reported `learning_pokemon: {slot: 1, name: "Vaporeon"}`, and all Eterna Gym nav this session (entering/exiting the building) worked.
+  - **BUG-013, BUG-014, BUG-015, BUG-016** still holding FIXED — heavy mid-battle switching during double grunts, level-ups in double battle, cold-start load all fine.
+  - **BUG-007, BUG-009** still open, untriggered this session.
+  - **Stale party read in `battle_turn` response's `party` field** (minor, not filed) — during Ninja Boy Zach fight, after Vaporeon leveled Lv17→Lv18, subsequent battle_turn responses still showed `party: [{slot:1, name:"Vaporeon", level:17}]` for the rest of the double-enemy chain. Full `read_party` post-battle showed correct Lv18. Same family as BUG-018 (stale battle-context Pokemon slot data). Not filed — BUG-018 is the canonical ticket for this class.
+  - **MOVE_LEARN `learning_pokemon.level` off-by-one** (minor, not filed) — at Vaporeon Lv18 → Lv19 learn-Aurora-Beam prompt, `learning_pokemon.level` returned **18** (pre-level-up value), but the in-game text said "Vaporeon grew to Lv. 19!" immediately before. Cosmetic — not worth a bug ticket unless it repros more broadly.
+  - **Collector gate on Route 211 East (by design, not a bug)** — NPC at (445, 526) demands SlowpokeTail for $1,000,000; rejects any decline and hard-blocks east passage toward Celestic. No map signage warns about this. Consider FR for a dialogue hint or map note.
 - **FR docket**: FR-003, FR-004, FR-005, FR-006 still open. FR-006 (R0113 water-tile rendering ambiguity) got a real-world dogfood this session — the west land strip IS traversable, legend should probably distinguish "shallow/crossable" vs "deep-needs-surf" water tiles or mark floor tiles that are surrounded by sea more prominently.
 - **Session 12 highlights**:
   - BUG-013 re-verified as fixed under heavy use (many state loads, many battles).
@@ -290,6 +293,16 @@ Saved macros persist across sessions in `macros/`.
   - **Mothim is now the team carry**: Bug Buzz 90 BP Special STAB upgraded from Bug Bite at Lv26. 2x SE on pure Grass, 4x SE Gust on Grass/Fighting Breloom. Lv29 by end of run.
   - **Monferno sustained a KO** vs Roserade crit — first gym leader loss in this QA run. Not a whiteout since Mothim was the MVP clean-up.
   - **`heal_party` + `buy_item` overworld auto-nav chain** worked perfectly for mid-challenge restock (Eterna Gym → PC → Mart → back). Good dogfooding.
+- **Session 15 highlights**:
+  - **Exp. Share moved Mothim → Vaporeon** as planned (`take_item(2)` + `give_item("Exp. Share", 1)`) — Vaporeon went **Lv17 → Lv21** this session on Exp. Share alone. Learned **Aurora Beam at Lv19** (forgot Covet). Big power-up.
+  - **Wrong-route detour exposed**: session 14's "Route 211 East → Hearthome" plan was incorrect. Route 211 East is hard-gated by the Collector at (445, 526) demanding SlowpokeTail — permanent block until post-game. Actual Eterna → Hearthome path is **Cycling Road (Route 206) south**, which is itself gated until the Cycle Shop manager returns. Session 14's note "bike shop is open (already triggered)" was wrong too — the shop employee confirmed the manager is still missing at the Galactic Bldg.
+  - **NEW story arc discovered: post-Forest-Badge Grunt at (305, 520) Eterna** — triggered a Ledian Lv24 + Ariados Lv24 fight, then his post-battle dialogue ("I must inform Commander Jupiter...") opened the T.G. Eterna Bldg door. **Implies a 2nd raid of the Galactic HQ is required to free the Cycle Shop manager and unlock Route 206.** This was not mentioned in CLAUDE.md's story guide.
+  - **Entered T.G. Eterna Bldg raid** — ground floor has Looker in disguise (as "Grunt F" at (18, 8)) hinting "2 stairs, 1 is a trap". Took left stair (14, 6) → map 73 floor 2 L1 with 4 warps all labeled "T.G. Eterna Bldg" — dead-end loop (Pokeball pickup only, TM73 Thunder Wave). Next session try the right stair (20, 6).
+  - **Right-stair floor is the real one**: had a Grunt×2 double battle at (19, 8) — Koffing + Ekans → Nidoran♂ + Nidoran♀ → Stunky + Glameow. Burned through our party's status bars (both active mons paralyzed + Mothim badly poisoned). Great dogfood for double-battle mechanics but **left the party heavily battered**. BUG-019 discovered (duplicated fainted/Exp lines in double-battle logs).
+  - **Items gained this session**: TM12 Taunt (R211W), TM69 Rock Polish (MtCoronet), Escape Rope (MtCoronet), Fire Stone (R211E), TM73 Thunder Wave (T.G. Bldg F2).
+  - **BUG-019, BUG-020, BUG-021 filed** — all cosmetic/minor, all view_map/log display issues, none blocking progress.
+  - **BUG-017, BUG-018 untriggered this session** and still FIXED.
+  - **Ended mid-raid** — session 16 starts with a retreat-to-heal, restock (Parlyz Heal especially), and re-entry via the CORRECT (20, 6) stair to continue the HQ.
 
 ## Tips
 
