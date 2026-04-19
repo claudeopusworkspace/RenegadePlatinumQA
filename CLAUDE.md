@@ -228,57 +228,58 @@ Saved macros persist across sessions in `macros/`.
 
 - **Character**: WOJ (boy), rival **Barry**
 - **Badges**: 1 (**Coal**)
-- **Money**: **$16,092** (+$608 from Hiker Louis on Route 211).
-- **Location**: **Route 211 West** at (380, 532), map 365, just emerged from Mt. Coronet R0112 west exit. Standing next to the Arrow Signpost. Best resume point: **`session11_end_route211_west_mt_coronet_exit`** (on Route 211 West, Mt. Coronet exit behind me, post Hiker Louis fight). Alternative: **`eterna_city_hm01_cut_acquired`** (back in Eterna with HM01 just received from Cynthia, at (306, 522) map 65 — good for pivoting to a different plan).
-- **Party** (Monferno topped up with 2× Super Potions post-Hiker fight):
-  1. **Monferno** Lv29 (Quirky, Blaze) — Low Kick (17/20) / Flamethrower (15/15) / Fake Out (10/10) / Rock Smash (14/15). 88/88 HP. +513 EXP this session.
-  2. **Vaporeon** Lv17 — unchanged. 76/76 HP.
-  3. **Mothim** Lv21 holding Exp. Share — unchanged. 64/64 HP. +513 EXP this session.
-  4. **Shinx** Lv6 — unchanged.
-- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), Fashion Case, HM06 Rock Smash (on Monferno), Coal Badge, Works Key, **+HM01 Cut (this session)**.
-- **Bag** — new this session:
-  - Medicine: **-2 Super Potion** (used on Monferno after Beldum Zen Headbutt crit) — **4 Super Potion** remaining.
-  - TMs & HMs: **+HM01 Cut** (from Cynthia, Eterna City).
-  - Items/Repels/Balls: unchanged.
+- **Money**: **$9,222** (spent ~$8,250 at Eterna Mart restocking).
+- **Location**: **Route 211 West** at (356, 532), map 365, heading east back toward Mt. Coronet after a supply run to Eterna. Best resume point: **`session12_end_route211_stocked`** (healed + stocked + already 1 step into Route 211 from Eterna, ready to push back to Route 216). Alternative: **`session12_eterna_stocked`** (inside Eterna Mart post-buy, if you want to re-plan routing from the city).
+- **Party** (all fully healed at Eterna PC):
+  1. **Monferno** Lv30 (Quirky, Blaze) — Low Kick (20/20) / Flamethrower (15/15) / Fake Out (10/10) / Rock Smash (15/15). 91/91 HP. **Leveled up this session** (Lv29 → Lv30 vs Togetic).
+  2. **Vaporeon** Lv17 — 76/76 HP. Fainted vs Vigoroth on Route 216, revived at PC. Still painfully underleveled for the region — grind candidate.
+  3. **Mothim** Lv23 holding Exp. Share — Protect / Gust / Bug Bite / Hidden Power (unknown type — confirmed SE vs Poison/Flying AND Fairy/Flying, so likely Electric, Ice, or Rock). 70/70 HP. **Leveled up this session** (Lv21 → Lv23). Skipped learning Confusion at Lv23 (Gust is STAB and stronger after STAB bonus).
+  4. **Shinx** Lv6 — unchanged. Still just bait.
+- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), Fashion Case, HM06 Rock Smash (on Monferno), HM01 Cut, Coal Badge, Works Key.
+- **Bag** (post-restock):
+  - Medicine: **Super Potion x10**, **Antidote x5**, **Awakening x3**, Parlyz Heal x1.
+  - Items: Repel x9, Silk Scarf, Oval Stone, Expert Belt, Miracle Seed, Magnet, Honey x10, Destiny Knot, **Moon Stone (new — R0112 pickup)**, **Soft Sand (new — R0113 at (2, 60))**, **Prism Scale (new — R0113 at (6, 18))**.
+  - TMs & HMs: TM08/09/27/34/39/58/76 (x99 each), HM01, HM06.
+  - Balls: Poké Ball x21.
 - **Story flags** (new this session in bold):
   - All priors still valid.
-  - **Entered Eterna Cycle Shop (map 71)** and talked to the Youngster attendant (NPC index 1). He said: "The manager's gone off to the Team Galactic building and hasn't returned." So the Bike Shop owner is AT the TG Eterna Bldg — will return after Jupiter is defeated there.
-  - **Exited Cycle Shop** back to Eterna City (310, 540). Walked west, healed at Eterna PC (map 69, `heal_party` auto-navigated fine).
-  - **Walked east from PC area**: triggered the **Cyrus + Barry "Pokémon statue" cutscene** at the east side of Eterna. Barry's "make sure all your attacks hit" spiel, Cyrus's spiral-of-time-and-space monologue, all captured cleanly by `navigate_to`'s dialogue auto-advance.
-  - **Got HM01 Cut from Cynthia** at ~(306, 522) just south of the T.G. Eterna Bldg. She triggered as a scripted obstacle along my path. Dialogue was clean: "Obtained the HM01!" / "WOJ put the HM01 in the TMs & HMs Pocket." No BUG-007 token elision visible (HM01 isn't a `{ITEM}` substitution though, so this doesn't fully re-test that).
-  - **Gym Guide at (312, 563) blocks the gym door** (312, 562). His dialogue: "Gardenia went over to Route 216 to look for some Grass-type Pokémon." "I'm sure she'd come back to the Gym if you go and talk to her." **This is an RP-specific story gate CLAUDE.md did NOT document.** Gym entrance is the ONLY approach (walls on N/E/W), so we cannot skip.
-  - **Galactic Grunt at (305, 520) blocks T.G. Eterna Bldg door** (305, 519). His dialogue confirms: "You don't have a Forest Badge either, so your Pokémon must be weak!" — so Jupiter fight is **locked behind Gardenia**. Circular: Gardenia requires Route 216 trip; Jupiter requires Forest Badge. Forest Badge is Gardenia.
-  - **Explored Route 211 West** (map 365). Triggered trainer **Hiker Louis** (trainer_id 326) at (377, 529). Team: Geodude Lv19 → Beldum Lv19 (got a crit SE Zen Headbutt for 62 dmg on Monferno) → Slugma Lv19. All OHKO'd by Low Kick (Beldum weight abused) / Rock Smash (Geodude SE Fighting). Got $608.
-  - **Mt. Coronet R0112 (west entrance, map 218) is a shortcut** connecting Route 211 west ↔ Route 211 east. 2 Route 211 warps + 1 stairs_W warp at (11, 10) that leads up to R0113 (map 219).
-  - **R0113 (map 219) — CORRECT PATH north. I misread it last session.** Per Woj, the room has walkable land flanking the sea in the center; the west strip (cols 0-8 in the ASCII map) is traversable floor. I bounced out after reading the legend (`≈=sea` only) + dense water tiles as "water-blocked, needs Surf." FR-006 filed on the `view_map` rendering. **Resume plan for session 12: re-enter R0113 via the stairs at Mt. Coronet (11, 10) and walk the land path north — it is the intended route to higher floors and onward to Route 216 / Gardenia.**
-  - **Route 211 East (map 366)** explored briefly via the cave shortcut — lots of trainers I didn't engage, Ace Trainer F / Ruin Maniac / Ninja Boy / Black Belt. No obvious connection to Route 216 from here at this point.
-- **Unsolved story puzzle**: How to bring Gardenia back. **Primary plan**: go UP through Mt. Coronet R0113 via the land path I missed last session. If that's blocked, fall back to:
-  - (a) Revisit every NPC in Eterna City proper — maybe one triggers Gardenia's return once you have HM01.
-  - (b) Try entering the gym from a different approach (e.g. walk into the Gym Guide pre-HM01 vs post-HM01 — maybe his dialogue gates on Cut).
-  - (c) Look for another Mt. Coronet entrance — maybe Route 207 / Oreburgh Gate connects higher floors and RP opened a shortcut to 216. (Worth checking Oreburgh Gate B1F with Rock Smash.)
-  - (d) Check T.G. Eterna Warehouse / Route 206 area — CLAUDE.md says HM02 Fly is in the Galactic Warehouse; that's possibly accessible via east Eterna or south once Bike Shop opens.
-  - (e) Accept the gate is later-story and proceed to another city (Hearthome?) — but Route 206 is blocked and I don't see another exit.
+  - **BUG-013 workaround still applied precautionarily** at session start (load_state post_starter_twinleaf_eevee → 300f → target → 300f). All reads clean immediately. Per BUG_LOG.md, next session can drop the warmup dance — BUG-013's root-cause fix is holding.
+  - **Reached Route 216** via the Mt. Coronet R0112 → R0113 → R0111 chain. R0113's WEST LAND STRIP is the correct path north (cols 0-8 walkable floor, not water as the legend `≈=sea` suggests). Took 3 consumable rewards on the way: Moon Stone on R0112 at (12, 37), Soft Sand on R0113 at (2, 60), Prism Scale on R0113 at (6, 18).
+  - **R0111 (map 217)** is the floor above R0113 — 4 warps: (10, 27) back-down to R0113, (2, 18) **out to Route 216**, (15, 16) labeled as both Mt. Coronet and Iceberg Ruins (untested, likely post-Regice event). First time routing through R0111.
+  - **Route 216 entry at (375, 403) map 383**. Snowy route with hail and steep BDHC elevation — many Pokeballs/trainers visible on view_map are unreachable from entry without Rock Climb. Mothim was Toxic'd by a wild Zubat in R0111 before this; cured with Antidote + Super Potion at entry.
+  - **Defeated Ace Trainer Blake (trainer 132) on Route 216** at (355, 402). Team: Porygon Lv23 (Trace → copied Blaze, kept spamming Charge Beam to +3 SpA while Monferno slept — very close call, used 2 Super Potions) → Vigoroth Lv23 (Crush Claw -Def'd and KO'd Vaporeon, Monferno came back in from switch and OHKO'd with Low Kick SE). +$1,380.
+  - **Failed against Ace Trainer Laura (trainer 134) at (328, 405)**. Team: Togetic Lv23 (Fairy/Flying per RP retyping, Serene Grace, Wish/Safeguard/Air Cutter/Ancient Power) → Swellow Lv23 (Guts, Aerial Ace SE on Fighting). Mothim got OHKO'd by Swellow Aerial Ace on switch-in (bad call — Mothim's Bug/Flying takes 1x but the damage was still ~67); Monferno then outsped but Swellow's Aerial Ace is SE vs Fighting and one-shot Monferno from 40 HP. Reverted to `session12_route216_post_blake` and retreated to heal + stock.
+  - **Retreat path**: Route 216 (2, 18) warp → Mt. Coronet R0111 → R0113 (had to traverse the west strip again) → R0112 → Route 211 West → Eterna City south border. `heal_party` auto-nav to Eterna PC worked cleanly.
+  - **Restocked at Eterna Mart**: +10 Super Potion ($7k), +5 Antidote ($500), +3 Awakening ($750). Revive + Hyper Potion still gated (need 3/4 badges respectively).
 - **Next session start**:
-  1. Apply the BUG-013 cold-start workaround first: `load_state("post_starter_twinleaf_eevee")` → `advance_frames(300)` → then the target state → `advance_frames(300)`.
-  2. Load **`mt_coronet_west_entrance_from_route211`** (player at Mt. Coronet R0112 west entrance after entering from Route 211). Alternatively **`session11_end_route211_west_mt_coronet_exit`** to re-enter manually.
-  3. **Primary objective: go UP through R0113.** Navigate to the stairs_W at `(11, 10)` in R0112, enter R0113 (map 219), and walk the WEST land strip north. Don't trust the visual density of `≈` sea tiles — the space-char floor is walkable. Pick up the Pokeball at (2, 60) early as confirmation you can reach it.
-  4. Continue north through Mt. Coronet as far as HMs (Cut, Rock Smash) allow. Goal: reach Route 216 and find Gardenia.
-  5. **If R0113 hits a hard wall**: fall through to the fallback plan in the "Unsolved story puzzle" section above (re-test NPCs in Eterna with HM01, Oreburgh Gate B1F, etc.).
-  6. Defer actually challenging Gardenia until she's back at the Gym — Gym Guide at (312, 563) still blocks the gym door on map 65. Just *talk* to her on Route 216 first to trigger her return.
+  1. BUG-013 workaround no longer needed per this session's verification — but if anything weird happens on first read, fall back to the `post_starter_twinleaf_eevee` → 300f → target → 300f pattern from session 11.
+  2. Load **`session12_end_route211_stocked`** (Route 211 West at (356, 532) with full HP and full bag) — drops you 1 step inside Route 211 from Eterna, already pointed east toward Mt. Coronet.
+  3. **Primary objective: rematch Ace Trainer Laura on Route 216 and continue west.** Route back: Route 211 East → Mt. Coronet R0112 stairs_W (11, 10) → R0113 → R0111 (10, 27 stairs) → (2, 18) warp to Route 216.
+  4. **Strategy vs Laura**:
+     - Fake Out Togetic (flinch, ~15 dmg).
+     - Flamethrower Togetic twice — NVE (Fire vs Fairy/Flying = 0.5x) but STAB still 2HKOs from Lv30 Monferno against Togetic's ~58 SpD. Use `force=True` when the effectiveness warning blocks.
+     - Swellow comes in: Monferno is faster (Spe 66 vs ~65, tied at best). Flamethrower for STAB neutral damage OR switch out to a Fake Out user (only Monferno has Fake Out — not useful after one use). Most reliable: Super Potion Monferno on the turn Swellow enters, then Flamethrower from full HP twice = KO. Expect 1-2 Super Potions spent.
+  5. **Then push west on Route 216.** Other trainers visible: Ace Trainer Snow F (trainer 135) at (344, 411), Skier F/M at (366, 395) / (346, 392), Black Belt (258) at (337, 392). Laura's defeat should unlock west-strip of the route.
+  6. **Goal still: find Gardenia on Route 216.** The objects list at my furthest checkpoint (340, 402) did NOT surface her as a named NPC, so she's further west. The overworld pattern `G` on the ASCII map at grid coords like (343, 530) turned out to be the Map Signpost (symbol `G` reused for multiple NPC types — first-letter of NPC name or class). Don't trust ASCII letters; use the `objects` list for NPC names.
+  7. **Vaporeon is critically underleveled.** Consider a grind stop between Mt. Coronet R0112 and Route 216 — wild Geodude/Beldum/Nosepass/Metang give nice Exp, and Vaporeon's Water Pulse handles Geodude/Nosepass SE. Or deposit Vaporeon and pull a Lv-appropriate box mon.
 - **Open QA bugs after this session**:
-  - **BUG-013 NEW (this session)** — **blocking on cold start**. Same symptom class as BUG-012 (all renegade memory reads garbage: Mystery Zone / $36M / Combusken / empty bag). Triggers on (a) the FIRST `load_state` after `init_emulator` + `load_rom`, and (b) sometimes mid-session without any `load_state` call (observed after several dialogues + building entry/exits). Workaround: load a post-starter save (`post_starter_twinleaf_eevee`) with 300 frame advancement, then reload target. `qa_base_bedroom` double-load was NOT reliable for mid-session recovery. Full details + repro states in BUG_LOG.md.
-  - **BUG-007** still open. Not re-triggered this session (HM01 dialogue didn't have a `{ITEM}` token).
-  - **BUG-009** still open. No trainer-class prefix leaks observed this session (Hiker Louis parsed cleanly: "Player defeated Hiker Louis!" and "Hiker Louis is about to send in Beldum."). Consistent with BUG-009 being specifically limited to the "Pokémon Trainer" class label.
-  - **BUG-010, BUG-011, BUG-012** marked FIXED per session 10 commits; BUG-010/011 not re-triggered this session (no PC round-trip or level-up observed).
-  - **map_name display inconsistency (minor — not filed)**: At the Eterna PC (map 69, code C04PC0101) `map_name` returns `display: "Eterna City"` rather than "Pokemon Center" or similar. Other PCs likely have the same behavior. Cosmetic. Not filing BUG yet — needs repro at a few more PCs to characterize.
-  - **view_map legend includes unlabeled tile-behavior placeholders (`?=0x83 ?=0x85 ?=0xe1 ?=0xe5` etc.)** inside buildings. Cosmetic/minor — indicates some tile-behavior IDs aren't in the renegade tool's symbol table yet. Not a bug per se, but worth a FR for completeness.
-- **FR docket**: FR-003, FR-004, FR-005 still open. Possible new minor FR candidates (not filed yet): `map_name` display coherency for sub-maps; unknown tile-behavior legend entries in `view_map`.
-- **Session 11 highlights**:
-  - BUG-013 regression discovery and characterization — the fix for BUG-012 does NOT cover the cold-start or mid-session paths.
-  - Confirmed RP story gate at Gardenia's gym that CLAUDE.md didn't document — the in-game Gym Guide is the source of truth, not CLAUDE.md for this particular gate.
-  - Mt. Coronet R0112 mapped (one room, 2 Route 211 warps + 1 stairs to R0113 water dead-end).
-  - HM01 Cut acquired cleanly, Cyrus statue cutscene cleared cleanly.
-  - Monferno is a beast — Low Kick vs heavy mons (Beldum ~120 BP) is one-shotting trainer battles.
+  - **BUG-014 NEW** — `battle_turn(use_item=..., party_slot=...)` / `use_battle_item` route heals to the wrong Pokemon after a mid-battle switch. Proved the Super Potion went to benched Monferno, not active Vaporeon, and the tool returned `"Slot N (bench — HP unverifiable)"` for what the caller intended as the active slot. Repro: `session12_route216_entry`. Details in BUG_LOG.md.
+  - **BUG-015 NEW** — `read_party` during battle keeps pre-switch slot order (and pre-battle HP). Makes party_slot math for BUG-014 impossible to reason about without consulting the `battle_state.party` response from `battle_turn`. Repro: same as BUG-014.
+  - **BUG-016 NEW** — Level-up / stat-gain text emits malformed lines (`"Mothim@\nLv. 23"`, `"Sp. Def"` alone) mid-battle on exp rollup. Cosmetic but possibly related to BUG-007 token-substitution class. Repro: grind from `session12_route216_post_blake` until the next party level-up triggers mid-battle.
+  - **BUG-013 VERIFIED FIXED this session** — holds through heavy use (many `load_state`s, many battles, map transitions, exits/entries). Marker flipped in BUG_LOG.md.
+  - **BUG-007** still open. Possibly related to new BUG-016 — same class of text-substitution issue.
+  - **BUG-009** still open. No "Pokémon Trainer" class label fights this session (all trainers had specific class names).
+  - **BUG-010, BUG-011, BUG-012** still FIXED.
+  - **Arrow Signpost null dialogue (minor, not filed)**: `interact_with(object_index=<Arrow Signpost>)` on Route 211 West at (353, 531) returned `dialogue: null`, note `"Arrow Signpost did not produce any dialogue when interacted with."` — other Arrow Signposts DID produce dialogue earlier (Rt. 216 / Mt. Coronet marker). Possibly the sign-overlay-capture path missed this one. Worth a targeted repro later.
+  - **map_name display inconsistency (still minor, not filed)**: Same as session 11 note.
+  - **view_map legend unlabeled tile-behavior placeholders** — not filed, cosmetic.
+- **FR docket**: FR-003, FR-004, FR-005, FR-006 still open. FR-006 (R0113 water-tile rendering ambiguity) got a real-world dogfood this session — the west land strip IS traversable, legend should probably distinguish "shallow/crossable" vs "deep-needs-surf" water tiles or mark floor tiles that are surrounded by sea more prominently.
+- **Session 12 highlights**:
+  - BUG-013 re-verified as fixed under heavy use (many state loads, many battles).
+  - Reached **Route 216** via Mt. Coronet R0113 — confirmed the west land strip walk works, grabbed 3 evolution/held items along the way.
+  - 1 trainer defeated on Route 216 (Blake), 1 failed (Laura) — planned retry route next session.
+  - Discovered BUG-014 + BUG-015 + BUG-016 through actual play — the item-target bug nearly cost me a whiteout.
+  - Mothim hit Lv23 and is starting to pull its weight; Vaporeon is falling behind badly.
 
 ## Tips
 

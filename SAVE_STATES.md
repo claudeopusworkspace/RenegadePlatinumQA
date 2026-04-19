@@ -48,6 +48,13 @@
 | `mt_coronet_west_entrance_from_route211` | Mt. Coronet R0112 (map 218) at the west entrance from Route 211. No path to upper floors found from this room — 2 warps both back to Route 211 + 1 stairs_W warp to R0113 water dead-end. Confirmed Route 216 not reachable at this stage without Strength/Surf. |
 | `mt_coronet_r0112_explored_no_progress_path` | After full R0112 exploration. Player at (28, 24). Documented for the next session's decision tree: "we tried Mt. Coronet west entrance, it doesn't reach Route 216, pivot to another option". |
 | `session11_end_route211_west_mt_coronet_exit` | **Session 11 end state.** Player on Route 211 West at (380, 532) just outside Mt. Coronet R0112 exit. Defeated Hiker Louis (Geodude/Beldum/Slugma all Lv19) — got $608. Monferno fully healed (2× Super Potions used post-Beldum-crit). Money $16,092. 4 Super Potions remaining. HM01 Cut in bag (not yet taught to any party member). |
+| `session12_r0113_entry_8_60` | Inside Mt. Coronet R0113 (map 219) at (8, 60) just after warping up from R0112 stairs_W. Confirms R0112→R0113 stairs work. Items not yet picked up. |
+| `session12_mt_coronet_r0111_entry` | Mt. Coronet R0111 (map 217) at (10, 27) after climbing R0113's north stairs to this floor. From here: warp (2, 18) → Route 216, warp (15, 16) → higher Mt Coronet / Iceberg Ruins (untested). |
+| `session12_route216_entry` | **Route 216 finally reached** (map 383) at (375, 403) just inside the cave warp from R0111. Haven't engaged any Route 216 trainer yet. Mothim Toxic'd from the wild Zubat encounter in R0111 — use Antidote before exploring. |
+| `session12_route216_post_blake` | Route 216 at (355, 403) after defeating Ace Trainer Blake (Porygon Lv23 + Vigoroth Lv23). **Vaporeon fainted**, Monferno 52/88, Mothim full. $1380 won. 2 Super Potions remaining. Useful BUG-014 + BUG-015 repro (the in-battle Super Potion went to wrong slot here). |
+| `session12_eterna_healed_post_retreat` | Post-retreat from Route 216 to Eterna PC — full heal (Vaporeon revived). Player at Eterna PC (map 69, 8, 6). Bag: 1 Parlyz Heal (post-heal, pre-shop). Good "reset to safety" checkpoint. |
+| `session12_eterna_stocked` | Post-Mart visit, bag: Super Potion x10, Antidote x5, Awakening x3, Parlyz Heal x1. Money ¥9,222. Player at Eterna Mart (map 66). |
+| `session12_end_route211_stocked` | **Session 12 end state.** Player on Route 211 West at (356, 532) — just crossed from Eterna City, fled a wild Machop, heading back to Mt. Coronet for the Route 216 Ace Trainer Laura rematch. Party fully healed, bag fully stocked. Monferno Lv30, Mothim Lv23 (**new**), Vaporeon Lv17, Shinx Lv6. Money $9,222. Items gained this session: Moon Stone (R0112), Soft Sand (R0113), Prism Scale (R0113). |
 
 ## Bug Reproduction States
 

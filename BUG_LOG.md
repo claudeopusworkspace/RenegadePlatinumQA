@@ -20,7 +20,56 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-013: BUG-012 symptoms return on the FIRST `load_state` after `init_emulator` + `load_rom` (session 11, 2026-04-18) — **FIXED 2026-04-19 (awaiting re-verification next session)**
+### BUG-014: `battle_turn(use_item=...)` / `use_battle_item` party_slot targets wrong Pokemon after a switch (session 12, 2026-04-19)
+
+Using a healing item mid-battle with `party_slot=<active battler's slot>` skips the active battler and routes the heal to a bench Pokemon that happens to be at that party index. The tool's reply is also misleading — says "Slot N (bench — HP unverifiable)" for what the caller intended as the active slot.
+
+- **Tool**: `battle_turn(use_item=..., party_slot=...)` (and the equivalent `use_battle_item`).
+- **Severity**: major — can waste a turn and a consumable on the wrong target; in a trainer fight on Route 216 this let Vaporeon get KO'd while a Super Potion intended for it was silently applied to the benched Monferno.
+- **Save state**: `session12_route216_entry` (before the trainer fight). To repro: walk west to Ace Trainer Blake at (355, 402), engage, let Monferno get put to sleep / low HP, switch to Vaporeon (party_slot 1), take a hit, then `battle_turn(use_item="Super Potion", party_slot=1)`.
+- **Call**: `battle_turn(use_item="Super Potion", party_slot=1)` while Vaporeon is active (post-switch).
+- **Expected**: Super Potion heals active Vaporeon (party slot 1).
+- **Actual**: Tool responded `"target":"Slot 1","party_slot":1,"final_state":"WAIT_FOR_ACTION","formatted":"Used Super Potion on Slot 1 (bench — HP unverifiable). State: WAIT_FOR_ACTION."`. Post-turn `read_battle` showed Vaporeon still at 35/76 HP (unchanged); Monferno (the ACTUAL bench mon at the time) later switched in at 52/88 HP, up from 2/88 — the Super Potion healed Monferno, not Vaporeon. Item count decremented, turn was consumed.
+- **Related**: `switch_to` is aware of the post-switch party-slot swap (errors with "switch_to=0 is your active battler (Vaporeon)" once Vaporeon has been switched in and is, per read_party, at slot 1 pre-battle). The `use_item` path seems to use a DIFFERENT slot convention than `switch_to`. They should agree, and the "bench — HP unverifiable" message should not fire when the caller's party_slot equals the active battler's party_slot.
+- **Workaround**: For active-battler heals, trial-and-error the party_slot; or exit battle and use `use_medicine` (which works correctly in the overworld).
+- **Notes**: See also BUG-015 below — `read_party` during battle returns stale pre-switch slot positions, which compounds confusion about what "party_slot=1" even means mid-battle.
+
+---
+
+### BUG-015: `read_party` during battle returns stale/pre-switch party order (session 12, 2026-04-19)
+
+During a battle where a Pokemon has been switched out and a new one switched in, the Gen 4 engine physically swaps the two Pokemon's positions in the party block. `read_party` does not reflect this mid-battle — it keeps returning the pre-battle order until the battle ends.
+
+- **Tool**: `read_party`.
+- **Severity**: minor/major — on its own just confusing, but it compounds BUG-014: the caller uses `read_party` to figure out which party slot Vaporeon occupies, plugs that into `use_item(party_slot=...)`, and ends up healing the wrong mon.
+- **Save state**: `session12_route216_entry` (same as BUG-014).
+- **Call**: After switching from Monferno (lead) to Vaporeon in battle, call `read_party()` without ending the battle.
+- **Expected**: `read_party` returns current party order — Vaporeon at slot 0, Monferno at slot 1 (matching the post-switch swap the Gen 4 engine performs and that `switch_to`'s logic agrees with).
+- **Actual**: `read_party` still shows `slot 0 = Monferno`, `slot 1 = Vaporeon` (pre-battle order). Also HP in `read_party` output is the pre-battle HP, not the current battle HP (Monferno shows 88/88 even while Monferno is at 2/88 in battle). The "pre-battle HP" half is a documented Gen 4 convention (party block isn't updated mid-battle) but the slot-order mismatch is specifically misleading — especially when combined with BUG-014.
+- **Workaround**: For mid-battle identification, prefer the `battle_state.party` array returned by `battle_turn` after a faint/switch event; it reports the post-swap order.
+- **Notes**: Verified cross-check — `FAINT_FORCED` response after Vaporeon fainted returned `"party":[{"slot":0,"name":"Vaporeon"},{"slot":1,"name":"Monferno"},...]` while `read_party` same moment would still show slot 0 = Monferno / slot 1 = Vaporeon. So the emulator DOES have the swapped order in RAM — `read_party` is reading the wrong struct during battle.
+
+---
+
+### BUG-016: Level-up / stat-gain dialogue emits malformed text tokens mid-battle (session 12, 2026-04-19)
+
+When Mothim leveled from 22 → 23 mid-battle after a Natu wild fight on Route 211, `read_dialogue`'s conversation array contained a garbled line: `"Mothim@\nLv. 23"`. This looks like an unresolved text substitution — expected shape is something like `"Mothim reached\nLv. 23!"` or the classic Gen 4 `"{MON_NAME} is\ntrying to learn\n{MOVE_NAME}."`. Separately, during the Togetic fight earlier in the session, Monferno leveled from 29 → 30 and the battle log emitted a standalone line `"Sp. Def"` (no value, no "rose by X"), followed by the next game event — so the stat-gain numbers appear to be dropped entirely in one of the two level-up paths.
+
+- **Tool**: `read_dialogue` (auto-advance mode) during battle level-up; `battle_turn` surfaces the same text via its log.
+- **Severity**: cosmetic/minor — doesn't block gameplay, but if another tool or a human reader relies on these lines (analytics, regression tests, etc.) it will mis-parse.
+- **Save state**: `session12_route216_post_blake` is the earliest checkpoint with a party that will level mid-battle; grinding vs Route 211 wild mons there will re-trigger. The exact "Sp. Def" bare-line variant triggered when Monferno KO'd Togetic with Flamethrower and immediately leveled during the exp-gain rollup.
+- **Call**: Any `battle_turn(move_index=...)` that finishes a battle with XP that crosses a level boundary.
+- **Expected**: Full formatted level-up string with stat names AND values (e.g. `"Sp. Def\nrose by 2!"`) OR a correctly substituted `"Mothim reached Lv. 23!"`.
+- **Actual**: `"Mothim@\nLv. 23"` (Natu fight level-up) / `"Sp. Def"` (Togetic fight level-up) — partial/garbled output.
+- **Related**: Feels like the same class as **BUG-007** ({ITEM} substitution elision on the Exp. Share receive dialogue) — maybe the dialogue-advance engine is over-aggressively filtering out token-only lines or stopping mid-substitution. Worth cross-checking with the BUG-007 fix.
+- **Notes**: Not every level-up produces the bug — Monferno's 29→30 from Metang kill on the return trip through Mt Coronet (cave `Monferno grew to Lv. 30!`) parsed cleanly.
+
+---
+
+### BUG-013: BUG-012 symptoms return on the FIRST `load_state` after `init_emulator` + `load_rom` (session 11, 2026-04-18) — **FIXED (verified 2026-04-19 session 12)**
+
+**Session 12 re-verification**: Applied the session-11 cold-start workaround as a precaution (`load_state("post_starter_twinleaf_eevee")` → 300f → `load_state("mt_coronet_west_entrance_from_route211")` → 300f). First post-workaround `read_party` / `read_trainer_status` / `map_name` all returned correct values (Monferno Lv29, Vaporeon Lv17, Mothim Lv21, Shinx Lv6; $16,092; Mt. Coronet D05R0112 at 2,41). No Mystery Zone / $36M symptoms. Stayed stable across many `load_state` calls, trainer battles, map transitions (Mt. Coronet R0112 ↔ R0113 ↔ R0111 ↔ Route 216 ↔ Route 211 ↔ Eterna City). Fix holding. Can drop the pre-load warmup dance next session.
+
 
 Root cause: BUG-012's fix made `name_length × 10` dominate delta scoring, which works when the decoy is a *longer* name (Monferno, 8 chars) than the real player name. In QA's save the player name is "WOJ" (3 chars), and a ROM text-buffer in main RAM contains the string "Destiny Knot". The 4-char substring `"Knot"` scored 40+2=42 at delta=-0x100, beating the real `"WOJ"` at delta=-0x20 with score 30+3=33. The secondary canaries at the decoy were wildly out of range (party_count=36,299,880 and money=$36,302,676 — the reported "always $36,302,676" fingerprint), but the scoring treated them as missed bonuses, not disqualifications.
 
