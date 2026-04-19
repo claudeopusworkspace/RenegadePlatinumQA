@@ -16,6 +16,24 @@ Ideas for improving the Renegade MCP tooling, surfaced during QA playthroughs. T
 
 ---
 
+### FR-006: `view_map` legend does not document the walkable-floor character; easy to misread sparse-land rooms as "fully blocked"
+
+- **Area**: navigation / developer experience
+- **Priority**: medium — I wasted a session's Route-216 attempt because of this.
+- **Context**: Session 11, Mt. Coronet R0113 (map 219, reached via stairs from R0112). The ASCII map was dense with `≈` (sea) in the center and `#` (walls) on the right; a narrow vertical strip of space characters `" "` flanked the sea on the west. The legend only said `≈=sea`, with no entry for the walkable floor character. Visually this read as "mostly water, walled in" and I backed out looking for another path. Per Woj, R0113 is actually the correct direction — the land strip is traversable and leads to higher Mt. Coronet floors.
+- **Current friction**:
+  - Walkable cave floor renders as a literal space, same char as "void outside the map" — the two look identical.
+  - The legend omits spaces entirely, so there's no hint that " " is meaningful terrain.
+  - When a room has a dense sea + sparse land mix, the eye lumps land into the visual "background" and reads the water as the dominant feature.
+  - Cross-referencing the objects list does help (I had a Pokeball at `(2, 60) reachable: true` which was the hint I missed), but when skimming a large map you don't always catch it.
+- **Proposal**: Pick any of these (or combine):
+  1. Change walkable cave/dungeon floor from `" "` to a clearly-visible char like `·` (middle dot) or `.` (already used for some floors). Keep void / outside-map unchanged as `" "` so the distinction is visually obvious.
+  2. Always include walkable-floor entries in the legend when they appear — e.g. `·=floor` or `.=walkable` so a quick reader knows blank-ish areas inside walls are navigable.
+  3. When a room is majority-water, add an info line above the map like `# walkable land tiles: 47  sea tiles: 183` so the caller knows there's a non-trivial land path even if it doesn't dominate visually.
+- **Notes**: Not a bug — the data is all there, and `navigate_to` / reachability correctly treat the floor as walkable. Pure rendering clarity. One minor related issue: the current legend in R0112 also lists unlabeled entries like `?=0x83 ?=0x85 ?=0xe1 ?=0xe5` inside buildings — those tile-behavior codes not in the symbol table might benefit from the same "add a name" treatment.
+
+---
+
 ### FR-003: Consider merging `use_battle_item` into `battle_turn` as a fourth action type
 
 - **Area**: battle
