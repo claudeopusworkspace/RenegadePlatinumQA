@@ -20,7 +20,59 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-022: `battle_turn` with `use_item=` returns no `log` field, making turn opaque (session 16, 2026-04-19)
+### BUG-022: `battle_turn` with `use_item=` returns no `log` field, making turn opaque (session 16, 2026-04-19) — **FIXED (verified 2026-04-19 session 17 dev)**
+
+Re-verified the repro by copying `session16_map75_pre_jupiter_battle` into
+the dev project as `qa_session16_map75_pre_jupiter_battle`, engaging
+Jupiter, and calling `battle_turn(use_item="Super Potion", party_slot=0)`
+on Monferno 75/99. Post-fix response includes the full turn log:
+
+```
+[
+  {"text": "Used the Super Potion!", "stop": "AUTO_ADVANCE"},
+  {"text": "Monferno's HP was restored\nby 24 point[01B9]s/.", "stop": "AUTO_ADVANCE"},
+  {"text": "The foe's Golbat used\nWing Attack!", "stop": "AUTO_ADVANCE"},
+  {"text": "It's super effective!", "stop": "AUTO_ADVANCE"},
+  {"text": "What will Monferno do?", "stop": "WAIT_FOR_ACTION"}
+]
+```
+
+The HP delta (75 → 51) is now trivially reconstructible: heal +24 to 99,
+Golbat Wing Attack super-effective for ~48 → 51. (Session 16's Sableye
+Fake Out hypothesis from the original entry was spot-on, same bug class.)
+
+Root cause: `use_battle_item` called `_wait_for_action_prompt` at
+`use_battle_item.py:251` but only extracted `prompt["prompt_type"]` —
+`prompt["log"]` (which already contains the full turn narration collected
+during the item-animation + enemy-turn poll) was thrown away. None of
+the six return paths in `use_battle_item` included a `log` field.
+
+Fix in `renegade_mcp/use_battle_item.py`:
+- Capture `prompt["log"]` into a `turn_log` local immediately after the
+  `_wait_for_action_prompt` call.
+- Initialize `turn_log = []` before the branch so the escape-item path
+  (battleUseFunc=3, Poke Doll) still returns a well-typed empty list.
+- Thread `"log": turn_log` through every return path in the function —
+  blackout, active-heal HP-changed, active-heal HP-unchanged, bench
+  (HP-unverifiable), X-item success, and X-item uncertain.
+
+The `turn.py::battle_turn` wrapper for the item path (lines 1056-1064)
+already returns early with `use_battle_item`'s dict intact, so the `log`
+field propagates automatically — no wrapper changes needed.
+
+8 regression tests added in
+`tests/test_qa_bug022_battle_turn_use_item_log.py`:
+- 4 on `battle_item_debug_damaged` (Luxio vs Natu) — log is present, log
+  entries have correct shape, log ends with the action prompt, log
+  contains item-use narration mentioning the item name.
+- 2 on the same state via the `battle_turn(use_item=...)` wrapper — log
+  survives the wrapper, `log` and `battle_state` coexist.
+- 2 on `bug022_jupiter_battle_pre_super_potion` (the original repro) —
+  enemy Pokemon ("Golbat") appears in log, and both the heal narration
+  and the enemy-action narration are captured so the HP arc is
+  reconstructible.
+
+**Original entry retained below for reference.**
 
 - **Tool**: `battle_turn(use_item=..., party_slot=...)`
 - **Severity**: minor (observability / tool UX — not gameplay-affecting, but makes downstream diagnosis extremely hard)
