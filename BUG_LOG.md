@@ -20,7 +20,55 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-019: Double-battle log duplicates "fainted" and "gained Exp." lines (session 15, 2026-04-19)
+### BUG-019: Double-battle log duplicates "fainted" and "gained Exp." lines (session 15, 2026-04-19) — **FIXED (verified 2026-04-19 session 15 dev)**
+
+Re-ran the repro from `qa_session15_galactic_bldg_pre_stairs` → navigate_to
+(20, 6) stair → engage double grunts → `battle_turn(move_index=1, target=0)`
+(Monferno Flamethrower) + `battle_turn(move_index=3, target=1)` (Vaporeon
+Aurora Beam). Post-fix log shows each multi-line narration exactly once —
+`"Vaporeon used / Aurora Beam!"`, `"The foe's Koffing fainted! /"`,
+`"Monferno gained / 139 Exp. Points! /"`, etc. Single-line emphasis like
+`"A critical hit!"` is left alone since it can legitimately repeat when both
+attackers crit in the same doubles turn.
+
+Root cause was **two-fold**, not just the obvious partner-loop hypothesis:
+1. `BattleTracker.poll` updated `prev_text` unconditionally even for
+   entries it then filtered out (orphan names via BUG-011's heuristic,
+   level-summary artifacts via BUG-016's heuristic). A filtered entry
+   sandwiched between two real repeats of the same text advanced
+   `prev_text` past the first, defeating the consecutive-same dedupe
+   and letting the second copy through.
+2. The bigger contributor: after `_tracker.poll` returns (e.g., on
+   WAIT_FOR_ACTION / TIMEOUT / NO_TEXT), `turn.py`'s doubles / recovery
+   path calls `_wait_for_action_prompt` to find the partner prompt.
+   That scanner re-reads the same battle-text region — narration markers
+   that were already logged by `poll` are still in memory, so the
+   re-scan re-emits them into `result["log"]` via the subsequent
+   `list.extend(...)` call. My live repro had exactly one "Aurora Beam!"
+   in `poll`'s log but a second one appeared via the recovery extend.
+
+Fix in `renegade_mcp/battle_tracker.py` + `renegade_mcp/turn.py`:
+- `BattleTracker.poll` — skip the `prev_text = text` update when the
+  entry is a filtered orphan / artifact, and additionally maintain a
+  `logged_multiline` set per-poll. Multi-line AUTO_ADVANCE text already
+  in the set is dropped; single-line emphasis (no `\n`) stays
+  un-deduped.
+- `renegade_mcp/turn.py::_merge_log_dedupe_multiline` — new helper that
+  appends to an existing log list but drops exact multi-line
+  AUTO_ADVANCE duplicates of entries already present. Applied at every
+  cross-scanner extend site (`_poll_after_action` recovery,
+  doubles-partner recovery, `_execute_action`'s prompt+poll merge, and
+  the level-up recovery's trailing prepend). Non-AUTO_ADVANCE entries
+  (WAIT_FOR_ACTION / WAIT_FOR_INPUT) always pass through so partner
+  prompts aren't suppressed.
+
+7 regression tests added in `tests/test_qa_bug019_double_battle_log_dedupe.py`
+(6 unit covering merge semantics — dup-drop, legit single-line repeats,
+different-mon/different-exp values pass through, empty extra, prompt stops
+unaffected — plus 1 meta-test asserting BUG-011/BUG-016 filter invariants
+stay stable, since BUG-019's prev_text guard depends on them).
+
+**Original entry retained below for reference.**
 
 - **Tool**: `battle_turn` (double battle) — `log` / `formatted` fields.
 - **Severity**: minor (cosmetic, log-only).
@@ -37,7 +85,46 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-020: `view_map` `object.name` disagrees with in-battle trainer class for Route 211 W Bird Keeper (session 15, 2026-04-19)
+### BUG-020: `view_map` `object.name` disagrees with in-battle trainer class for Route 211 W Bird Keeper (session 15, 2026-04-19) — **FIXED (verified 2026-04-19 session 15 dev)**
+
+Re-ran from `qa_session15_route211_west_entry`: `view_map()` now returns
+`{index:1, name:"Bird Keeper", trainer:true, trainer_id:76, defeated:false,
+trainer_class:"Bird Keeper", sprite_name:"Ace Trainer F", ...}` for the NPC
+at (367, 523). The sprite-class mismatch is preserved via the new
+`sprite_name` field; `name` / `trainer_class` both carry the authoritative
+battle class. Ninja Boy Zach (trainer 78) has matching sprite + class, so
+`name:"Ninja Boy"` and no `sprite_name` appears.
+
+Root cause: `map_state.py`'s object-trainer block used the sprite name
+from `GFX_NAMES[graphics_id]` as the display `name`. The actual in-battle
+trainer class lives in `trdata.narc` (byte 1 of each per-trainer record,
+indexing into ROM message file 619). For Route 211 W's Alexandra, the
+zone_event declares `graphics_id: OBJ_EVENT_GFX_ACE_TRAINER_F`
+(sprite class = "Ace Trainer F") but `script: TRAINER_BIRD_KEEPER_ALEXANDRA`
+→ trainer id 76 → trdata class byte 0x1E (30) → file 619 index 30 =
+"Bird Keeper". Vanilla Platinum inherits the same re-skin, so this isn't a
+Renegade-specific quirk.
+
+Fix:
+- `data/trainer_classes.json` — pre-built at tool-repair time from
+  trdata.narc byte 1 cross-referenced against the 105 strings in ROM
+  file 619. Ships as a plain `{trainer_id: {class_id, class_name}}` map
+  so runtime lookup is a dict hit, no NARC unpacking at call time.
+- `renegade_mcp/trainer.py::lookup_trainer_class` — cached singleton
+  loader returning the class name for a trainer id, or `None` for
+  unknown ids.
+- `renegade_mcp/map_state.py` — when the trainer id resolves and the
+  sprite name differs from the trainer class, override `name` with the
+  real class, preserve the original sprite as `sprite_name`, and surface
+  the class explicitly via `trainer_class`. Matching sprite+class pairs
+  skip the extra fields.
+
+7 regression tests in `tests/test_qa_bug020_view_map_trainer_class.py`
+(5 lookup-table unit tests covering Alexandra, Zach, Louis, unknown id,
+and cache singleton + 2 live view_map integration tests — the Alexandra
+sprite/class override and the Ninja Boy matching-pair negative case).
+
+**Original entry retained below for reference.**
 
 - **Tool**: `view_map` — `objects[].name`.
 - **Severity**: cosmetic.
@@ -50,7 +137,49 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-021: `view_map` marks non-battleable flavor NPC as `trainer=true defeated=true` (session 15, 2026-04-19)
+### BUG-021: `view_map` marks non-battleable flavor NPC as `trainer=true defeated=true` (session 15, 2026-04-19) — **FIXED (verified 2026-04-19 session 15 dev)**
+
+Re-ran from `qa_session15_route211_west_entry` and walked east into the
+Hiker's viewport: `view_map()` now returns `{index:2, x:377, y:529,
+name:"Hiker", flavor_npc:true, ...}` — no `trainer`, no `trainer_id`, no
+`defeated`. Alexandra (real trainer 76) still reports trainer metadata
+correctly, so the fix is scoped.
+
+Root cause (confirmed via ref decomp + live save inspection):
+`TRAINER_HIKER_LOUIS` at (377, 529) has a real 3-mon party in trdata.narc
+(Graveler / Onix / Golem @ Lv19) AND the zone_event header declares
+`trainer_type: TRAINER_TYPE_NORMAL` with `script: TRAINER_HIKER_LOUIS` →
+trainer id 326 via our script-to-id decoder. Renegade Platinum rewrote
+the field script to skip the battle and pre-sets trainer 326's defeat
+flag (bit 1686 in VarsFlags) via a story script — confirmed cold:
+bit 1686 is 0 in `twinleaf_outside_house_post_mom`, 1 in
+`qa_session15_route211_west_entry`, with no battle in between. So our
+`is_trainer_defeated` probe was faithful (the game really does treat him
+as defeated) but the combination with `trainer=true` was misleading.
+
+Fix:
+- `data/rp_flavor_trainers.json` — curated allowlist keyed by `map_id`
+  listing trainer ids that are flavor-only. Starts narrow: just
+  `{"365": [326]}` (Louis on Route 211 W). Comment block at the top
+  documents scope + how to extend.
+- `renegade_mcp/trainer.py::is_flavor_trainer` — cached singleton
+  `(map_id, trainer_id)` membership check.
+- `renegade_mcp/map_state.py` — when an NPC's resolved trainer id hits
+  the allowlist, drop `trainer` / `trainer_id` / `defeated` from the
+  output and set `flavor_npc: true` instead. Non-flavor trainers keep
+  the existing trainer metadata plus BUG-020's new `trainer_class` /
+  `sprite_name` fields.
+
+6 regression tests in `tests/test_qa_bug021_flavor_trainer_suppression.py`
+(4 allowlist semantic tests — Louis positive, other trainers negative,
+same-id-on-other-maps negative, cache singleton + 2 live view_map
+integration tests — Louis flavor suppression, Alexandra unchanged).
+
+Future QA runs that find additional flavor-only NPCs should append to
+`data/rp_flavor_trainers.json`; the allowlist is data-driven precisely to
+keep that bar low.
+
+**Original entry retained below for reference.**
 
 - **Tool**: `view_map` — `objects[].trainer` / `defeated`.
 - **Severity**: cosmetic (but misleading for completionist logic).
