@@ -20,6 +20,19 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
+### BUG-022: Mid-battle Super Potion heals far less than 50 HP (session 16, 2026-04-19)
+
+- **Tool**: `battle_turn(use_item="Super Potion", party_slot=...)`
+- **Severity**: major (gameplay-affecting — cost me near-whiteout timing vs Commander Jupiter)
+- **Save state**: `session16_end_jupiter_midfight_sableye` (state is *after* the bug — Mothim shows 43/85 HP; Sableye is the active enemy with Sitrus Berry still held, pre-Fake Out).
+- **Call**: Mid Jupiter battle — Mothim at 36/85 HP (no status) before Sableye's first turn. Called `battle_turn(use_item="Super Potion", party_slot=2)` expecting +50 HP → 85/85.
+- **Expected**: Super Potion restores 50 HP (RP doesn't document nerfing Super Potion; bag/party reads list it as "Super Potion" id 26). Mothim should end at 85/85.
+- **Actual**: Tool returns `{"success":true,"item":"Super Potion","old_hp":36,"new_hp":43}`. Only **7 HP restored** — matches *Potion* (20 HP, also low) or even a partially-applied heal, not Super Potion's 50. Battle_state confirms Mothim 43/85 afterward. Super Potion was still consumed from the bag (need to verify on reload, but consumption implies the item was used).
+- **Workaround**: None in-battle — Mothim survived anyway by RNG (Jupiter's Skuntank picked Poison Jab over Night Slash earlier). If this happens at a critical moment it's a whiteout risk.
+- **Notes**: Not a dialogue/log parsing issue — the structured JSON `old_hp`/`new_hp` fields disagree with Super Potion's known effect. Possible causes: (1) the tool internally calls the wrong item-id path and applies Potion's heal table, (2) Super Potion got silently nerfed in RP (unlikely — no mention in CLAUDE.md and would be a weird change), (3) `new_hp` is being mis-read from memory one tick too early. Reload `session16_map75_pre_jupiter_battle` and re-run the full battle up to the switch prompt with different heal values to isolate. No other Super Potion use this session to cross-reference.
+
+---
+
 ### BUG-019: Double-battle log duplicates "fainted" and "gained Exp." lines (session 15, 2026-04-19) — **FIXED (verified 2026-04-19 session 15 dev)**
 
 Re-ran the repro from `qa_session15_galactic_bldg_pre_stairs` → navigate_to

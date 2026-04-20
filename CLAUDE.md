@@ -228,18 +228,18 @@ Saved macros persist across sessions in `macros/`.
 
 - **Character**: WOJ (boy), rival **Barry**
 - **Badges**: **2 (Coal, Forest)**.
-- **Money**: **~$12,906** (8,786 entry + 640 Alexandra + 152 Zach + 528 Sean + 960 Forest-Badge Grunt + 1,840 double grunts — recompute on load).
-- **Location**: **T.G. Eterna Bldg (map 72)** at (19, 8) mid-raid arc, mid-floor ground level, party beat up. Best resume point: **`session15_end_post_double_grunts_eterna_hq`** (BUT needs heal + status cure). Cleaner alternative: `session14_end_post_gardenia_healed` (pristine, pre-arc) if restarting from scratch is preferred.
-- **Party** (post-double-grunt, battered):
-  1. **Monferno** Lv33 (Quirky, Blaze) — Low Kick (20/20) / **Flamethrower (1/15 — critical, needs PP Up or PC)** / Fake Out (9/10) / Rock Smash (14/15). 23/99 HP. **⚠ Paralysis.** Leveled Lv32 → Lv33 this session (Golbat KO).
-  2. **Vaporeon** Lv21 (Serious, Water Absorb) holding Exp. Share — **Water Pulse / Quick Attack / Bite / Aurora Beam (NEW — learned at Lv19, replaced Covet)**. 20/91 HP. **⚠ Paralysis.** **Leveled Lv17 → Lv21 this session** via Exp. Share haul on Route 211 W and the HQ grunts. Aurora Beam gives her Ice coverage (2x vs Grass/Flying/Dragon/Ground).
-  3. **Mothim** Lv29 (Naive, Swarm) — Protect (10/10) / Gust (34/35) / Bug Buzz (9/10) / Hidden Power (15/15). 52/85 HP. **⚠ Toxic (badly poisoned).** Switched in vs Nidoran♀ Poison-Fang + toxic tick.
+- **Money**: **~$17,558** (15,486 after Eterna restock + $920 Cleffa + $1152 Scientist — recompute on load).
+- **Location**: **T.G. Eterna Bldg (map 75) mid-Commander-Jupiter fight** — Mothim active vs Sableye's Fake-Out prompt. Jupiter's Golbat/Skuntank/Tangela already KO'd; **Sableye + (possibly more) remaining**. Vaporeon fainted to crit Poison Jab. Monferno at 8/102 **Poisoned** (reserve — dies to tick next time it's sent out). Best resume: **`session16_end_jupiter_midfight_sableye`** (mid-fight, Mothim 43/85). Cleaner alt: **`session16_map75_pre_jupiter_battle`** (pre-Jupiter, Monferno 75/99, Vaporeon 91/91, Mothim 85/85 — restart the Commander fight with better strategy, e.g. lead Mothim with Protect vs Fake Out).
+- **Party** (mid-Jupiter, battered):
+  1. **Monferno** Lv34 (Quirky, Blaze) — Low Kick (19/20) / Flamethrower (8/15) / Fake Out (9/10) / Rock Smash (12/15). **8/102 HP. ⚠ Poisoned.** Leveled Lv33 → Lv34 this session (Skuntank+Golbat XP).
+  2. **Vaporeon** Lv23 (Serious, Water Absorb) holding Exp. Share — Water Pulse (20/20) / Quick Attack (30/30) / Bite (25/25) / Aurora Beam (15/15). **0/99 HP. FAINTED** (crit Poison Jab from Skuntank). Leveled Lv22 → Lv23 this session; also got a MOVE_LEARN prompt for Aqua Ring (skipped — kept the current moveset). **BUG-018 still FIXED** — MOVE_LEARN correctly reported `{slot:1, name:"Vaporeon"}`.
+  3. **Mothim** Lv29 (Naive, Swarm) — Protect (10/10) / Gust (35/35) / Bug Buzz (6/10) / Hidden Power **Rock 57 BP** (15/15). **43/85 HP, no status.** Carried the Jupiter fight (Skuntank + Tangela KOs; Bug Buzz 4x SE on Tangela via Bug/Flying combo).
   4. **Shinx** Lv6 — still unused bait.
-- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch (all apps), Fashion Case, HM06 Rock Smash (on Monferno), HM01 Cut, **Coal Badge, Forest Badge**, Works Key.
-- **Bag** (post-double-grunts, pre-heal):
-  - Medicine: Super Potion x9 (untouched this session — Monferno only fainted vs Roserade in s14), Antidote x5, Awakening x1, **Parlyz Heal x0 — BUY NEXT SESSION** (both active mons paralyzed). Need ~3+ for safe HQ clear.
-  - Items: Repel x7, **Fire Stone (NEW — Route 211 East drop at (433, 535))**, Silk Scarf, Oval Stone, Expert Belt, Miracle Seed, Magnet, Honey x10, Destiny Knot, Moon Stone, Soft Sand, Prism Scale, **Escape Rope (NEW — Mt. Coronet drop at (28, 43))**.
-  - TMs & HMs: TM08/09/27/34/39/58/76/86 (x99 each), HM01, HM06, **TM12 Taunt (NEW — R211W (368, 535))**, **TM69 Rock Polish (NEW — Mt. Coronet (2, 31))**, **TM73 Thunder Wave (NEW — T.G. Eterna Bldg L1 map 73 at (3, 12))**.
+- **Key Items**: Bicycle, Poké Radar, Journal, Vs. Recorder, Town Map, Pokétch, Fashion Case, HM06 Rock Smash (on Monferno), HM01 Cut, **Coal Badge, Forest Badge**, Works Key, **Secret Key (NEW — map 75 Pokeball at (21, 5); unlocks Rotom's Room warp at map 72 (2, 2))**.
+- **Bag** (mid-Jupiter fight, post-restock):
+  - Medicine: **Super Potion x8** (1 used mid-Jupiter — triggered **BUG-022** below), **Antidote x10** (restocked x5), Awakening x1, **Parlyz Heal x5 (restocked this session)**.
+  - Items: Repel x7, Fire Stone, Silk Scarf, Oval Stone, Expert Belt, Miracle Seed, Magnet, Honey x10, Destiny Knot, Moon Stone, Soft Sand, Prism Scale, Escape Rope, **Wise Glasses (NEW — map 74 Pokeball at (10, 8); +10% Special damage held item)**.
+  - TMs & HMs: TM08/09/12/27/34/39/58/69/73/76/86 (x99 each), HM01, HM06, **TM16 Light Screen (NEW — map 75 Pokeball at (8, 6))**, **TM33 Reflect (NEW — map 75 Pokeball at (9, 6))**.
   - Balls: Poké Ball x21.
 - **Story flags** (new this session in bold):
   - All priors still valid.
@@ -252,26 +252,30 @@ Saved macros persist across sessions in `macros/`.
   - **BUG-018 discovered** — mid-battle MOVE_LEARN response's `learning_pokemon` and `current_moves` fields report the party-slot-0 Pokemon (Monferno, fainted) instead of the actually-leveling Pokemon (Mothim at party slot 2). Triggered via Mothim 28 → 29 on Grotle KO. Looks related to the BUG-014/015 persistent-slot vs UI-slot family; the MOVE_LEARN path likely wasn't updated when `battle_ui_slot` / `battle_role` were added.
   - **`heal_party` auto-navigates perfectly** from Eterna City (map 65) → PC (map 69) → nurse dialogue → heal → same flow used to leave the gym for a mid-challenge restock. `buy_item("Super Potion", 8)` **also** auto-navigates from the overworld into the mart, to the correct cashier, and executes — great tool coverage moment.
 - **Next session start**:
-  1. Load **`session15_end_post_double_grunts_eterna_hq`** (battered, mid-raid in T.G. Eterna Bldg). Or `session15_post_grunt_ledian_ariados` for a cleaner mid-session resume (one fight earlier, party at similar HP but before the Toxic-spikes/paralysis mess).
-  2. **Immediately retreat south** from the HQ: south warp at (11, 15) → Eterna City map 65 → `heal_party()` to auto-nav the PC (healed in session 14 from same position, so `heal_party` is battle-tested). Cure Paralysis + Toxic + HP.
-  3. **Restock at Eterna Mart**: buy **Parlyz Heal x5+** (crucial — 2 paralysis per double-battle has been common) and more Super Potions (currently 9, should be fine). `buy_item` on the overworld auto-navs now (exercised session 14).
-  4. **Return to T.G. Eterna Bldg (305, 519)** and take the **OTHER stair — (20, 6)**, NOT (14, 6). Looker (disguised as a "Grunt F" object at (18, 8)) hinted 2 stairs = 1 trap. Session 15 took the left one (14, 6) → map 73 dead-end loop (4 stairs all same map, the only way up was going back). **Prediction: (20, 6) is the correct stair** — but verify before committing.
-  5. **Goal of the raid arc**: find the manager of the Cycle Shop (dialogue said he's "at the Team Galactic building and hasn't returned"). Once he's freed, he returns to the Cycle Shop, and talking to him opens **Route 206 Cycling Road** — the actual path to Hearthome. (Session 15 confirmed the south-of-Eterna warp at (315, 548) goes to a residential building chain, NOT Cycling Road.)
-  6. **Actual Eterna → Hearthome path** (revised from session 14's wrong guess): **Route 206 Cycling Road south** → Route 207 → Route 208 → Hearthome. Route 211 East is **blocked** until post-game (Collector at (445, 526) demands SlowpokeTail "for $1,000,000" — permanent hard gate).
-  7. **Consider routing order**: the Grunt at (305, 520) who blocks Galactic HQ entrance respawned after Forest Badge and dropped the post-Jupiter flag — he's a new story trigger and is now defeated (Ledian Lv24 + Ariados Lv24 team). Similar respawns likely on the 2nd floor.
-  8. **Vaporeon leveling update**: Exp. Share got her to Lv21 in one session from Lv17 — Aurora Beam Ice coverage is now useful. Keep Exp. Share on Vaporeon.
-  9. **Monferno Flamethrower PP = 1/15** — critical for the HQ raid. Either PC-heal restores PP (yes, heal_party refills PP too) or use Rock Smash as chip until Flamethrower restored. Post-heal should be fine.
-  10. **Fighting-type weakness note** still applies — Roserade-style Psychic/Fairy coverage wrecks Monferno at Lv32+. Rely on Vaporeon Aurora Beam + Mothim Bug Buzz for bulk of damage.
+  1. **STRONG RECOMMEND: reload `session16_map75_pre_jupiter_battle`** (pre-fight, full party). Mid-fight save `session16_end_jupiter_midfight_sableye` is technically valid but Vaporeon is dead and Monferno is 8HP poisoned — very low margin for anything beyond Sableye.
+  2. **Jupiter's team (confirmed so far)**: Golbat Lv26 (Inner Focus, Wing Attack / Giga Drain / Leech Life / Confuse Ray) → Skuntank Lv27 (Aftermath, Sitrus Berry, Focus Energy + Night Slash combo — Night Slash crit 2x SE on Bug/Flying 1-shots Mothim) → Tangela Lv26 (Chlorophyll, Giga Drain / Shock Wave / Leech Seed / Sleep Powder) → Sableye Lv26 (Magic Guard, Sitrus Berry, **Fake Out** first turn + Shadow Claw / Knock Off / Shadow Sneak). Likely 1 more after Sableye (Commander teams usually 4-5 in RP). **Bug Buzz on Tangela = 4x SE (Bug STAB + Flying's own Bug-SE stack) = OHKO.**
+  3. **Better Jupiter strategy**: (a) Lead Monferno Flamethrower 2x to drop Golbat (avoid Confuse Ray miss RNG). (b) On Skuntank switch-in, **switch to Mothim** (Fire-resist Dark via Fighting is nice but Monferno's best move is contact Rock Smash = Aftermath suicide). (c) Mothim Bug Buzz x2-3 vs Skuntank (take a Poison Jab or pray no Night Slash crit — Focus Energy makes it 33% crit). (d) Mothim Bug Buzz on Tangela OHKO. (e) Sableye — **lead with Protect to block Fake Out** (priority +4 > priority +3), then Bug Buzz to 2-shot. Sableye has Magic Guard + Sitrus so it takes 2 Bug Buzzes minimum.
+  4. **Post-Jupiter**: talk to **Pokefan M at map 75 (14, 9)** — almost certainly the Cycle Shop manager. Expected to unlock Route 206 Cycling Road once he returns to the Cycle Shop.
+  5. **Map layout** (well-mapped this session): ground = map 72 (2 stairs @ (14,6) and (20,6)). Floor 2 = map 73 (4 isolated pockets each with 1 stair @ (3,3),(8,3),(14,3),(20,3); "dead-end loop" was real but TM73 pickup is there, done). Floor 3 = map 74 (4 pockets w/ bottom strip connecting — Scientist Travon mid-pocket, Grunt M right pocket). Floor 4 = map 75 (Jupiter hall; 2 stairs @ (3,3),(8,3) only). Stair pairs documented:
+     - map 72 (14,6) ↔ map 73 (3,3) — "left-stair trap" pocket (has TM73 Thunder Wave)
+     - map 72 (20,6) ↔ map 73 (8,3) — real path
+     - map 73 (14,3) ↔ map 74 (2,3) — left pocket route
+     - map 73 (20,3) ↔ map 74 (8,3) — middle-left pocket route
+     - map 74 (14,3) ↔ map 75 (3,3) — Jupiter-area access
+     - map 74 (20,3) ↔ map 75 (8,3) — middle-left Pokeballs (TM16/TM33)
+  6. **Rotom's Room** — map 72 (2, 2) warp "ROTOM's Room" was gated by "Wall Blocking Rotom's Room" object in session 15. Now that we have the **Secret Key** (from map 75 Pokeball), the wall should be removable. Worth trying after Jupiter is down.
+  7. **Actual Eterna → Hearthome path** (unchanged): Route 206 Cycling Road south → Route 207 → Route 208 → Hearthome. Route 211 East still hard-gated by Collector.
+  8. **Vaporeon at Lv23** — keep Exp. Share. **Consider giving Mothim the Wise Glasses** (new item, +10% SpA to Bug Buzz makes Mothim even scarier).
+  9. **Monferno Flamethrower PP=8/15** (fresh from heal minus 7 uses mid-raid). Fine for now.
+  10. **BUG-022 caveat**: Super Potion only restored 7 HP in battle (expected 50). If that's a reproducible bug, Super Potion is unreliable in-combat until fixed. Prefer `heal_party` overworld or overworld-mode `use_item` for now.
 - **Open QA bugs after this session**:
-  - **BUG-019 NEW** — Double-battle logs duplicate "fainted" and "gained N Exp. Points" lines (cosmetic). Repro: `session15_galactic_bldg_pre_stairs` → right-stair double-grunt fight.
-  - **BUG-020 NEW** — `view_map` `object.name` reports sprite class, not battle class. Route 211 W "Ace Trainer F" trainer_id 76 is actually a Bird Keeper in battle. Cosmetic but affects matchup planning. Repro: `session15_route211_west_entry`.
-  - **BUG-021 NEW** — `view_map` shows non-battleable flavor NPCs as `trainer=true defeated=true` on FIRST entry to a never-visited map (Route 211 W "Hiker" trainer_id 326, only gives flavor dialogue). Repro: `session15_route211_west_entry`.
-  - **BUG-017 (Eterna Gym clock)** and **BUG-018 (MOVE_LEARN wrong-mon)** still FIXED — no repros this session. MOVE_LEARN on Vaporeon Lv18→19 Aurora Beam correctly reported `learning_pokemon: {slot: 1, name: "Vaporeon"}`, and all Eterna Gym nav this session (entering/exiting the building) worked.
-  - **BUG-013, BUG-014, BUG-015, BUG-016** still holding FIXED — heavy mid-battle switching during double grunts, level-ups in double battle, cold-start load all fine.
-  - **BUG-007, BUG-009** still open, untriggered this session.
-  - **Stale party read in `battle_turn` response's `party` field** (minor, not filed) — during Ninja Boy Zach fight, after Vaporeon leveled Lv17→Lv18, subsequent battle_turn responses still showed `party: [{slot:1, name:"Vaporeon", level:17}]` for the rest of the double-enemy chain. Full `read_party` post-battle showed correct Lv18. Same family as BUG-018 (stale battle-context Pokemon slot data). Not filed — BUG-018 is the canonical ticket for this class.
-  - **MOVE_LEARN `learning_pokemon.level` off-by-one** (minor, not filed) — at Vaporeon Lv18 → Lv19 learn-Aurora-Beam prompt, `learning_pokemon.level` returned **18** (pre-level-up value), but the in-game text said "Vaporeon grew to Lv. 19!" immediately before. Cosmetic — not worth a bug ticket unless it repros more broadly.
-  - **Collector gate on Route 211 East (by design, not a bug)** — NPC at (445, 526) demands SlowpokeTail for $1,000,000; rejects any decline and hard-blocks east passage toward Celestic. No map signage warns about this. Consider FR for a dialogue hint or map note.
+  - **BUG-022 NEW** — Mid-battle Super Potion restored only 7 HP (36→43) instead of the expected 50 on Mothim during the Jupiter fight. Tool returned `success:true` so the item was consumed. Major — could cause whiteouts if the player relies on standard heal values. Repro: `session16_end_jupiter_midfight_sableye` is the state AFTER the bug; to pre-reproduce, reload `session16_map75_pre_jupiter_battle`, fight up to Mothim 36/85 HP vs Sableye's switch prompt, deny switch, and call `battle_turn(use_item="Super Potion", party_slot=2)`.
+  - **BUG-019, BUG-020, BUG-021** all untriggered this session (no doubles, no view_map sprite-vs-class mismatch, no virgin-map entry). Still holding FIXED.
+  - **BUG-017 (Eterna Gym clock)** and **BUG-018 (MOVE_LEARN wrong-mon)** still FIXED — exercised heavy Jupiter-battle switching, 3 MOVE_LEARN events this session (Mothim Lv28→29, Vaporeon Lv22 Aqua Ring, Monferno Lv33→34) all reported the correct Pokemon.
+  - **BUG-013, BUG-014, BUG-015, BUG-016** still holding FIXED through the 4-floor T.G. Eterna dungeon and 4-way stair puzzle.
+  - **BUG-007, BUG-009** still open, untriggered.
+  - **MOVE_LEARN `learning_pokemon.level` off-by-one** (minor, still not filed) — repro'd again this session at Vaporeon Lv22→23 Aqua Ring prompt: `learning_pokemon.level: 21` despite "Vaporeon grew to Lv. 22!" immediately prior. Consistent pattern across two sessions now; may be worth a ticket if it repros a third time.
+  - **Collector gate on Route 211 East (by design)** — unchanged.
 - **FR docket**: FR-003, FR-004, FR-005, FR-006 still open. FR-006 (R0113 water-tile rendering ambiguity) got a real-world dogfood this session — the west land strip IS traversable, legend should probably distinguish "shallow/crossable" vs "deep-needs-surf" water tiles or mark floor tiles that are surrounded by sea more prominently.
 - **Session 12 highlights**:
   - BUG-013 re-verified as fixed under heavy use (many state loads, many battles).
@@ -303,6 +307,14 @@ Saved macros persist across sessions in `macros/`.
   - **BUG-019, BUG-020, BUG-021 filed** — all cosmetic/minor, all view_map/log display issues, none blocking progress.
   - **BUG-017, BUG-018 untriggered this session** and still FIXED.
   - **Ended mid-raid** — session 16 starts with a retreat-to-heal, restock (Parlyz Heal especially), and re-entry via the CORRECT (20, 6) stair to continue the HQ.
+- **Session 16 highlights**:
+  - **Retreat-heal-restock chain worked perfectly**: `navigate_to(11,15)` → Eterna City → `heal_party()` → exit PC → `buy_item("Parlyz Heal", 5)` + `buy_item("Antidote", 5)` — 4-step auto-nav chain all clean, no bugs.
+  - **Mapped the T.G. Eterna Bldg stair puzzle end-to-end** (maps 72→73→74→75). 4 floors, 4 stairs per middle floor, 4 isolated pockets per floor connected only via stairs + bottom-strip bypass. Stair pairs documented in next-session notes.
+  - **Engaged Commander Jupiter** — mid-fight as session ends. 3 of her mons down (Golbat/Skuntank/Tangela), Sableye active. Vaporeon fainted to Poison Jab crit from Skuntank (the Focus Energy + crit RNG combo stung). Mothim carried by Bug Buzz (OHKO'd Tangela via Bug+Flying-stack 4x SE, key technical win).
+  - **Items gained**: TM16 Light Screen, TM33 Reflect, Wise Glasses, **Secret Key (KEY ITEM — unlocks Rotom's Room at map 72 (2, 2))**.
+  - **BUG-022 discovered** — mid-battle `battle_turn(use_item="Super Potion", party_slot=2)` on Mothim at 36/85 HP restored only 7 HP, not the expected 50. Tool returned `success:true`. Major/blocking-ish — affects combat survivability calculations. Filed. Repro pending reload.
+  - **BUG-017/018 and BUG-013-16 all untriggered but implicitly re-exercised** via heavy dungeon navigation (4 floors of map transitions), 3 MOVE_LEARN prompts (Mothim L29 Bug Buzz was already done, Vaporeon L22→23 Aqua Ring skipped, Monferno L33→34 no new move), and mid-battle switching. All clean.
+  - **Ended mid-Jupiter fight** — session 17 should reload `session16_map75_pre_jupiter_battle` for clean re-fight.
 
 ## Tips
 
