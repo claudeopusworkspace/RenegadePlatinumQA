@@ -20,16 +20,16 @@ Bugs discovered during QA playthrough. Each entry includes reproduction steps an
 
 ---
 
-### BUG-022: Mid-battle Super Potion heals far less than 50 HP (session 16, 2026-04-19)
+### BUG-022: `battle_turn` with `use_item=` returns no `log` field, making turn opaque (session 16, 2026-04-19)
 
-- **Tool**: `battle_turn(use_item="Super Potion", party_slot=...)`
-- **Severity**: major (gameplay-affecting — cost me near-whiteout timing vs Commander Jupiter)
-- **Save state**: `session16_end_jupiter_midfight_sableye` (state is *after* the bug — Mothim shows 43/85 HP; Sableye is the active enemy with Sitrus Berry still held, pre-Fake Out).
-- **Call**: Mid Jupiter battle — Mothim at 36/85 HP (no status) before Sableye's first turn. Called `battle_turn(use_item="Super Potion", party_slot=2)` expecting +50 HP → 85/85.
-- **Expected**: Super Potion restores 50 HP (RP doesn't document nerfing Super Potion; bag/party reads list it as "Super Potion" id 26). Mothim should end at 85/85.
-- **Actual**: Tool returns `{"success":true,"item":"Super Potion","old_hp":36,"new_hp":43}`. Only **7 HP restored** — matches *Potion* (20 HP, also low) or even a partially-applied heal, not Super Potion's 50. Battle_state confirms Mothim 43/85 afterward. Super Potion was still consumed from the bag (need to verify on reload, but consumption implies the item was used).
-- **Workaround**: None in-battle — Mothim survived anyway by RNG (Jupiter's Skuntank picked Poison Jab over Night Slash earlier). If this happens at a critical moment it's a whiteout risk.
-- **Notes**: Not a dialogue/log parsing issue — the structured JSON `old_hp`/`new_hp` fields disagree with Super Potion's known effect. Possible causes: (1) the tool internally calls the wrong item-id path and applies Potion's heal table, (2) Super Potion got silently nerfed in RP (unlikely — no mention in CLAUDE.md and would be a weird change), (3) `new_hp` is being mis-read from memory one tick too early. Reload `session16_map75_pre_jupiter_battle` and re-run the full battle up to the switch prompt with different heal values to isolate. No other Super Potion use this session to cross-reference.
+- **Tool**: `battle_turn(use_item=..., party_slot=...)`
+- **Severity**: minor (observability / tool UX — not gameplay-affecting, but makes downstream diagnosis extremely hard)
+- **Save state**: `session16_map75_pre_jupiter_battle` (clean pre-fight state — any in-battle Super Potion use reproduces). Also reproduced **in session 17** by loading this state, engaging Jupiter, and immediately calling `battle_turn(use_item="Super Potion", party_slot=0)` on Monferno 75/99 → response payload has no `log` key.
+- **Call**: Any in-battle `battle_turn(use_item="<item>", party_slot=N)` — confirmed for Super Potion on both active (slot 0) and non-active (slot 2) party members.
+- **Expected**: Response includes a `log` array identical in shape to the move-action path (e.g. `[{text: "WOJ used one Super Potion!", stop: "AUTO_ADVANCE"}, {text: "Mothim's HP was restored by 50 points!", stop: "AUTO_ADVANCE"}, {text: "The foe's Sableye used Fake Out!", stop: "AUTO_ADVANCE"}, {text: "What will Mothim do?", stop: "WAIT_FOR_ACTION"}]` ), so the enemy's reciprocal action on the same turn is visible.
+- **Actual**: Response is just `{"success":true,"item":"<name>","target":"<mon>","party_slot":N,"role":"active","old_hp":X,"new_hp":Y,"final_state":"WAIT_FOR_ACTION","formatted":"..."}` — no `log` field, no `battle_log` field. The enemy's move executes invisibly, and the only evidence it happened is that `new_hp` reflects the end-of-turn HP (post-heal minus whatever the enemy just did), not the immediate post-heal value.
+- **Workaround**: Call `read_battle` before and after the `battle_turn(use_item=...)` to sanity-check HP deltas and deduce enemy behaviour from stage/status changes. Cumbersome.
+- **Notes**: This is what caused the false-positive Super Potion bug originally filed here — without a log, `old_hp: 36, new_hp: 43` looked like a 7 HP heal, but the actual sequence was very likely heal-to-full (36→85) followed by Sableye's Fake Out on the same turn (~42 dmg → 43 HP). The tool isn't under-healing; it's under-reporting. Fix parity with the move-action path: have `battle_turn(use_item=...)` collect the same turn log and include it in the response. (Retraction note: the earlier draft of this entry accused Super Potion of broken heal math — that was wrong, a Super Potion test on Monferno 75/99 in session 17 correctly restored to 99/99. Save-after-bug was also a bad call; next time save *before* the tool invocation that might misbehave.)
 
 ---
 
